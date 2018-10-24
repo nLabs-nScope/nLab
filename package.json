@@ -11,14 +11,16 @@
     "electron-builder": "^20.28.1"
   },
   "scripts": {
-    "postinstall": "electron-builder install-app-deps",
-    "start": "electron .",
+    "start": "npm run compile-scss && electron .",
+    "compile-scss": "sass --style=compressed ./scss/_custom.scss ./app/assets/css/bootstrap_theme.min.css",
     "dist": "build"
   },
   "dependencies": {
-    "bootstrap": "^4.0.0-beta.3",
+    "bootstrap": "^4.1.3",
+    "bootstrap-toggle": "^2.2.2",
     "jquery": "^3.2.1",
     "popper.js": "^1.12.9",
-    "tether": "^1.4.0"
+    "tether": "^1.4.0",
+    "sass": "^1.14.3"
   }
 }

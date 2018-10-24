@@ -8,10 +8,16 @@ const path = require('path')
 const config = require(path.join(__dirname, 'package.json'))
 const BrowserWindow = electron.BrowserWindow
 
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+
 app.setName(config.productName)
 var mainWindow = null
 app.on('ready', function () {
   mainWindow = new BrowserWindow({
+    width: 1000,
+    height: 600,
+    minWidth: 400,
+    minHeight: 300,
     backgroundColor: 'lightgray',
     title: config.productName,
     show: false,
