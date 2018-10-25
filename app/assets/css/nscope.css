@@ -2,10 +2,14 @@ html,body {
     height: 100%;
     /* background-color: #555; */
 }
+.toggle.btn {
+
+    margin-top: 10px;
+}
 
 .sidebar {
-    -ms-flex: 0 0 100px;
-    flex: 0 0 100px;
+    -ms-flex: 0 0 120px;
+    flex: 0 0 120px;
 }
 .sidebar > *{
     vertical-align:top;

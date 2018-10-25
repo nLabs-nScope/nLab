@@ -16,8 +16,8 @@ app.on('ready', function () {
   mainWindow = new BrowserWindow({
     width: 1000,
     height: 600,
-    minWidth: 400,
-    minHeight: 300,
+    minWidth: 600,
+    minHeight: 350,
     title: config.productName,
     show: false,
     webPreferences: {
