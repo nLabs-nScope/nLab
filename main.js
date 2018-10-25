@@ -18,7 +18,6 @@ app.on('ready', function () {
     height: 600,
     minWidth: 400,
     minHeight: 300,
-    backgroundColor: 'lightgray',
     title: config.productName,
     show: false,
     webPreferences: {

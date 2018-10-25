@@ -11,6 +11,13 @@ html,body {
     vertical-align:top;
 }
 
+/* remove blue border from focused or active items */
+:focus, :active {
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+}
+
  /* Bootstrap Toggle v2.2.2 corrections for Bootstrap 4*/
 .toggle > .toggle-group {
     background:white;
