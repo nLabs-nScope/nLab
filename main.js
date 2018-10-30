@@ -34,9 +34,15 @@ app.on('ready', function () {
     globalShortcut.register('Command+Option+I', () => {
       mainWindow.webContents.openDevTools()
     })
+    globalShortcut.register('Command+F', () =>{
+      mainWindow.setFullScreen(!mainWindow.isFullScreen())
+    })
   } else if (platform === 'linux' || platform === 'win32') {
     globalShortcut.register('Control+Shift+I', () => {
       mainWindow.webContents.openDevTools()
+    })
+    globalShortcut.register('Control+F', () =>{
+      mainWindow.setFullScreen(!mainWindow.isFullScreen())
     })
   }
 
