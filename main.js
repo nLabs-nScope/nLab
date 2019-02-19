@@ -8,6 +8,8 @@ const path = require('path')
 const config = require(path.join(__dirname, 'package.json'))
 const BrowserWindow = electron.BrowserWindow
 
+require('electron-reload')(__dirname);
+
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 app.setName(config.productName)

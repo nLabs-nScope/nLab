@@ -6,7 +6,6 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="stylesheet" href="assets/css/bootstrap_theme.min.css">
-    <link rel="stylesheet" href="../node_modules/bootstrap-toggle/css/bootstrap-toggle.min.css">
     <link rel="stylesheet" href="assets/css/nscope.css">
   </head>
   <body>
@@ -17,12 +16,43 @@
     </div>
     <div class="row flex-grow-1">
       <div class="col px-2 sidebar">
-        <input type="checkbox" checked data-toggle="toggle"  data-width="100%"  data-on="P1 On" data-off="P1 Off">
-        <input type="checkbox" checked data-toggle="toggle"  data-width="100%"  data-on="P2 On" data-off="P2 Off">
-        <input type="checkbox" checked data-toggle="toggle"  data-width="100%"  data-on="A1 On" data-off="A1 Off">
-        <input type="checkbox" checked data-toggle="toggle"  data-width="100%"  data-on="A2 On" data-off="A2 Off">
-        <input type="checkbox" checked data-toggle="toggle"  data-width="100%"  data-on="Math On" data-off="Math Off">
-        <input type="checkbox" checked data-toggle="toggle"  data-width="100%"  data-on="Cursors" data-off="Cursors Off">
+          <div class="btn-group dropright">
+              <button type="button" data-toggle="button" class="btn btn-primary">P1 Off</button>
+              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <div class="dropdown-menu">
+              </div>
+          </div>
+          <div class="btn-group dropright">
+              <button type="button" data-toggle="button" class="btn btn-primary">P2 Off</button>
+              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <div class="dropdown-menu">
+              </div>
+          </div>
+          <div class="btn-group dropright">
+              <button type="button" data-toggle="button" class="btn btn-primary">A1 Off</button>
+              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <div class="dropdown-menu">
+              </div>
+          </div>
+          <div class="btn-group dropright">
+              <button type="button" data-toggle="button" class="btn btn-primary">A2 Off</button>
+              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <div class="dropdown-menu">
+              </div>
+          </div>
+          <div class="btn-group dropright">
+              <button type="button" data-toggle="button" class="btn btn-primary">Math</button>
+              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <div class="dropdown-menu">
+              </div>
+          </div>
+          <div class="btn-group dropright">
+              <button type="button" data-toggle="button" class="btn btn-primary">Cursors</button>
+              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <div class="dropdown-menu">
+              </div>
+          </div>
+        
       </div>
       
       <div class="col bg-secondary d-flex p-0 flex-column align-items-center">
@@ -35,12 +65,48 @@
       </div>
 
       <div class="col px-2 sidebar">
-          <input type="checkbox" checked data-toggle="toggle"  data-width="100%"  data-on="Ch1 On" data-off="Ch1 Off">
-          <input type="checkbox" checked data-toggle="toggle"  data-width="100%"  data-on="Ch2 On" data-off="Ch2 Off">
-          <input type="checkbox" checked data-toggle="toggle"  data-width="100%"  data-on="Ch3 On" data-off="Ch3 Off">
-          <input type="checkbox" checked data-toggle="toggle"  data-width="100%"  data-on="Ch4 On" data-off="Ch4 Off">
-          <input type="checkbox" checked data-toggle="toggle"  data-width="100%"  data-on="Trig On" data-off="Trig Off">
-          <input type="checkbox" checked data-toggle="toggle"  data-width="100%"  data-on="Horiz" data-off="Horiz">
+          <div class="btn-group">
+              <div class="btn-group dropleft">
+              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <div class="dropdown-menu"></div>
+              </div>
+              <button type="button" data-toggle="button" class="btn btn-primary">Ch1 Off</button>
+          </div>
+          <div class="btn-group">
+              <div class="btn-group dropleft">
+              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <div class="dropdown-menu"></div>
+              </div>
+              <button type="button" data-toggle="button" class="btn btn-primary">Ch2 Off</button>
+          </div>
+          <div class="btn-group">
+              <div class="btn-group dropleft">
+              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <div class="dropdown-menu"></div>
+              </div>
+              <button type="button" data-toggle="button" class="btn btn-primary">Ch3 Off</button>
+          </div>
+          <div class="btn-group">
+              <div class="btn-group dropleft">
+              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <div class="dropdown-menu"></div>
+              </div>
+              <button type="button" data-toggle="button" class="btn btn-primary">Ch4 Off</button>
+          </div>
+          <div class="btn-group">
+              <div class="btn-group dropleft">
+              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <div class="dropdown-menu"></div>
+              </div>
+              <button type="button" data-toggle="button" class="btn btn-primary">Trig Off</button>
+          </div>
+          <div class="btn-group">
+              <div class="btn-group dropleft">
+              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <div class="dropdown-menu"></div>
+              </div>
+              <button type="button" data-toggle="button" class="btn btn-primary">Horiz</button>
+          </div>
 
         </div>
     </div>
