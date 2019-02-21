@@ -1,4 +1,25 @@
-// $font-size-base: 0.9rem;
+/* import only the necessary Bootstrap files */
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+
+
+/* -------begin customization-------- */
+
+$theme-colors: (
+  primary: $blue,
+  secondary: $gray-600,
+  success: $green,
+  info: $cyan,
+  warning: $yellow,
+  danger: $red,
+  light: $gray-100,
+  dark: $gray-900,
+  dark-1l: $gray-800
+);
+
+/* -------end customization-------- */
+/* finally, import Bootstrap to set the changes! */
 
 @import "../node_modules/bootstrap/scss/bootstrap";
 

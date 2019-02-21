@@ -19,7 +19,7 @@ app.on('ready', function () {
     width: 1000,
     height: 600,
     minWidth: 600,
-    minHeight: 350,
+    minHeight: 380,
     title: config.productName,
     show: false,
     webPreferences: {
@@ -27,31 +27,21 @@ app.on('ready', function () {
       defaultEncoding: 'UTF-8'
     }
   })
-
+  
   mainWindow.loadURL(`file://${__dirname}/app/index.html`)
-
-  // Enable keyboard shortcuts for Developer Tools on various platforms.
-  let platform = os.platform()
-  if (platform === 'darwin') {
-    globalShortcut.register('Command+Option+I', () => {
-      mainWindow.webContents.openDevTools()
-    })
-    globalShortcut.register('Command+F', () =>{
-      mainWindow.setFullScreen(!mainWindow.isFullScreen())
-    })
-  } else if (platform === 'linux' || platform === 'win32') {
-    globalShortcut.register('Control+Shift+I', () => {
-      mainWindow.webContents.openDevTools()
-    })
-    globalShortcut.register('Control+F', () =>{
-      mainWindow.setFullScreen(!mainWindow.isFullScreen())
-    })
-  }
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.setMenu(null)
     mainWindow.show()
   })
+
+  // Prevent zooming
+  let webContents = mainWindow.webContents;
+  webContents.on('did-finish-load', () => {
+      webContents.setZoomFactor(1);
+      webContents.setVisualZoomLevelLimits(1, 1);
+      webContents.setLayoutZoomLevelLimits(0, 0);
+  });
 
   mainWindow.onbeforeunload = (e) => {
     // Prevent Command-R from unloading the window contents.

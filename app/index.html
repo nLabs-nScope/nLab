@@ -11,44 +11,64 @@
   <body>
 
   <main role="main" class="container-fluid h-100 d-flex flex-column">
-    <div class="row bg-dark text-white py-1 px-2">
-        Title Bar
+    <div class="row bg-dark text-white py-1 align-items-center text-nowrap">
+        <div class="col-3"><img src="assets/svg/nScopeLogo_white.svg" width="100px"></div>
+        <div class="flex-grow-1"></div>
+        <div class="col-6 text-right">
+            <div class="btn-group btn-group-toggle px-2" data-toggle="buttons">
+                <label class="btn btn-outline-secondary btn-xs active">
+                    <input type="radio" name="options" id="run" autocomplete="off" checked>Run
+                </label>
+                <label class="btn btn-outline-secondary btn-xs">
+                    <input type="radio" name="options" id="option2" autocomplete="off">Single
+                </label>
+                <label class="btn btn-outline-secondary btn-xs">
+                    <input type="radio" name="options" id="option3" autocomplete="off">Stop
+                </label>
+            </div>
+            <div class="btn btn-xs btn-outline-danger static px-2">Disconnected</div>
+        </div>
+        <!-- <div class="col-2">
+            <div class="progress btn btn-xs">
+                <div class="progress-bar" role="progressbar" style="width: 25%;">25%</div>
+            </div>
+        </div> -->
     </div>
     <div class="row flex-grow-1">
-      <div class="col px-2 sidebar">
+      <div class="col bg-dark-1l px-2 sidebar">
           <div class="btn-group dropright">
-              <button type="button" data-toggle="button" class="btn btn-primary">P1 Off</button>
-              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <button type="button" data-toggle="button" class="btn btn-sm btn-outline-secondary flex-grow-1">P1</button>
+              <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
               <div class="dropdown-menu">
               </div>
           </div>
           <div class="btn-group dropright">
-              <button type="button" data-toggle="button" class="btn btn-primary">P2 Off</button>
-              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <button type="button" data-toggle="button" class="btn btn-sm btn-outline-secondary flex-grow-1">P2</button>
+              <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
               <div class="dropdown-menu">
               </div>
           </div>
           <div class="btn-group dropright">
-              <button type="button" data-toggle="button" class="btn btn-primary">A1 Off</button>
-              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <button type="button" data-toggle="button" class="btn btn-sm btn-outline-secondary flex-grow-1">A1</button>
+              <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
               <div class="dropdown-menu">
               </div>
           </div>
           <div class="btn-group dropright">
-              <button type="button" data-toggle="button" class="btn btn-primary">A2 Off</button>
-              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <button type="button" data-toggle="button" class="btn btn-sm btn-outline-secondary flex-grow-1">A2</button>
+              <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
               <div class="dropdown-menu">
               </div>
           </div>
           <div class="btn-group dropright">
-              <button type="button" data-toggle="button" class="btn btn-primary">Math</button>
-              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <button type="button" data-toggle="button" class="btn btn-sm btn-outline-secondary flex-grow-1">Math</button>
+              <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
               <div class="dropdown-menu">
               </div>
           </div>
           <div class="btn-group dropright">
-              <button type="button" data-toggle="button" class="btn btn-primary">Cursors</button>
-              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <button type="button" data-toggle="button" class="btn btn-sm btn-outline-secondary flex-grow-1">Cursors</button>
+              <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
               <div class="dropdown-menu">
               </div>
           </div>
@@ -64,48 +84,48 @@
         </div>
       </div>
 
-      <div class="col px-2 sidebar">
+      <div class="col bg-dark-1l px-2 sidebar">
           <div class="btn-group">
               <div class="btn-group dropleft">
-              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
               <div class="dropdown-menu"></div>
               </div>
-              <button type="button" data-toggle="button" class="btn btn-primary">Ch1 Off</button>
+              <button type="button" data-toggle="button" class="btn btn-sm btn-outline-secondary flex-grow-1">Ch1</button>
           </div>
           <div class="btn-group">
               <div class="btn-group dropleft">
-              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
               <div class="dropdown-menu"></div>
               </div>
-              <button type="button" data-toggle="button" class="btn btn-primary">Ch2 Off</button>
+              <button type="button" data-toggle="button" class="btn btn-sm btn-outline-secondary flex-grow-1">Ch2</button>
           </div>
           <div class="btn-group">
               <div class="btn-group dropleft">
-              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
               <div class="dropdown-menu"></div>
               </div>
-              <button type="button" data-toggle="button" class="btn btn-primary">Ch3 Off</button>
+              <button type="button" data-toggle="button" class="btn btn-sm btn-outline-secondary flex-grow-1">Ch3</button>
           </div>
           <div class="btn-group">
               <div class="btn-group dropleft">
-              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
               <div class="dropdown-menu"></div>
               </div>
-              <button type="button" data-toggle="button" class="btn btn-primary">Ch4 Off</button>
+              <button type="button" data-toggle="button" class="btn btn-sm btn-outline-secondary flex-grow-1">Ch4</button>
           </div>
           <div class="btn-group">
               <div class="btn-group dropleft">
-              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
               <div class="dropdown-menu"></div>
               </div>
-              <button type="button" data-toggle="button" class="btn btn-primary">Trig Off</button>
+              <button type="button" data-toggle="button" class="btn btn-sm btn-outline-secondary flex-grow-1">Trigger</button>
           </div>
           <div class="btn-group">
               <div class="btn-group dropleft">
-              <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+              <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
               <div class="dropdown-menu"></div>
               </div>
-              <button type="button" data-toggle="button" class="btn btn-primary">Horiz</button>
+              <button type="button" data-toggle="button" class="btn btn-sm btn-outline-secondary flex-grow-1">Horiz</button>
           </div>
 
         </div>
