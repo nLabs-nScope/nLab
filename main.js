@@ -18,10 +18,11 @@ app.on('ready', function () {
   mainWindow = new BrowserWindow({
     width: 1000,
     height: 600,
-    minWidth: 600,
-    minHeight: 380,
+    minWidth: 700,
+    minHeight: 400,
     title: config.productName,
     show: false,
+    icon: path.join(__dirname, 'assets/icons/png/256x256.png'),
     webPreferences: {
       nodeIntegration: true,
       defaultEncoding: 'UTF-8'

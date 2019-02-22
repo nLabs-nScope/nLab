@@ -1,11 +1,7 @@
 html,body {
     height: 100%;
-    /* background-color: #555; */
+    line-height: 1.0;
 }
-
-/* .sidebar .btn:not(.dropdown-toggle-split) {
-    width: 100%;
-} */
 
 .sidebar > .btn-group {
     margin-top: 10px;
@@ -13,8 +9,8 @@ html,body {
 }
 
 .sidebar {
-    -ms-flex: 0 0 120px;
-    flex: 0 0 120px;
+    -ms-flex: 0 0 90px;
+    flex: 0 0 90px;
 }
 .sidebar > *{
     vertical-align:top;
@@ -38,4 +34,13 @@ html,body {
 .static {
     pointer-events: none;
 
+}
+
+.dropright .dropdown-toggle
+{
+    width: 24px;
+}
+.dropleft .dropdown-toggle
+{
+    width: 24px;
 }
