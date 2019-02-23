@@ -9,11 +9,16 @@ html,body {
 }
 
 .sidebar {
-    -ms-flex: 0 0 90px;
-    flex: 0 0 90px;
+    -ms-flex: 0 0 110px;
+    flex: 0 0 110px;
 }
 .sidebar > *{
     vertical-align:top;
+}
+
+#usb-status {
+    width: 90px;
+    overflow: hidden;
 }
 
 /* remove border from focused or active items */
@@ -36,11 +41,36 @@ html,body {
 
 }
 
-.dropright .dropdown-toggle
-{
+.dropright .dropdown-toggle {
     width: 24px;
 }
-.dropleft .dropdown-toggle
-{
+.dropleft .dropdown-toggle {
     width: 24px;
+}
+
+.dropdown-menu {
+    font-size: 12px;
+    line-height: 1.5;
+    min-width: 0rem;
+}
+
+.dropdown-item {
+    padding: 0.1rem 0.6rem;
+}
+
+
+.nscope-progress-bar {
+    pointer-events: none;
+    position: relative;
+    display:inline-block;
+}
+
+.nscope-progress-bar .nscope-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 46%;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
 }
