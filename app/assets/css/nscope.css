@@ -3,7 +3,8 @@ html,body {
     line-height: 1.0;
 }
 
-.sidebar > .btn-group {
+
+.sidebar > .btn-group-vertical {
     margin-top: 10px;
     width: 100%;
 }
@@ -38,20 +39,27 @@ html,body {
 
 .static {
     pointer-events: none;
-
 }
 
 .dropright .dropdown-toggle {
-    width: 24px;
+    width: 20px;
 }
 .dropleft .dropdown-toggle {
-    width: 24px;
+    width: 20px;
+}
+
+.btn-group-vertical .dropleft {
+    width: 20px;
+}
+
+.btn-group-vertical .dropright {
+    width: 20px;
 }
 
 .dropdown-menu {
     font-size: 12px;
     line-height: 1.5;
-    min-width: 0rem;
+    min-width: 10rem;
 }
 
 .dropdown-item {
@@ -74,3 +82,7 @@ html,body {
     margin: 0;
     overflow: hidden;
 }
+
+/* .dropdown-toggle-split:hover + .dropdown-menu {
+    display: block;
+   } */
