@@ -28,7 +28,7 @@ app.on('ready', function () {
       defaultEncoding: 'UTF-8'
     }
   })
-  
+  console.log('Version: ' + process.version);
   mainWindow.loadURL(`file://${__dirname}/app/index.html`)
 
   mainWindow.once('ready-to-show', () => {
@@ -37,12 +37,12 @@ app.on('ready', function () {
   })
 
   // Prevent zooming
-  let webContents = mainWindow.webContents;
-  webContents.on('did-finish-load', () => {
-      webContents.setZoomFactor(1);
-      webContents.setVisualZoomLevelLimits(1, 1);
-      webContents.setLayoutZoomLevelLimits(0, 0);
-  });
+  // let webContents = mainWindow.webContents;
+  // webContents.on('did-finish-load', () => {
+  //     webContents.setZoomFactor(1);
+  //     webContents.setVisualZoomLevelLimits(1, 1);
+  //     webContents.setLayoutZoomLevelLimits(0, 0);
+  // });
 
   mainWindow.onbeforeunload = (e) => {
     // Prevent Command-R from unloading the window contents.
