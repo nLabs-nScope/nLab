@@ -2,7 +2,6 @@
 
 const electron = require('electron')
 const app = electron.app
-const globalShortcut = electron.globalShortcut
 const os = require('os')
 const path = require('path')
 const config = require(path.join(__dirname, 'package.json'))
@@ -35,6 +34,8 @@ app.on('ready', function () {
     mainWindow.setMenu(null)
     mainWindow.show()
   })
+
+  mainWindow.webContents.openDevTools();
 
   // Prevent zooming
   // let webContents = mainWindow.webContents;
