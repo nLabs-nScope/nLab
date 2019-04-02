@@ -2,10 +2,10 @@
 
 const electron = require('electron')
 const app = electron.app
-const os = require('os')
 const path = require('path')
 const config = require(path.join(__dirname, 'package.json'))
 const BrowserWindow = electron.BrowserWindow
+
 
 require('electron-reload')(__dirname);
 
