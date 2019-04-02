@@ -5,7 +5,7 @@ const app = electron.app
 const path = require('path')
 const config = require(path.join(__dirname, 'package.json'))
 const BrowserWindow = electron.BrowserWindow
-
+const nScopeAPI = require(path.resolve('app/js/nScopeAPI'));
 
 require('electron-reload')(__dirname);
 
@@ -51,6 +51,8 @@ app.on('ready', function () {
     }
 
     mainWindow.on('closed', function () {
+        nScopeAPI.close();
+        nScopeAPI.clean();
         mainWindow = null
     })
 })

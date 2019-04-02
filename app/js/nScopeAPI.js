@@ -6,9 +6,11 @@ var double = ref.types.double;
 var p_double = ref.refType(double);
 var ns_error = ref.types.int;
 var ns_power_state = ref.types.int;
+var p_ns_power_state = ref.refType(ns_power_state);
 var int = ref.types.int;
+var p_int = ref.refType(int);
 
-var scopeHandle = ref.types.void 
+var scopeHandle = ref.refType(ref.types.void);
 var p_scopeHandle = ref.refType(scopeHandle);
 
 switch(require('process').platform)
@@ -32,12 +34,92 @@ switch(require('process').platform)
 
 
 const libnscopeapi = ffi.Library(lib,{
-    "nScope_check_API_version": [ ns_error, [p_double]]
+    "nScope_open": [ns_error, [bool, p_scopeHandle]],
+    "nScope_close": [ns_error, [p_scopeHandle]],
+    "nScope_clean": [ns_error, [p_scopeHandle]],
+    "nScope_initialize": [ns_error, [scopeHandle]],
+    "nScope_get_power_usage": [ns_error, [scopeHandle, p_double]],
+    "nScope_get_power_state": [ns_error, [scopeHandle, p_ns_power_state]],
+    "nScope_find_firmware_loader": [ns_error, []],
+    "nScope_write_to_loader": [ns_error, []],
+    "nScope_load_firmware": [ns_error, []],
+    "nScope_check_API_version": [ns_error, [p_double]],
+    "nScope_check_FW_version": [ns_error, [p_double]],
+    "nScope_check_API_build": [ns_error, [p_int]]
 });
+
+var p_nScopeHandle = ref.alloc(p_scopeHandle);
+var nScopeHandle;
+var p_nScopeRequest;
+var nScopeRequest;
+
+exports.open = () => {
+    var err = libnscopeapi.nScope_open(true,p_nScopeHandle);
+    if(err == 0) nScopeHandle = p_nScopeHandle.deref();
+    return err;
+}
+
+exports.close = () => {
+    var err = libnscopeapi.nScope_close(p_nScopeHandle);
+    return err;
+}
+
+exports.clean = () => {
+    var err = libnscopeapi.nScope_close(p_nScopeHandle);
+    return err;
+}
+
+exports.initialize = () => {
+    var err = libnscopeapi.nScope_initialize(nScopeHandle);
+    return err;
+}
+
+exports.get_power_usage = () => {
+    let powerUsage = ref.alloc(double);
+    var err = libnscopeapi.nScope_get_power_usage(nScopeHandle,powerUsage);
+    if(err == 0) return powerUsage.deref();
+    return err;
+}
+
+exports.get_power_state = () => {
+    let powerState = ref.alloc(ns_power_state);
+    var err = libnscopeapi.nScope_get_power_state(nScopeHandle,powerState);
+    if(err == 0) return powerState.deref();
+    return err;
+}
+
+exports.find_firmware_loader = () => {
+    var err = libnscopeapi.nScope_find_firmware_loader();
+    return err;
+}
+
+exports.write_to_loader = () => {
+    var err = libnscopeapi.nScope_write_to_loader();
+    return err;
+}
+
+exports.load_firmware = () => {
+    var err = libnscopeapi.nScope_load_firmware();
+    return err;
+}
 
 exports.check_API_version = () => {
     let apiVersion = ref.alloc(double)
-    libnscopeapi.nScope_check_API_version(apiVersion);
+    var err = libnscopeapi.nScope_check_API_version(apiVersion);
+    if(err == 0) return apiVersion.deref();
+    return err;
+}
 
-    return apiVersion.deref()
+exports.check_FW_version = () => {
+    let fwVersion = ref.alloc(double)
+    var err = libnscopeapi.nScope_check_FW_version(fwVersion);
+    if(err == 0) return fwVersion.deref();
+    return err;
+}
+
+exports.check_API_build = () => {
+    let apiBuild = ref.alloc(int)
+    var err = libnscopeapi.nScope_check_API_build(apiBuild);
+    if(err == 0) return apiBuild.deref();
+    return err;
 }
