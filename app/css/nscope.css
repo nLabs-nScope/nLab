@@ -17,10 +17,7 @@ html,body {
     vertical-align:top;
 }
 
-#usb-status {
-    width: 90px;
-    overflow: hidden;
-}
+
 
 /* remove border from focused or active items */
 :focus, :active, .active {
@@ -67,20 +64,36 @@ html,body {
 }
 
 
-.nscope-progress-bar {
+.nscope-power-usage-bar {
     pointer-events: none;
     position: relative;
     display:inline-block;
 }
 
-.nscope-progress-bar .nscope-progress {
+.nscope-power-usage-bar .nscope-power-usage {
     position: absolute;
     top: 0;
     left: 0;
-    width: 46%;
+    width: 100%;
     padding: 0;
     margin: 0;
     overflow: hidden;
+
+}
+
+.nscope-usb-disconnected {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0;
+    margin: 0;
+    /* visibility: hidden; */
+}
+
+#usb-status-bar,#usb-status {
+    width: 90px;
+    overflow: hidden;
+    visibility: hidden;
 }
 
 /* .dropdown-toggle-split:hover + .dropdown-menu {
