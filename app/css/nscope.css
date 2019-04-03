@@ -70,30 +70,20 @@ html,body {
     display:inline-block;
 }
 
-.nscope-power-usage-bar .nscope-power-usage {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
 
-}
-
-.nscope-usb-disconnected {
+.nscope-power-usage-bar > div:not(:first-child) {
     position: absolute;
     top: 0;
     left: 0;
     padding: 0;
     margin: 0;
-    /* visibility: hidden; */
+    overflow: hidden;
 }
 
-#usb-status-bar,#usb-status {
-    width: 90px;
-    overflow: hidden;
-    visibility: hidden;
+
+
+.nscope-power-usage-bar .btn {
+    width:90px;
 }
 
 /* .dropdown-toggle-split:hover + .dropdown-menu {
