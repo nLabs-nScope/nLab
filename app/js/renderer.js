@@ -31,6 +31,7 @@ function updatePowerUsage(state, usage)
             break;
         }
         case 2:
+        case 3:
         {
             $("#usb-status-bar, #usb-status").css("visibility","hidden");
             $(".nscope-usb-disconnected").css("visibility","hidden");
@@ -50,6 +51,11 @@ function updatePowerUsage(state, usage)
         }
     }
     return usage;
+}
+
+function initPowerUsage()
+{
+    updatePowerUsage(-1, 0);
 }
 
 function monitorScope(){
@@ -75,5 +81,9 @@ function monitorScope(){
 
 }
 
+
+
+
 // Monitor the state of the nScope:
+initPowerUsage();
 setInterval(monitorScope,10);

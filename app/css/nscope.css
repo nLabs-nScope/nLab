@@ -65,11 +65,10 @@ html,body {
 
 
 .nscope-power-usage-bar {
-    pointer-events: none;
+    pointer-events: none;   
     position: relative;
     display:inline-block;
 }
-
 
 .nscope-power-usage-bar > div:not(:first-child) {
     position: absolute;
@@ -79,6 +78,7 @@ html,body {
     margin: 0;
     overflow: hidden;
 }
+
 
 
 
