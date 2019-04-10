@@ -2,6 +2,7 @@ const ffi = require('ffi')
 const ref = require('ref')
 
 var bool = ref.types.bool;
+var p_bool = ref.refType(bool);
 var double = ref.types.double;
 var p_double = ref.refType(double);
 var ns_error = ref.types.int;
@@ -45,7 +46,19 @@ const libnscopeapi = ffi.Library(lib,{
     "nScope_load_firmware": [ns_error, []],
     "nScope_check_API_version": [ns_error, [p_double]],
     "nScope_check_FW_version": [ns_error, [p_double]],
-    "nScope_check_API_build": [ns_error, [p_int]]
+    "nScope_check_API_build": [ns_error, [p_int]],
+
+    "nScope_set_AX_on": [ns_error, [scopeHandle, int, bool]],
+    "nScope_get_AX_on": [ns_error, [scopeHandle, int, p_bool]],
+    "nScope_set_AX_frequency_in_hz": [ns_error, [scopeHandle, int, double]],
+    "nScope_get_AX_frequency_in_hz": [ns_error, [scopeHandle, int, p_double]],
+    "nScope_set_AX_wave_type": [ns_error, [scopeHandle, int, int]],
+    "nScope_get_AX_wave_type": [ns_error, [scopeHandle, int, p_int]],
+    "nScope_set_AX_unipolar": [ns_error, [scopeHandle, int, bool]],
+    "nScope_get_AX_unipolar": [ns_error, [scopeHandle, int, p_bool]],
+    "nScope_set_AX_amplitude": [ns_error, [scopeHandle, int, double]],
+    "nScope_get_AX_amplitude": [ns_error, [scopeHandle, int, p_double]],
+
 });
 
 var p_nScopeHandle = ref.alloc(p_scopeHandle);
@@ -121,5 +134,65 @@ exports.check_API_build = () => {
     let apiBuild = ref.alloc(int)
     var err = libnscopeapi.nScope_check_API_build(apiBuild);
     if(err == 0) return apiBuild.deref();
+    return err;
+}
+
+exports.get_AX_on = (ch) => {
+    let isOn = ref.alloc(bool)
+    var err = libnscopeapi.nScope_get_AX_on(nScopeHandle,ch,isOn);
+    if(err == 0) return isOn.deref();
+    return err;
+}
+
+exports.set_AX_on = (ch, on) => {
+    var err = libnscopeapi.nScope_set_AX_on(nScopeHandle,ch,on);
+    return err;
+}
+
+exports.get_AX_frequency_in_hz = (ch) => {
+    let freq = ref.alloc(double)
+    var err = libnscopeapi.nScope_get_AX_frequency_in_hz(nScopeHandle,ch,freq);
+    if(err == 0) return freq.deref();
+    return err;
+}
+
+exports.set_AX_frequency_in_hz = (ch, freq) => {
+    var err = libnscopeapi.nScope_set_AX_frequency_in_hz(nScopeHandle,ch,freq);
+    return err;
+}
+
+exports.get_AX_wave_type = (ch) => {
+    let wavetype = ref.alloc(int)
+    var err = libnscopeapi.nScope_get_AX_wave_type(nScopeHandle,ch,wavetype);
+    if(err == 0) return wavetype.deref();
+    return err;
+}
+
+exports.set_AX_wave_type = (ch, wavetype) => {
+    var err = libnscopeapi.nScope_set_AX_wave_type(nScopeHandle,ch,wavetype);
+    return err;
+}
+
+exports.get_AX_unipolar = (ch) => {
+    let isUnipolar = ref.alloc(bool)
+    var err = libnscopeapi.nScope_get_AX_unipolar(nScopeHandle,ch,isUnipolar);
+    if(err == 0) return isUnipolar.deref();
+    return err;
+}
+
+exports.set_AX_unipolar = (ch, unipolar) => {
+    var err = libnscopeapi.nScope_set_AX_unipolar(nScopeHandle,ch,unipolar);
+    return err;
+}
+
+exports.get_AX_amplitude = (ch) => {
+    let amplitude = ref.alloc(double)
+    var err = libnscopeapi.nScope_get_AX_amplitude(nScopeHandle,ch,amplitude);
+    if(err == 0) return amplitude.deref();
+    return err;
+}
+
+exports.set_AX_amplitude = (ch, amplitude) => {
+    var err = libnscopeapi.nScope_set_AX_amplitude(nScopeHandle,ch,amplitude);
     return err;
 }
