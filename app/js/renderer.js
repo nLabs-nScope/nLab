@@ -4,7 +4,8 @@ window.Bootstrap = require('bootstrap')
 
 const path = require("path");
 const nScopeAPI = require(path.resolve('app/js/nScopeAPI'));
-
+const nsAnalogOutputs = require(path.resolve('app/js/analogOutputs'));
+const nsPulseOutput = require(path.resolve('app/js/pulseOutputs'));
 
 
 function updatePowerUsage(state, usage)
@@ -68,6 +69,7 @@ function monitorScope(){
         if(nScopeAPI.open() == 0)
         {
             monitorScope.isOpen = true;
+            nsPulseOutput.initInput();
         }
     }
     else
@@ -83,6 +85,19 @@ function monitorScope(){
 
 }
 
+$('.dropdown-menu.clickable').click(function(e) {
+    e.stopPropagation();
+});
+
+$("label[contenteditable='true'").keypress(function(e) { 
+    return false;
+    // if(e.which == 13)
+    // {
+
+    // }   
+    return e.which != 13; 
+});
+
 
 
 
@@ -92,5 +107,3 @@ monitorScope();
 setInterval(monitorScope,10);
 
 
-require(path.resolve('app/js/analogOutputs'));
-require(path.resolve('app/js/pulseOutputs'));

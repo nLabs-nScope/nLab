@@ -3,56 +3,107 @@ const nScopeAPI = require(path.resolve('app/js/nScopeAPI'));
 
 
 function valToDuty(val) {
-    val = parseFloat(val);
+    let val = parseFloat(val);
     return val;
 }
 
-function valToFrequency(val) {
-    val = parseFloat(val);
-    freq = Math.pow(10,val/100.0*4.3);
+function dutyToVal(duty) {
+    return duty;
+}
+
+function dutyToString(duty) {
+    let dutyString = {};
+    dutyString.number = duty.toFixed(0);
+    dutyString.unit = '%';
+    return dutyString;
+}
+
+function valToFreq(val) {
+    let val = parseFloat(val);
+    let freq = Math.pow(10,val/100.0*4.3);
     return freq;
 }
 
+function freqToVal(freq) {
+    let val = Math.log10(freq)/4.3*100.0;
+    return val;
+}
 
-function updatePxStatus()
-{
+function freqToString(freq) {
+
+    let freqString = {};
+    if(freq < 10) {
+        freqString.number = freq.toPrecision(2);
+        freqString.unit = "Hz";
+    } else if(freq < 1000) {
+        freqString.number = freq.toPrecision(3);
+        freqString.unit = "Hz";
+    } else if (freq < 1000000) {
+        freqString.number = (freq/1000).toPrecision(3);
+        freqString.unit = "kHz";
+    } else {
+        freqString.number = (freq/1000000).toPrecision(3);
+        freqString.unit = "MHz";
+    }
+    return freqString;
+}
+
+exports.initInput = () => {
+    
+    let frequency, duty, label, freqString, dutyString;
+
+    frequency = nScopeAPI.get_PX_frequency_in_hz(1);
+    duty = nScopeAPI.get_PX_duty_percentage(1);
+
+    label = $("label[for='P1-freq']");
+    
+    freqString = freqToString(frequency);
+    label.html(freqString.number);
+    label.next().html(freqString.unit);
+    $("#P1-freq").val(freqToVal(frequency));
+
+    label = $("label[for='P1-duty']");
+
+    dutyString = dutyToString(duty);;
+    label.html(dutyString.number);
+    label.next().html(dutyString.unit);
+    $("#P1-duty").val(dutyToVal(duty));
+
+    frequency = nScopeAPI.get_PX_frequency_in_hz(2);
+    duty = nScopeAPI.get_PX_duty_percentage(2);
+
+    label = $("label[for='P2-freq']");
+    
+    freqString = freqToString(frequency);
+    label.html(freqString.number);
+    label.next().html(freqString.unit);
+    $("#P2-freq").val(freqToVal(frequency));
+
+    label = $("label[for='P2-duty']");
+
+    dutyString = dutyToString(duty);
+    label.html(dutyString.number);
+    label.next().html(dutyString.unit);
+    $("#P2-duty").val(dutyToVal(duty));
+
+}
+
+exports.updateStatus = () => {
+
     if(monitorScope.isOpen)
     {
-        frequency = nScopeAPI.get_PX_frequency_in_hz(1);
-        duty = nScopeAPI.get_PX_duty_percentage(1);
-        if(frequency < 10)
-        {
-            $("#P1-status").html(frequency.toPrecision(2)+' Hz '+duty.toFixed(0)+'%');
-        } else if(frequency < 1000)
-        {
-            $("#P1-status").html(frequency.toPrecision(3)+' Hz '+duty.toFixed(0)+'%');
-        } else if (frequency < 1000000)
-        {
-            frequency /= 1000
-            $("#P1-status").html(frequency.toPrecision(3)+' kHz '+duty.toFixed(0)+'%');
-        } else 
-        {
-            frequency /= 1000000
-            $("#P1-status").html(frequency.toPrecision(3)+' MHz '+duty.toFixed(0)+'%');
-        }
+        let frequency = nScopeAPI.get_PX_frequency_in_hz(1);
+        let duty = nScopeAPI.get_PX_duty_percentage(1);
+        let freqString = freqToString(frequency);
+        let dutyString = dutyToString(duty);
+
+        $("#P1-status").html(freqString.number+' '+freqString.unit+' '+dutyString.number+' '+dutyString.unit);
 
         frequency = nScopeAPI.get_PX_frequency_in_hz(2);
         duty = nScopeAPI.get_PX_duty_percentage(2);
-        if(frequency < 10)
-        {
-            $("#P2-status").html(frequency.toPrecision(2)+' Hz '+duty.toFixed(0)+'%');
-        } else if(frequency < 1000)
-        {
-            $("#P2-status").html(frequency.toPrecision(3)+' Hz '+duty.toFixed(0)+'%');
-        } else if (frequency < 1000000)
-        {
-            frequency /= 1000
-            $("#P2-status").html(frequency.toPrecision(3)+' kHz '+duty.toFixed(0)+'%');
-        } else 
-        {
-            frequency /= 1000000
-            $("#P2-status").html(frequency.toPrecision(3)+' MHz '+duty.toFixed(0)+'%');
-        }
+        freqString = freqToString(frequency);
+        dutyString = dutyToString(duty);
+        $("#P2-status").html(freqString.number+' '+freqString.unit+' '+dutyString.number+' '+dutyString.unit);
 
     } else {
         $("#P1-status").html("&nbsp;");
@@ -61,61 +112,52 @@ function updatePxStatus()
 }
 
 $("#P1-onoff").on("click", function(){
-    wasChecked = $(this).hasClass('active');
+    let wasChecked = $(this).hasClass('active');
     if(wasChecked) {nScopeAPI.set_PX_on(1,false)}
     if(!wasChecked) {nScopeAPI.set_PX_on(1,true)}
 }); 
 
 $("#P2-onoff").on("click", function(){
-    wasChecked = $(this).hasClass('active');
+    let wasChecked = $(this).hasClass('active');
     if(wasChecked) {nScopeAPI.set_PX_on(2,false)}
     if(!wasChecked) {nScopeAPI.set_PX_on(2,true)}
 }); 
 
 $("#P1-freq,#P2-freq").on("input change", function(){
-    var label = $("label[for='" + $(this).attr('id') + "']");
-    var frequency = valToFrequency($(this).val())
-    if(frequency < 10) {
-        label.html(frequency.toPrecision(2));
-        label.next().html("Hz");
-    } else if(frequency < 1000) {
-        label.html(frequency.toPrecision(3));
-        label.next().html("Hz");
-    } else if (frequency < 1000000) {
-        label.html((frequency/1000).toPrecision(3));
-        label.next().html("kHz");
-    } else {
-        label.html((frequency/1000000).toPrecision(3));
-        label.next().html("MHz");
-    }
+    let label = $("label[for='" + $(this).attr('id') + "']");
+    let frequency = valToFreq($(this).val())
+    let freqString = freqToString(frequency);
+    label.html(freqString.number);
+    label.next().html(freqString.unit);
 })
 
 $("#P1-freq").on("change", function(){
-    var frequency = valToFrequency($(this).val())
+    let frequency = valToFreq($(this).val())
     nScopeAPI.set_PX_frequency_in_hz(1,frequency);
 })
 
 $("#P2-freq").on("change", function(){
-    var frequency = valToFrequency($(this).val())
+    let frequency = valToFreq($(this).val())
     nScopeAPI.set_PX_frequency_in_hz(2,frequency);
 })
 
-
 $("#P1-duty,#P2-duty").on("input change", function(){
-    var label = $("label[for='" + $(this).attr('id') + "']");
-    var duty = valToDuty($(this).val())
-    label.html(duty.toFixed(0));
+    let label = $("label[for='" + $(this).attr('id') + "']");
+    let duty = valToDuty($(this).val())
+    let dutyString = dutyToString(duty);;
+    label.html(dutyString.number);
+    label.next().html(dutyString.unit);
 })
 
 $("#P1-duty").on("change", function(){
-    var duty = valToDuty($(this).val());
+    let duty = valToDuty($(this).val());
     nScopeAPI.set_PX_duty_percentage(1,duty);
 })
 
 $("#P2-duty").on("change", function(){
-    var duty = valToDuty($(this).val());
+    let duty = valToDuty($(this).val());
     nScopeAPI.set_PX_duty_percentage(2,duty);
 })
 
 
-setInterval(updatePxStatus,10);
+setInterval(this.updateStatus,10);

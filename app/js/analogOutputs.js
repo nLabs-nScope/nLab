@@ -132,18 +132,4 @@ $("input[type=radio][name=A2-waveType]").on("change", function(){
 })
 
 
-$('.dropdown-menu.clickable').click(function(e) {
-    e.stopPropagation();
-});
-
-$("label[contenteditable='true'").keypress(function(e) { 
-    // if(e.which == 13)
-    // {
-
-    // }   
-    return e.which != 13; 
-});
-
-
-
 setInterval(updateAxStatus,10);
