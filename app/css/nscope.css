@@ -10,8 +10,8 @@ html,body {
 }
 
 .sidebar {
-    -ms-flex: 0 0 110px;
-    flex: 0 0 110px;
+    -ms-flex: 0 0 120px;
+    flex: 0 0 120px;
 }
 .sidebar > *{
     vertical-align:top;
@@ -56,7 +56,7 @@ html,body {
 .dropdown-menu {
     font-size: 12px;
     line-height: 1.5;
-    min-width: 10rem;
+    min-width: 12rem;
 }
 
 .dropdown-item {
@@ -83,9 +83,9 @@ html,body {
 
 
 .nscope-power-usage-bar .btn {
-    width:90px;
+    width:100px;
 }
 
-/* .dropdown-toggle-split:hover + .dropdown-menu {
-    display: block;
-   } */
+label {
+    /* border-bottom: 1px dotted gray; */
+}

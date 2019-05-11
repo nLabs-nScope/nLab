@@ -54,49 +54,91 @@
       <div class="col bg-dark-1l sidebar">
         <div class="btn-group-vertical btn-group-xs">
             <div class="btn-group btn-group-xs">
-                <button type="button" data-toggle="button" class="btn btn-outline-secondary">A1</button>
+                <button type="button" data-toggle="button" class="btn btn-outline-secondary" id="A1-onoff">A1</button>
                 <div class="btn-group btn-group-xs dropright">
                     <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu clickable">
+                            <div class="mx-3 form-group">
+                                <span class="px-1">Frequency:</span><label for="A1-freq" contenteditable="true">5</label><span class="px-1">Hz</span>
+                                <input type="range" class="form-control-range" id="A1-freq">
+                            </div>
+                            <div class="mx-3 form-group">
+                                <span class="px-1">Amplitude:</span><label for="A1-amplitude" contenteditable="true">5</label><span class="px-1">V</span>
+                                <input type="range" class="form-control-range" id="A1-amplitude">
+                            </div>
+                            <div class="mx-4 form-check">
+                                <input class="form-check-input" type="radio" name="A1-waveType" id="A1-waveType1" value="0" checked>
+                                <label class="form-check-label" for="A1-waveType1">Sine</label>
+                            </div>
+                            <div class="mx-4 form-check">
+                                <input class="form-check-input" type="radio" name="A1-waveType" id="A1-waveType2" value="1">
+                                <label class="form-check-label" for="A1-waveType2">Triangle</label>
+                            </div>
+                            <div class="mx-4 pt-2 form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="A1-unipolar">
+                                <label class="form-check-label" for="A1-unipolar">Bipolar</label>
+                            </div>
+
                     </div>
                 </div>
             </div>
-            <button data-toggle="button" class="btn btn-outline-secondary static">3.3 kHz 4.0 V</button>
+            <button data-toggle="button" class="btn btn-outline-secondary static" id="A1-status">&nbsp;</button>
         </div> 
         <div class="btn-group-vertical btn-group-xs">
             <div class="btn-group btn-group-xs">
-                <button type="button" data-toggle="button" class="btn btn-outline-secondary">A2</button>
+                <button type="button" data-toggle="button" class="btn btn-outline-secondary" id="A2-onoff">A2</button>
                 <div class="btn-group btn-group-xs dropright">
                     <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu clickable">
+                            <div class="mx-3 form-group">
+                                <span class="px-1">Frequency:</span><label for="A2-freq" contenteditable="true">5</label><span class="px-1">Hz</span>
+                                <input type="range" class="form-control-range" id="A2-freq">
+                            </div>
+                            <div class="mx-3 form-group">
+                                <span class="px-1">Amplitude:</span><label for="A2-amplitude" contenteditable="true">5</label><span class="px-1">V</span>
+                                <input type="range" class="form-control-range" id="A2-amplitude">
+                            </div>
+                            <div class="mx-4 form-check">
+                                    <input class="form-check-input" type="radio" name="A2-waveType" id="A2-waveType1" value="0" checked>
+                                    <label class="form-check-label" for="A2-waveType1">Sine</label>
+                                </div>
+                                <div class="mx-4 form-check">
+                                    <input class="form-check-input" type="radio" name="A2-waveType" id="A2-waveType2" value="1">
+                                    <label class="form-check-label" for="A2-waveType2">Triangle</label>
+                                </div>
+                            <div class="mx-4 pt-2 form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="A2-unipolar">
+                                <label class="form-check-label" for="A2-unipolar">Bipolar</label>
+                            </div>
+
                     </div>
                 </div>
             </div>
-            <button data-toggle="button" class="btn btn-outline-secondary static">3.3 kHz 1.2 V</button>
+            <button data-toggle="button" class="btn btn-outline-secondary static" id="A2-status">&nbsp;</button>
         </div> 
         <div class="btn-group-vertical btn-group-xs">
             <div class="btn-group btn-group-xs">
-                <button type="button" data-toggle="button" class="btn btn-outline-secondary">P1</button>
+                <button type="button" data-toggle="button" class="btn btn-outline-secondary" id="P1-onoff">P1</button>
                 <div class="btn-group btn-group-xs dropright">
                     <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
                     <div class="dropdown-menu">
                     </div>
                 </div>
             </div>
-            <button data-toggle="button" class="btn btn-outline-secondary static">5 kHz 50%</button>
+            <button data-toggle="button" class="btn btn-outline-secondary static" id="P1-status">&nbsp;</button>
         </div> 
         <div class="btn-group-vertical btn-group-xs">
             <div class="btn-group btn-group-xs">
-                <button type="button" data-toggle="button" class="btn btn-outline-secondary">P2</button>
+                <button type="button" data-toggle="button" class="btn btn-outline-secondary" id="P2-onoff">P2</button>
                 <div class="btn-group btn-group-xs dropright">
                     <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
                     <div class="dropdown-menu">
                     </div>
                 </div>
             </div>
-            <button data-toggle="button" class="btn btn-outline-secondary static">4 kHz 24%</button>
+            <button data-toggle="button" class="btn btn-outline-secondary static" id="P2-status">&nbsp;</button>
         </div> 
-        <div class="btn-group-vertical btn-group-xs">
+        <!-- <div class="btn-group-vertical btn-group-xs">
             <div class="btn-group btn-group-xs">
                 <button type="button" data-toggle="button" class="btn btn-outline-secondary">Math</button>
                 <div class="btn-group btn-group-xs dropright">
@@ -106,7 +148,7 @@
                 </div>
             </div>
             <button type="button" class="btn btn-outline-secondary static"><span class="btn-xs btn-info">4</span><span class="px-1">-</span><span class="btn-xs btn-warning">3</span></button>
-        </div> 
+        </div>  -->
           <!-- <div class="btn-group btn-group-sm dropright">
               <button type="button" data-toggle="button" class="btn btn-sm btn-outline-secondary flex-grow-1">Cursors</button>
               <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>

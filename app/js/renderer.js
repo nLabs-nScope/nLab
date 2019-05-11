@@ -5,6 +5,8 @@ window.Bootstrap = require('bootstrap')
 const path = require("path");
 const nScopeAPI = require(path.resolve('app/js/nScopeAPI'));
 
+
+
 function updatePowerUsage(state, usage)
 {
     switch(state)
@@ -59,7 +61,7 @@ function initPowerUsage()
 }
 
 function monitorScope(){
-    
+
     monitorScope.isOpen = monitorScope.isOpen || false;
     if(!monitorScope.isOpen)
     {
@@ -86,4 +88,8 @@ function monitorScope(){
 
 // Monitor the state of the nScope:
 initPowerUsage();
+monitorScope();
 setInterval(monitorScope,10);
+
+
+require(path.resolve('app/js/analogOutputs'));
