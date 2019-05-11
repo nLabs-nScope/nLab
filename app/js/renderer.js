@@ -93,3 +93,4 @@ setInterval(monitorScope,10);
 
 
 require(path.resolve('app/js/analogOutputs'));
+require(path.resolve('app/js/pulseOutputs'));

@@ -78,7 +78,6 @@
                                 <input class="form-check-input" type="checkbox" value="" id="A1-unipolar">
                                 <label class="form-check-label" for="A1-unipolar">Bipolar</label>
                             </div>
-
                     </div>
                 </div>
             </div>
@@ -121,7 +120,15 @@
                 <button type="button" data-toggle="button" class="btn btn-outline-secondary" id="P1-onoff">P1</button>
                 <div class="btn-group btn-group-xs dropright">
                     <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu clickable">
+                            <div class="mx-3 form-group">
+                                <span class="px-1">Frequency:</span><label for="P1-freq" contenteditable="true">5</label><span class="px-1">Hz</span>
+                                <input type="range" class="form-control-range" id="P1-freq">
+                            </div>
+                            <div class="mx-3 form-group">
+                                <span class="px-1">Duty:</span><label for="P1-duty" contenteditable="true">5</label><span class="px-1">%</span>
+                                <input type="range" class="form-control-range" id="P1-duty">
+                            </div>
                     </div>
                 </div>
             </div>
@@ -132,7 +139,15 @@
                 <button type="button" data-toggle="button" class="btn btn-outline-secondary" id="P2-onoff">P2</button>
                 <div class="btn-group btn-group-xs dropright">
                     <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu clickable">
+                            <div class="mx-3 form-group">
+                                <span class="px-1">Frequency:</span><label for="P2-freq" contenteditable="true">5</label><span class="px-1">Hz</span>
+                                <input type="range" class="form-control-range" id="P2-freq">
+                            </div>
+                            <div class="mx-3 form-group">
+                                <span class="px-1">Duty:</span><label for="P2-duty" contenteditable="true">5</label><span class="px-1">%</span>
+                                <input type="range" class="form-control-range" id="P2-duty">
+                            </div>
                     </div>
                 </div>
             </div>

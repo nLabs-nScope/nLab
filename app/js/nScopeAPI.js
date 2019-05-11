@@ -59,6 +59,15 @@ const libnscopeapi = ffi.Library(lib,{
     "nScope_set_AX_amplitude": [ns_error, [scopeHandle, int, double]],
     "nScope_get_AX_amplitude": [ns_error, [scopeHandle, int, p_double]],
 
+    "nScope_set_PX_on": [ns_error, [scopeHandle, int, bool]],
+    "nScope_get_PX_on": [ns_error, [scopeHandle, int, p_bool]],
+    "nScope_set_PX_frequency_in_hz": [ns_error, [scopeHandle, int, double]],
+    "nScope_get_PX_frequency_in_hz": [ns_error, [scopeHandle, int, p_double]],
+    "nScope_set_PX_duty_percentage": [ns_error, [scopeHandle, int, double]],
+    "nScope_get_PX_duty_percentage": [ns_error, [scopeHandle, int, p_double]],
+
+
+
 });
 
 var p_nScopeHandle = ref.alloc(p_scopeHandle);
@@ -194,5 +203,41 @@ exports.get_AX_amplitude = (ch) => {
 
 exports.set_AX_amplitude = (ch, amplitude) => {
     var err = libnscopeapi.nScope_set_AX_amplitude(nScopeHandle,ch,amplitude);
+    return err;
+}
+
+exports.get_PX_on = (ch) => {
+    let isOn = ref.alloc(bool)
+    var err = libnscopeapi.nScope_get_PX_on(nScopeHandle,ch,isOn);
+    if(err == 0) return isOn.deref();
+    return err;
+}
+
+exports.set_PX_on = (ch, on) => {
+    var err = libnscopeapi.nScope_set_PX_on(nScopeHandle,ch,on);
+    return err;
+}
+
+exports.get_PX_frequency_in_hz = (ch) => {
+    let freq = ref.alloc(double)
+    var err = libnscopeapi.nScope_get_PX_frequency_in_hz(nScopeHandle,ch,freq);
+    if(err == 0) return freq.deref();
+    return err;
+}
+
+exports.set_PX_frequency_in_hz = (ch, freq) => {
+    var err = libnscopeapi.nScope_set_PX_frequency_in_hz(nScopeHandle,ch,freq);
+    return err;
+}
+
+exports.get_PX_duty_percentage = (ch) => {
+    let duty = ref.alloc(double)
+    var err = libnscopeapi.nScope_get_PX_duty_percentage(nScopeHandle,ch,duty);
+    if(err == 0) return duty.deref();
+    return err;
+}
+
+exports.set_PX_duty_percentage = (ch, duty) => {
+    var err = libnscopeapi.nScope_set_PX_duty_percentage(nScopeHandle,ch,duty);
     return err;
 }
