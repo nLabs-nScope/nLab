@@ -70,6 +70,7 @@ function monitorScope(){
         {
             monitorScope.isOpen = true;
             nsPulseOutput.initInput();
+            nsAnalogOutputs.initInput();
         }
     }
     else

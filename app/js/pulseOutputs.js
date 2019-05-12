@@ -3,7 +3,7 @@ const nScopeAPI = require(path.resolve('app/js/nScopeAPI'));
 
 
 function valToDuty(val) {
-    let val = parseFloat(val);
+    val = parseFloat(val);
     return val;
 }
 
@@ -19,7 +19,7 @@ function dutyToString(duty) {
 }
 
 function valToFreq(val) {
-    let val = parseFloat(val);
+    val = parseFloat(val);
     let freq = Math.pow(10,val/100.0*4.3);
     return freq;
 }
@@ -92,12 +92,26 @@ exports.updateStatus = () => {
 
     if(monitorScope.isOpen)
     {
+        let isOn = nScopeAPI.get_PX_on(1);
+        if(isOn) {
+            $("#P1-onoff").addClass('active');
+        } else {
+            $("#P1-onoff").removeClass('active');
+        }
+
         let frequency = nScopeAPI.get_PX_frequency_in_hz(1);
         let duty = nScopeAPI.get_PX_duty_percentage(1);
         let freqString = freqToString(frequency);
         let dutyString = dutyToString(duty);
 
         $("#P1-status").html(freqString.number+' '+freqString.unit+' '+dutyString.number+' '+dutyString.unit);
+
+        isOn = nScopeAPI.get_PX_on(2);
+        if(isOn) {
+            $("#P2-onoff").addClass('active');
+        } else {
+            $("#P2-onoff").removeClass('active');
+        }
 
         frequency = nScopeAPI.get_PX_frequency_in_hz(2);
         duty = nScopeAPI.get_PX_duty_percentage(2);
