@@ -123,6 +123,7 @@ exports.updateStatus = () => {
         $("#P1-status").html("&nbsp;");
         $("#P2-status").html("&nbsp;");
     }
+    window.requestAnimationFrame(this.updateStatus);
 }
 
 $("#P1-onoff").on("click", function(){
@@ -173,5 +174,4 @@ $("#P2-duty").on("change", function(){
     nScopeAPI.set_PX_duty_percentage(2,duty);
 })
 
-
-setInterval(this.updateStatus,10);
+window.requestAnimationFrame(this.updateStatus);

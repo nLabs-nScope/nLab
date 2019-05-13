@@ -143,6 +143,8 @@ exports.updateStatus = () => {
         $("#A1-status").html("&nbsp;");
         $("#A2-status").html("&nbsp;");
     }
+
+    window.requestAnimationFrame(this.updateStatus);
 }
 
 $("#A1-onoff").on("click", function(){
@@ -215,5 +217,4 @@ $("input[name=A2-waveType]").on("change", function(){
     nScopeAPI.set_AX_wave_type(2,wave);
 })
 
-
-setInterval(this.updateStatus,100);
+window.requestAnimationFrame(this.updateStatus);
