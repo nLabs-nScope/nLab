@@ -174,7 +174,7 @@
       </div>
       <div class="col bg-secondary p-0 flex-column d-flex overflow-hidden">
         <div class="row h-100 w-100 no-gutters" id="glcanvas-div">
-                <!-- <canvas id="glcanvas"></canvas> -->
+                <canvas id="glcanvas"></canvas>
         </div>
         <div class="row w-100 bg-secondary border-top text-white py-1 no-gutters">
             <div class="col-12 text-right" >   
@@ -314,4 +314,34 @@
   </main>
   </body>
   <script src="js/renderer.js"></script>
+  <script src="js/glCanvas.js"></script>
+  <script id="vertex-shader" type="x-shader/x-vertex">
+    attribute vec2 aVertexPosition;
+  
+    uniform vec2 uScalingFactor;
+    uniform vec2 uRotationVector;
+  
+    void main() {
+      vec2 rotatedPosition = vec2(
+        aVertexPosition.x * uRotationVector.y +
+              aVertexPosition.y * uRotationVector.x,
+        aVertexPosition.y * uRotationVector.y -
+              aVertexPosition.x * uRotationVector.x
+      );
+  
+      gl_Position = vec4(rotatedPosition * uScalingFactor, 0.0, 1.0);
+    }
+  </script>
+
+  <script id="fragment-shader" type="x-shader/x-fragment">
+    #ifdef GL_ES
+      precision highp float;
+    #endif
+  
+    uniform vec4 uGlobalColor;
+  
+    void main() {
+      gl_FragColor = uGlobalColor;
+    }
+  </script>
 </html>
