@@ -1,4 +1,4 @@
-# nScope-electron
+# nScope
 
 This version of nScope is based on the Electron framework. To use it, you must have the nScope hardware, updated to the latest version. Find more information about the hardware at https://www.nscope.org/
 
