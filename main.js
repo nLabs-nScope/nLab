@@ -35,7 +35,7 @@ app.on('ready', function () {
         mainWindow.show()
     })
 
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     // Prevent zooming
     // let webContents = mainWindow.webContents;

@@ -14,7 +14,7 @@
   },
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
-    "start": "npm run compile-scss && electron .",
+    "start": "electron .",
     "compile-scss": "sass --style=compressed ./scss/_custom.scss ./app/css/bootstrap_theme.min.css",
     "dist": "build"
   },

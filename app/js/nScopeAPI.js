@@ -14,6 +14,9 @@ var p_int = ref.refType(int);
 var scopeHandle = ref.refType(ref.types.void);
 var p_scopeHandle = ref.refType(scopeHandle);
 
+var requestHandle = ref.refType(ref.types.void);
+var p_requestHandle = ref.refType(requestHandle);
+
 switch(require('process').platform)
 {
     case 'linux':
@@ -48,6 +51,15 @@ const libnscopeapi = ffi.Library(lib,{
     "nScope_check_FW_version": [ns_error, [p_double]],
     "nScope_check_API_build": [ns_error, [p_int]],
 
+    "nScope_request_data": [ns_error, [scopeHandle, p_requestHandle, int, bool]],
+    "nScope_stop_request": [ns_error, [scopeHandle, requestHandle]],
+    "nScope_release_request": [ns_error, [scopeHandle, p_requestHandle]],
+    "nScope_wait_for_request_finish": [ns_error, [scopeHandle, requestHandle]],
+    "nScope_request_xfer_has_completed": [ns_error, [scopeHandle, requestHandle, p_bool]],
+    "nScope_read_data": [ns_error, [scopeHandle, requestHandle, int, p_double]],
+    "nScope_read_data_nonblocking": [ns_error, [scopeHandle, requestHandle, int, p_double]],
+    "nScope_request_has_data": [ns_error, [scopeHandle, requestHandle, p_bool]],
+
     "nScope_set_AX_on": [ns_error, [scopeHandle, int, bool]],
     "nScope_get_AX_on": [ns_error, [scopeHandle, int, p_bool]],
     "nScope_set_AX_frequency_in_hz": [ns_error, [scopeHandle, int, double]],
@@ -66,14 +78,20 @@ const libnscopeapi = ffi.Library(lib,{
     "nScope_set_PX_duty_percentage": [ns_error, [scopeHandle, int, double]],
     "nScope_get_PX_duty_percentage": [ns_error, [scopeHandle, int, p_double]],
 
-
+    "nScope_set_ChX_on": [ns_error, [scopeHandle, int, bool]],
+    "nScope_get_ChX_on": [ns_error, [scopeHandle, int, p_bool]],
+    "nScope_get_num_channels_on": [ns_error, [scopeHandle, p_int]],
+    "nScope_set_ChX_gain": [ns_error, [scopeHandle, int, double]],
+    "nScope_get_ChX_gain": [ns_error, [scopeHandle, int, p_double]],
+    "nScope_set_ChX_level": [ns_error, [scopeHandle, int, double]],
+    "nScope_get_ChX_level": [ns_error, [scopeHandle, int, p_double]],
 
 });
 
 var p_nScopeHandle = ref.alloc(p_scopeHandle);
-var nScopeHandle;
-var p_nScopeRequest;
-var nScopeRequest;
+var nScopeHandle = p_nScopeHandle.deref();
+var p_nScopeRequest = ref.alloc(p_requestHandle);
+var nScopeRequest = p_nScopeHandle.deref();
 
 exports.open = () => {
     var err = libnscopeapi.nScope_open(true,p_nScopeHandle);
@@ -143,6 +161,26 @@ exports.check_API_build = () => {
     let apiBuild = ref.alloc(int)
     var err = libnscopeapi.nScope_check_API_build(apiBuild);
     if(err == 0) return apiBuild.deref();
+    return err;
+}
+
+exports.request_data = (numSamples) => {
+    var err = libnscopeapi.nScope_request_data(nScopeHandle,p_nScopeRequest,numSamples,true);
+    if(err == 0) nScopeRequest = p_nScopeRequest.deref();
+    return err;
+}
+
+exports.read_data = (ch) => {
+    let data = ref.alloc(double);
+    var err = libnscopeapi.nScope_read_data_nonblocking(nScopeHandle, nScopeRequest, ch, data);
+    if(err == 0) return data.deref();
+    return err;
+}
+
+exports.request_has_data = () => {
+    let hasData = ref.alloc(bool);
+    var err = libnscopeapi.nScope_request_has_data(nScopeHandle, nScopeRequest, hasData);
+    if(err == 0) return hasData.deref();
     return err;
 }
 
@@ -239,5 +277,48 @@ exports.get_PX_duty_percentage = (ch) => {
 
 exports.set_PX_duty_percentage = (ch, duty) => {
     var err = libnscopeapi.nScope_set_PX_duty_percentage(nScopeHandle,ch,duty);
+    return err;
+}
+
+exports.get_ChX_on = (ch) => {
+    let isOn = ref.alloc(bool)
+    var err = libnscopeapi.nScope_get_ChX_on(nScopeHandle,ch,isOn);
+    if(err == 0) return isOn.deref();
+    return err;
+}
+
+exports.set_ChX_on = (ch, on) => {
+    var err = libnscopeapi.nScope_set_ChX_on(nScopeHandle,ch,on);
+    return err;
+}
+
+exports.get_num_channels_on = () => {
+    let numChannelsOn = ref.alloc(int)
+    var err = libnscopeapi.nScope_get_num_channels_on(nScopeHandle,numChannelsOn);
+    if(err == 0) return numChannelsOn.deref();
+    return err;   
+}
+
+exports.get_ChX_gain = (ch) => {
+    let gain = ref.alloc(double)
+    var err = libnscopeapi.nScope_get_ChX_gain(nScopeHandle,ch,gain);
+    if(err == 0) return gain.deref();
+    return err;
+}
+
+exports.set_ChX_gain = (ch, gain) => {
+    var err = libnscopeapi.nScope_set_ChX_gain(nScopeHandle,ch,gain);
+    return err;
+}
+
+exports.get_ChX_level = (ch) => {
+    let level = ref.alloc(double)
+    var err = libnscopeapi.nScope_get_ChX_level(nScopeHandle,ch,level);
+    if(err == 0) return level.deref();
+    return err;
+}
+
+exports.set_ChX_level = (ch, level) => {
+    var err = libnscopeapi.nScope_set_ChX_level(nScopeHandle,ch,level);
     return err;
 }

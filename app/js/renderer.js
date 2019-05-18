@@ -4,6 +4,7 @@ window.Bootstrap = require('bootstrap')
 
 const path = require("path");
 const nScopeAPI = require(path.resolve('app/js/nScopeAPI'));
+const nsAnalogInputs = require(path.resolve('app/js/analogInputs'))
 const nsAnalogOutputs = require(path.resolve('app/js/analogOutputs'));
 const nsPulseOutput = require(path.resolve('app/js/pulseOutputs'));
 const Plotly = require('plotly.js-dist');
@@ -61,6 +62,13 @@ function initPowerUsage()
     updatePowerUsage(-1, 0);
 }
 
+function requestData(){
+    clearData();
+    let err;
+    
+    err = nScopeAPI.request_data(1200);
+}
+
 function monitorScope(){
 
     monitorScope.isOpen = monitorScope.isOpen || false;
@@ -69,8 +77,10 @@ function monitorScope(){
         if(nScopeAPI.open() == 0)
         {
             monitorScope.isOpen = true;
+            nsAnalogInputs.initInput();
             nsPulseOutput.initInput();
             nsAnalogOutputs.initInput();
+            requestData();
         }
     }
     else
@@ -110,6 +120,7 @@ var layout = {
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
     hovermode: false,
+    showlegend: false,
     xaxis: {
         showticklabels: false,
         zeroline: false,
@@ -125,50 +136,98 @@ var layout = {
         zeroline: false,
         dtick: 1,
         fixedrange: true,
-        range: [-4, 4],
+        range: [-5, 5],
         linecolor: 'rgba(255,255,255,1)',
         linewidth: 1,
         mirror: true
     }
 };
 
-var data = [{
-    x: [1.2, 2.1, 2.7, 4.1, 6.2],
-    y: [1, -2, -4, 3.5, 2.5] 
-}];
+
+chData = [];
+function clearData() {
+    
+    chData[0] = [];
+    chData[1] = [];
+    chData[2] = [];
+    chData[3] = [];
+}
+clearData();
+
+
+colors = [
+    'rgb(233,102,86)',
+    'rgb(52,210,146)',
+    'rgb(58,176,226)',
+    'rgb(246,216,97)'
+];
 
 function computeData() {
 
-    let numPts = 1200;
-    let trace = {x:[], y:[],
-        line: {
-        color: 'rgb(246,216,97)',
-        width: 1
-      }};
-
-    // console.log(Date.now() % 1000);
-
-    for(let i = 0;i<numPts;i++)
+    let rtrn = [];
+    for(let ch=0;ch<4;ch++)
     {
-        let x,y;
-        x = i/numPts*12;
-        y = Math.sin((x + (Date.now())/1000)*Math.PI)
-        trace.x.push(x);
-        trace.y.push(y);
+
+        while(true){
+            rtrn[ch] = nScopeAPI.read_data(ch+1);
+            if(rtrn[ch] > -100)
+            {
+                chData[ch].push(rtrn[ch]);
+            } else {
+                break;
+            }
+        }
     }
-    return trace;
+    if(rtrn.every(function(x){
+        return x==-104;
+    }))
+    {
+        requestData();
+    }
+
+    let traces = [];
+
+    for(let ch=0;ch<4;ch++)
+    {
+        traces.push({x:[], y:[],
+            line: {
+            color: colors[ch],
+            width: 2
+            }
+        })
+    }
+
+    for(let ch=0;ch<4;ch++){
+        let data = chData[ch];
+        for(let i=0; i<data.length;i++)
+        {
+            let x,y;
+            x = i/100;
+            y = data[i];
+            traces[ch].x.push(x);
+            traces[ch].y.push(y);
+        }
+    }
+
+
+
+
+    return traces;
 }
 
 function updatePlot() {
     
-    trace =  computeData();
-    update = {x:[trace.x],y:[trace.y]};
+    traces =  computeData();
+    update = {
+        x:[traces[0].x,traces[1].x,traces[2].x,traces[3].x],
+        y:[traces[0].y,traces[1].y,traces[2].y,traces[3].y]
+    };
     Plotly.restyle('glcanvas-div',update);
-    Plotly.redraw('glcanvas-div');
     window.requestAnimationFrame(updatePlot);
 }
 
-Plotly.plot('glcanvas-div', [computeData()], layout,  {responsive: true});
+
+Plotly.plot('glcanvas-div', computeData(), layout,  {responsive: true});
 
 // Monitor the state of the nScope:
 initPowerUsage();
@@ -176,3 +235,4 @@ monitorScope();
 
 window.requestAnimationFrame(monitorScope);
 window.requestAnimationFrame(updatePlot);
+

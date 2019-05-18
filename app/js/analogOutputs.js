@@ -148,13 +148,13 @@ exports.updateStatus = () => {
 }
 
 $("#A1-onoff").on("click", function(){
-    wasChecked = $(this).hasClass('active');
+    let wasChecked = $(this).hasClass('active');
     if(wasChecked) {nScopeAPI.set_AX_on(1,false)}
     if(!wasChecked) {nScopeAPI.set_AX_on(1,true)}
 }); 
 
 $("#A2-onoff").on("click", function(){
-    wasChecked = $(this).hasClass('active');
+    let wasChecked = $(this).hasClass('active');
     if(wasChecked) {nScopeAPI.set_AX_on(2,false)}
     if(!wasChecked) {nScopeAPI.set_AX_on(2,true)}
 }); 
