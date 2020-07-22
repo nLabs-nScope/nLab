@@ -9,7 +9,7 @@ This project is very much a work-in-progress. If you'd like to try out the lates
 To install and run:
 ```
 $ git clone https://github.com/nLabs-nScope/nScope.git
-$ cd nScope-electron
+$ cd nScope
 $ npm install
 $ npm start
 ```
