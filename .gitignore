@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 node_modules
 dist
 .vscode/ipch
 npm-debug.log
+=======
+.vscode
+node_modules
+>>>>>>> master
