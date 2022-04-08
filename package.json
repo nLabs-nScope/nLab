@@ -7,24 +7,18 @@
   "author": "David J. Meyer",
   "license": "GPL3",
   "devDependencies": {
-    "electron": "^3.0.10",
-    "electron-builder": "^20.28.1",
+    "electron": "^17.0.0",
     "electron-reload": "^1.4.0",
-    "node-gyp": "^3.8.0"
+    "sass": "^1.14.3"
   },
   "scripts": {
-    "postinstall": "electron-builder install-app-deps",
     "start": "electron .",
-    "compile-scss": "sass --style=compressed ./scss/_custom.scss ./app/css/bootstrap_theme.min.css",
-    "dist": "build"
+    "compile-scss": "sass --style=compressed ./scss/_custom.scss ./app/css/bootstrap_theme.min.css"
   },
   "dependencies": {
     "bootstrap": "^4.3.0",
     "jquery": "^3.2.1",
     "popper.js": "^1.12.9",
-    "sass": "^1.14.3",
-    "ffi": "^2.3.0",
-    "ref": "^1.3.5",
     "plotly.js-dist": "^1.47.4"
   }
 }

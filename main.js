@@ -5,9 +5,11 @@ const app = electron.app
 const path = require('path')
 const config = require(path.join(__dirname, 'package.json'))
 const BrowserWindow = electron.BrowserWindow
-const nScopeAPI = require(path.resolve('app/js/nScopeAPI'));
+// const nScopeAPI = require(path.resolve('app/js/nScopeAPI'));
 
-require('electron-reload')(__dirname);
+require('electron-reload')(__dirname, {
+    electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
+});
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
@@ -27,7 +29,7 @@ app.on('ready', function () {
             defaultEncoding: 'UTF-8'
         }
     })
-    console.log("Platform: " + require('process').platform+ "  Arch: "+ require('process').arch);
+    console.log("Platform: " + require('process').platform + "  Arch: " + require('process').arch);
     mainWindow.loadURL(`file://${__dirname}/app/index.html`)
 
     mainWindow.once('ready-to-show', () => {
@@ -51,8 +53,8 @@ app.on('ready', function () {
     }
 
     mainWindow.on('closed', function () {
-        nScopeAPI.close();
-        nScopeAPI.clean();
+        // nScopeAPI.close();
+        // nScopeAPI.clean();
         mainWindow = null
     })
 })
