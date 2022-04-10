@@ -6,23 +6,28 @@
 
 /* -------begin customization-------- */
 
-$grid-gutter-width: 20px;
-
-$theme-colors: (
-  primary: $blue,
+$theme-colors: (primary: $blue,
   secondary: $gray-600,
   success: $green,
   info: $cyan,
   warning: $yellow,
   danger: $red,
   light: $gray-100,
-  dark: $gray-900,
-  dark-1l: $gray-800
-);
+  dark: $gray-900);
+
+$custom-colors: (dark-1l: $gray-800);
+
+
+.bg-dark-1l {
+  background-color: var(--bs-dark-1l);
+}
+
+;
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
 
 /* -------end customization-------- */
 /* finally, import Bootstrap to set the changes! */
 
 @import "../node_modules/bootstrap/scss/bootstrap";
-
-
