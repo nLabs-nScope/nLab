@@ -3,19 +3,32 @@
   "productName": "nScope",
   "version": "0.9.0",
   "description": "nScope",
+  "private": true,
   "main": "main.js",
   "author": "David J. Meyer",
   "license": "GPL3",
   "devDependencies": {
-    "electron": "^18.0",
-    "electron-reload": "^1.5",
-    "sass": "^1.50",
+    "autoprefixer": "^10.4.4",
     "bootstrap": "^5.1",
-    "jquery": "^3.6",
-    "plotly.js-dist": "^2.11"
+    "concurrently": "^7.1.0",
+    "css-loader": "^6.7.1",
+    "electron": "^18.0",
+    "electron-builder": "^23.0",
+    "electron-reload": "^1.5.0",
+    "ify-loader": "^1.1.0",
+    "mini-css-extract-plugin": "^2.6.0",
+    "node-sass": "^7.0.1",
+    "plotly.js-basic-dist": "^2.11",
+    "postcss-loader": "^6.2.1",
+    "sass": "^1.50",
+    "sass-loader": "^12.6.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.72",
+    "webpack-cli": "^4.9.2"
   },
   "scripts": {
-    "start": "electron .",
-    "compile-scss": "sass --style=compressed ./scss/_custom.scss ./app/css/bootstrap_theme.min.css"
+    "build": "webpack --mode=production",
+    "start": "npm run build && electron .",
+    "dev": "concurrently -k \"webpack --watch --mode=development\" \"electron . debug\""
   }
 }

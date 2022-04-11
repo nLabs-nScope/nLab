@@ -5,15 +5,16 @@ const app = electron.app
 const path = require('path')
 const config = require(path.join(__dirname, 'package.json'))
 const BrowserWindow = electron.BrowserWindow
-// const nScopeAPI = require(path.resolve('app/js/nScopeAPI'));
+
+const icon = electron.nativeImage.createFromPath(path.join(__dirname, 'app/assets/icons/icon_256x256.png'));
 
 require('electron-reload')(__dirname, {
     electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
 });
 
-process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 app.setName(config.productName)
+app.dock.setIcon(icon);
 var mainWindow = null
 app.on('ready', function () {
     mainWindow = new BrowserWindow({
@@ -23,22 +24,22 @@ app.on('ready', function () {
         minHeight: 400,
         title: config.productName,
         show: false,
-        icon: path.join(__dirname, 'assets/icons/png/256x256.png'),
-        webPreferences: {
-            nodeIntegration: true,
-            defaultEncoding: 'UTF-8'
-        }
+        icon: icon
     })
-    console.log("Platform: " + require('process').platform + "  Arch: " + require('process').arch);
-    mainWindow.loadURL(`file://${__dirname}/app/index.html`)
+
+
+    mainWindow.loadURL(`file://${__dirname}/nscope.html`)
 
     mainWindow.once('ready-to-show', () => {
         mainWindow.setMenu(null)
         mainWindow.show()
     })
 
-    mainWindow.webContents.openDevTools();
-
+    // Open the DevTools.
+    const isDebug = typeof process.argv.find(item => item === 'debug') !== 'undefined';
+    if (isDebug) {
+        mainWindow.openDevTools();
+    }
     // Prevent zooming
     // let webContents = mainWindow.webContents;
     // webContents.on('did-finish-load', () => {
@@ -55,8 +56,18 @@ app.on('ready', function () {
     mainWindow.on('closed', function () {
         // nScopeAPI.close();
         // nScopeAPI.clean();
-        mainWindow = null
+        app.quit()
     })
 })
 
-app.on('window-all-closed', () => { app.quit() })
+app.on('web-contents-created', (event, contents) => {
+    contents.on('will-navigate', (event) => {
+        event.preventDefault()
+    })
+})
+
+app.on('web-contents-created', (event, contents) => {
+    contents.setWindowOpenHandler(() => {
+        return { action: 'deny' }
+    })
+})
