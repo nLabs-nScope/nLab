@@ -24,7 +24,11 @@ app.on('ready', function () {
         minHeight: 400,
         title: config.productName,
         show: false,
-        icon: icon
+        icon: icon,
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js'),
+            devTools: !app.isPackaged,
+        }
     })
 
 

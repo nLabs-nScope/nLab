@@ -239,3 +239,5 @@ monitorScope();
 window.requestAnimationFrame(monitorScope);
 window.requestAnimationFrame(updatePlot);
 
+
+version.innerHTML = native.nscope.version();

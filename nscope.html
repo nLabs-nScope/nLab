@@ -1,158 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
     <link rel="stylesheet" href="app/main.css">
-  </head>
-  <body>
+</head>
 
-  <main role="main" class="container-fluid h-100 d-flex flex-column">
-    <div class="row bg-dark text-white py-1 align-items-center text-nowrap  ">
-        <div class="col-4">
-            <img src="src/assets/svg/nScopeLogo_white.svg" width="100px">
-        </div>
-        <div class="col-8 text-end">
-            <!-- <div class="btn-group static btn-group-xs" role="group">
-                <button type="button" class="btn btn-light">Trigger</button>
-                <button type="button" class="btn btn-light"><span class="btn-xs btn-info">4</span><span class="pl-1">&UpArrow;</span></button>
-                <button type="button" class="btn btn-outline-light">0.2 V</button>
-            </div> -->
-            <div class="btn-group btn-group-toggle px-2" data-toggle="buttons">
-                <label class="btn btn-outline-secondary btn-xs active">
-                    <input class="btn-check" type="radio" name="options" id="run" checked>Run
-                </label>
-                <label class="btn btn-outline-secondary btn-xs">
-                    <input class="btn-check" type="radio" name="options" id="single">Single
-                </label>
-                <label class="btn btn-outline-secondary btn-xs">
-                    <input class="btn-check" type="radio" name="options" id="stop">Stop
-                </label>
-            </div>
-            <div class="nscope-power-usage-bar">
-                <div class="btn btn-xs btn-outline-info" id="usb-status-bar"></div>
-                <div class="nscope-power-usage">
-                    <div class="btn btn-xs btn-info" id="usb-status"></div>
-                </div>
-                <div class="nscope-usb-power-off">
-                    <div class="btn btn-xs btn-outline-secondary">Power Off</div>
-                </div>
-                <div class="nscope-usb-disconnected">
-                    <div class="btn btn-xs btn-outline-danger">Disconnected</div>
-                </div>
-                <div class="nscope-usb-power-fault">
-                    <div class="btn btn-xs btn-outline-warning">Power Fault</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row flex-grow-1">
-      <div class="col bg-dark-1l sidebar">
-        <div class="btn-group-vertical btn-group-xs">
-            <div class="btn-group btn-group-xs">
-                <button type="button" data-toggle="button" class="btn btn-outline-secondary" id="A1-onoff">A1</button>
-                <div class="btn-group btn-group-xs dropright">
-                    <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
-                    <div class="dropdown-menu clickable">
-                            <div class="mx-3 form-group">
-                                <span class="px-1">Frequency:</span><label for="A1-freq" contenteditable="true">5</label><span class="px-1">Hz</span>
-                                <input type="range" class="form-control-range" id="A1-freq">
-                            </div>
-                            <div class="mx-3 form-group">
-                                <span class="px-1">Amplitude:</span><label for="A1-amplitude" contenteditable="true">5</label><span class="px-1">V</span>
-                                <input type="range" class="form-control-range" id="A1-amplitude">
-                            </div>
-                            <div class="mx-4 form-check">
-                                <input class="form-check-input" type="radio" name="A1-waveType" id="A1-waveType1" value="0">
-                                <label class="form-check-label" for="A1-waveType1">Sine</label>
-                            </div>
-                            <div class="mx-4 form-check">
-                                <input class="form-check-input" type="radio" name="A1-waveType" id="A1-waveType2" value="1">
-                                <label class="form-check-label" for="A1-waveType2">Triangle</label>
-                            </div>
-                            <div class="mx-4 pt-2 form-check">
-                                <input class="form-check-input" type="checkbox" id="A1-unipolar">
-                                <label class="form-check-label" for="A1-unipolar">Bipolar</label>
-                            </div>
-                    </div>
-                </div>
-            </div>
-            <button data-toggle="button" class="btn btn-outline-secondary static" id="A1-status">&nbsp;</button>
-        </div> 
-        <div class="btn-group-vertical btn-group-xs">
-            <div class="btn-group btn-group-xs">
-                <button type="button" data-toggle="button" class="btn btn-outline-secondary" id="A2-onoff">A2</button>
-                <div class="btn-group btn-group-xs dropright">
-                    <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
-                    <div class="dropdown-menu clickable">
-                            <div class="mx-3 form-group">
-                                <span class="px-1">Frequency:</span><label for="A2-freq" contenteditable="true">5</label><span class="px-1">Hz</span>
-                                <input type="range" class="form-control-range" id="A2-freq">
-                            </div>
-                            <div class="mx-3 form-group">
-                                <span class="px-1">Amplitude:</span><label for="A2-amplitude" contenteditable="true">5</label><span class="px-1">V</span>
-                                <input type="range" class="form-control-range" id="A2-amplitude">
-                            </div>
-                            <div class="mx-4 form-check">
-                                <input class="form-check-input" type="radio" name="A2-waveType" id="A2-waveType1" value="0">
-                                <label class="form-check-label" for="A2-waveType1">Sine</label>
-                            </div>
-                            <div class="mx-4 form-check">
-                                <input class="form-check-input" type="radio" name="A2-waveType" id="A2-waveType2" value="1">
-                                <label class="form-check-label" for="A2-waveType2">Triangle</label>
-                            </div>
-                            <div class="mx-4 pt-2 form-check">
-                                <input class="form-check-input" type="checkbox" id="A2-unipolar">
-                                <label class="form-check-label" for="A2-unipolar">Bipolar</label>
-                            </div>
+<body>
 
+    <main role="main" class="container-fluid h-100 d-flex flex-column">
+        <div class="row bg-dark text-white py-1 align-items-center text-nowrap  ">
+            <div class="col-4">
+                <img src="src/assets/svg/nScopeLogo_white.svg" width="100px">
+            </div>
+            <div class="col-8 text-end">
+                <!-- <div class="btn-group static btn-group-xs" role="group">
+                    <button type="button" class="btn btn-light">Trigger</button>
+                    <button type="button" class="btn btn-light"><span class="btn-xs btn-info">4</span><span
+                            class="pl-1">&UpArrow;</span></button>
+                    <button type="button" class="btn btn-outline-light">0.2 V</button>
+                </div> -->
+                <div class="btn-group btn-group-toggle px-2" data-toggle="buttons">
+                    <label class="btn btn-outline-secondary btn-xs active">
+                        <input class="btn-check" type="radio" name="options" id="run" checked>Run
+                    </label>
+                    <label class="btn btn-outline-secondary btn-xs">
+                        <input class="btn-check" type="radio" name="options" id="single">Single
+                    </label>
+                    <label class="btn btn-outline-secondary btn-xs">
+                        <input class="btn-check" type="radio" name="options" id="stop">Stop
+                    </label>
+                </div>
+                <div class="nscope-power-usage-bar">
+                    <div class="btn btn-xs btn-outline-info" id="usb-status-bar"></div>
+                    <div class="nscope-power-usage">
+                        <div class="btn btn-xs btn-info" id="usb-status"></div>
+                    </div>
+                    <div class="nscope-usb-power-off">
+                        <div class="btn btn-xs btn-outline-secondary">Power Off</div>
+                    </div>
+                    <div class="nscope-usb-disconnected">
+                        <div class="btn btn-xs btn-outline-danger">Disconnected</div>
+                    </div>
+                    <div class="nscope-usb-power-fault">
+                        <div class="btn btn-xs btn-outline-warning">Power Fault</div>
                     </div>
                 </div>
             </div>
-            <button data-toggle="button" class="btn btn-outline-secondary static" id="A2-status">&nbsp;</button>
-        </div> 
-        <div class="btn-group-vertical btn-group-xs">
-            <div class="btn-group btn-group-xs">
-                <button type="button" data-toggle="button" class="btn btn-outline-secondary" id="P1-onoff">P1</button>
-                <div class="btn-group btn-group-xs dropright">
-                    <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
-                    <div class="dropdown-menu clickable">
-                            <div class="mx-3 form-group">
-                                <span class="px-1">Frequency:</span><label for="P1-freq" contenteditable="true"></label><span class="px-1">Hz</span>
-                                <input type="range" class="form-control-range" id="P1-freq">
+        </div>
+        <div class="row flex-grow-1">
+            <div class="col bg-dark-1l sidebar">
+                <div class="btn-group-vertical btn-group-xs">
+                    <div class="btn-group btn-group-xs">
+                        <button type="button" data-toggle="button" class="btn btn-outline-secondary"
+                            id="A1-onoff">A1</button>
+                        <div class="btn-group btn-group-xs dropright">
+                            <button type="button"
+                                class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
+                                data-toggle="dropdown"></button>
+                            <div class="dropdown-menu clickable">
+                                <div class="mx-3 form-group">
+                                    <span class="px-1">Frequency:</span><label for="A1-freq"
+                                        contenteditable="true">5</label><span class="px-1">Hz</span>
+                                    <input type="range" class="form-control-range" id="A1-freq">
+                                </div>
+                                <div class="mx-3 form-group">
+                                    <span class="px-1">Amplitude:</span><label for="A1-amplitude"
+                                        contenteditable="true">5</label><span class="px-1">V</span>
+                                    <input type="range" class="form-control-range" id="A1-amplitude">
+                                </div>
+                                <div class="mx-4 form-check">
+                                    <input class="form-check-input" type="radio" name="A1-waveType" id="A1-waveType1"
+                                        value="0">
+                                    <label class="form-check-label" for="A1-waveType1">Sine</label>
+                                </div>
+                                <div class="mx-4 form-check">
+                                    <input class="form-check-input" type="radio" name="A1-waveType" id="A1-waveType2"
+                                        value="1">
+                                    <label class="form-check-label" for="A1-waveType2">Triangle</label>
+                                </div>
+                                <div class="mx-4 pt-2 form-check">
+                                    <input class="form-check-input" type="checkbox" id="A1-unipolar">
+                                    <label class="form-check-label" for="A1-unipolar">Bipolar</label>
+                                </div>
                             </div>
-                            <div class="mx-3 form-group">
-                                <span class="px-1">Duty:</span><label for="P1-duty" contenteditable="true"></label><span class="px-1">%</span>
-                                <input type="range" class="form-control-range" id="P1-duty">
-                            </div>
+                        </div>
                     </div>
+                    <button data-toggle="button" class="btn btn-outline-secondary static" id="A1-status">&nbsp;</button>
                 </div>
-            </div>
-            <button data-toggle="button" class="btn btn-outline-secondary static" id="P1-status">&nbsp;</button>
-        </div> 
-        <div class="btn-group-vertical btn-group-xs">
-            <div class="btn-group btn-group-xs">
-                <button type="button" data-toggle="button" class="btn btn-outline-secondary" id="P2-onoff">P2</button>
-                <div class="btn-group btn-group-xs dropright">
-                    <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
-                    <div class="dropdown-menu clickable">
-                            <div class="mx-3 form-group">
-                                <span class="px-1">Frequency:</span><label for="P2-freq" contenteditable="true"></label><span class="px-1">Hz</span>
-                                <input type="range" class="form-control-range" id="P2-freq">
+                <div class="btn-group-vertical btn-group-xs">
+                    <div class="btn-group btn-group-xs">
+                        <button type="button" data-toggle="button" class="btn btn-outline-secondary"
+                            id="A2-onoff">A2</button>
+                        <div class="btn-group btn-group-xs dropright">
+                            <button type="button"
+                                class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
+                                data-toggle="dropdown"></button>
+                            <div class="dropdown-menu clickable">
+                                <div class="mx-3 form-group">
+                                    <span class="px-1">Frequency:</span><label for="A2-freq"
+                                        contenteditable="true">5</label><span class="px-1">Hz</span>
+                                    <input type="range" class="form-control-range" id="A2-freq">
+                                </div>
+                                <div class="mx-3 form-group">
+                                    <span class="px-1">Amplitude:</span><label for="A2-amplitude"
+                                        contenteditable="true">5</label><span class="px-1">V</span>
+                                    <input type="range" class="form-control-range" id="A2-amplitude">
+                                </div>
+                                <div class="mx-4 form-check">
+                                    <input class="form-check-input" type="radio" name="A2-waveType" id="A2-waveType1"
+                                        value="0">
+                                    <label class="form-check-label" for="A2-waveType1">Sine</label>
+                                </div>
+                                <div class="mx-4 form-check">
+                                    <input class="form-check-input" type="radio" name="A2-waveType" id="A2-waveType2"
+                                        value="1">
+                                    <label class="form-check-label" for="A2-waveType2">Triangle</label>
+                                </div>
+                                <div class="mx-4 pt-2 form-check">
+                                    <input class="form-check-input" type="checkbox" id="A2-unipolar">
+                                    <label class="form-check-label" for="A2-unipolar">Bipolar</label>
+                                </div>
+
                             </div>
-                            <div class="mx-3 form-group">
-                                <span class="px-1">Duty:</span><label for="P2-duty" contenteditable="true"></label><span class="px-1">%</span>
-                                <input type="range" class="form-control-range" id="P2-duty">
-                            </div>
+                        </div>
                     </div>
+                    <button data-toggle="button" class="btn btn-outline-secondary static" id="A2-status">&nbsp;</button>
                 </div>
-            </div>
-            <button data-toggle="button" class="btn btn-outline-secondary static" id="P2-status">&nbsp;</button>
-        </div> 
-        <!-- <div class="btn-group-vertical btn-group-xs">
+                <div class="btn-group-vertical btn-group-xs">
+                    <div class="btn-group btn-group-xs">
+                        <button type="button" data-toggle="button" class="btn btn-outline-secondary"
+                            id="P1-onoff">P1</button>
+                        <div class="btn-group btn-group-xs dropright">
+                            <button type="button"
+                                class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
+                                data-toggle="dropdown"></button>
+                            <div class="dropdown-menu clickable">
+                                <div class="mx-3 form-group">
+                                    <span class="px-1">Frequency:</span><label for="P1-freq"
+                                        contenteditable="true"></label><span class="px-1">Hz</span>
+                                    <input type="range" class="form-control-range" id="P1-freq">
+                                </div>
+                                <div class="mx-3 form-group">
+                                    <span class="px-1">Duty:</span><label for="P1-duty"
+                                        contenteditable="true"></label><span class="px-1">%</span>
+                                    <input type="range" class="form-control-range" id="P1-duty">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button data-toggle="button" class="btn btn-outline-secondary static" id="P1-status">&nbsp;</button>
+                </div>
+                <div class="btn-group-vertical btn-group-xs">
+                    <div class="btn-group btn-group-xs">
+                        <button type="button" data-toggle="button" class="btn btn-outline-secondary"
+                            id="P2-onoff">P2</button>
+                        <div class="btn-group btn-group-xs dropright">
+                            <button type="button"
+                                class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
+                                data-toggle="dropdown"></button>
+                            <div class="dropdown-menu clickable">
+                                <div class="mx-3 form-group">
+                                    <span class="px-1">Frequency:</span><label for="P2-freq"
+                                        contenteditable="true"></label><span class="px-1">Hz</span>
+                                    <input type="range" class="form-control-range" id="P2-freq">
+                                </div>
+                                <div class="mx-3 form-group">
+                                    <span class="px-1">Duty:</span><label for="P2-duty"
+                                        contenteditable="true"></label><span class="px-1">%</span>
+                                    <input type="range" class="form-control-range" id="P2-duty">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button data-toggle="button" class="btn btn-outline-secondary static" id="P2-status">&nbsp;</button>
+                </div>
+                <!-- <div class="btn-group-vertical btn-group-xs">
             <div class="btn-group btn-group-xs">
                 <button type="button" data-toggle="button" class="btn btn-outline-secondary">Math</button>
                 <div class="btn-group btn-group-xs dropright">
@@ -163,154 +190,175 @@
             </div>
             <button type="button" class="btn btn-outline-secondary static"><span class="btn-xs btn-info">4</span><span class="px-1">-</span><span class="btn-xs btn-warning">3</span></button>
         </div>  -->
-          <!-- <div class="btn-group btn-group-sm dropright">
+                <!-- <div class="btn-group btn-group-sm dropright">
               <button type="button" data-toggle="button" class="btn btn-sm btn-outline-secondary flex-grow-1">Cursors</button>
               <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
               <div class="dropdown-menu">
               </div>
           </div> -->
-              
-      </div>
-      <div class="col bg-secondary p-0 flex-column d-flex overflow-hidden">
-        <div class="row h-100 w-100 g-0" id="glcanvas-div">
-                <!-- <canvas id="glcanvas"></canvas> -->
-        </div>
-        <div class="row w-100 bg-secondary border-top text-white py-1 g-0">
-            <div class="col-12 text-right" >   
-                <!-- <div class="btn-group static btn-group-xs" role="group" >
-                    <button type="button" class="btn btn-primary">1</button>
-                    <button type="button" class="btn btn-outline-primary">0.2 V</button>
-                </div> -->
-                <!-- <div class="btn-group btn-group-xs dropup" role="group">
-                    <button id="btnGroupDrop1" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
-                        Measure
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#">Ch1</a>
-                        <a class="dropdown-item" href="#">Ch2</a>
-                        <a class="dropdown-item" href="#">Ch3</a>
-                        <a class="dropdown-item" href="#">Ch4</a>
-                    </div>
-                </div> -->
-            </div> 
-             
-             
-            <!--<div class="col-9">
-                <div class="btn-group static btn-group-xs" role="group">
-                    <button type="button" class="btn btn-primary">1</button>
-                    <button type="button" class="btn btn-outline-primary">0.2 V</button>
-                </div>
-                <div class="btn-group static btn-group-xs" role="group">
-                    <button type="button" class="btn btn-success">2</button>
-                    <button type="button" class="btn btn-outline-success">0.2 V</button>
-                </div>
-                <div class="btn-group static btn-group-xs" role="group">
-                    <button type="button" class="btn btn-warning">3</button>
-                    <button type="button" class="btn btn-outline-warning">0.2 V</button>
-                </div>
-                <div class="btn-group static btn-group-xs" role="group">
-                    <button type="button" class="btn btn-info">4</button>
-                    <button type="button" class="btn btn-outline-info">0.2 V</button>
-                </div>
-            </div>
-            <div class="col-3 text-right">
-                <div class="btn-group static btn-group-xs" role="group">
-                        <button type="button" class="btn btn-light"><span class="btn-xs btn-info">4</span><span class="pl-1">&UpArrow;</span></button>
-                        <button type="button" class="btn btn-outline-light">0.2 V</button>
-                </div>
-            </div> -->
-        </div> 
-      </div>
 
-      <div class="col bg-dark-1l sidebar">
-        <div class="btn-group-vertical btn-group-xs">
-            <div class="btn-group btn-group-xs">
-                <div class="btn-group btn-group-xs dropleft">
-                    <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
-                    <div class="dropdown-menu"></div>
-                </div>
-                <button type="button"  data-toggle="button" class="btn btn-outline-secondary" id="Ch1-onoff">Ch1</button>
             </div>
-            <button class="btn btn-outline-secondary static">1 V/div</button>
+            <div class="col bg-secondary p-0 flex-column d-flex overflow-hidden">
+                <div class="row h-100 w-100 g-0" id="glcanvas-div">
+                    <!-- <canvas id="glcanvas"></canvas> -->
+                </div>
+                <div class="row w-100 bg-secondary border-top text-white py-1 g-0">
+                    <div class="col-12 text-right">
+                        <!-- <div class="btn-group static btn-group-xs" role="group">
+                            <button type="button" class="btn btn-primary">1</button>
+                            <button type="button" class="btn btn-outline-primary">0.2 V</button>
+                        </div> -->
+                        <!-- <div class="btn-group btn-group-xs dropup" role="group">
+                            <button id="btnGroupDrop1" type="button" class="btn btn-outline-secondary dropdown-toggle"
+                                data-toggle="dropdown">
+                                Measure
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#">Ch1</a>
+                                <a class="dropdown-item" href="#">Ch2</a>
+                                <a class="dropdown-item" href="#">Ch3</a>
+                                <a class="dropdown-item" href="#">Ch4</a>
+                            </div>
+                        </div> -->
+                    </div>
+
+
+                    <!-- <div class="col-9">
+                        <div class="btn-group static btn-group-xs" role="group">
+                            <button type="button" class="btn btn-primary">1</button>
+                            <button type="button" class="btn btn-outline-primary">0.2 V</button>
+                        </div>
+                        <div class="btn-group static btn-group-xs" role="group">
+                            <button type="button" class="btn btn-success">2</button>
+                            <button type="button" class="btn btn-outline-success">0.2 V</button>
+                        </div>
+                        <div class="btn-group static btn-group-xs" role="group">
+                            <button type="button" class="btn btn-warning">3</button>
+                            <button type="button" class="btn btn-outline-warning">0.2 V</button>
+                        </div>
+                        <div class="btn-group static btn-group-xs" role="group">
+                            <button type="button" class="btn btn-info">4</button>
+                            <button type="button" class="btn btn-outline-info">0.2 V</button>
+                        </div>
+                    </div>
+                    <div class="col-3 text-right">
+                        <div class="btn-group static btn-group-xs" role="group">
+                            <button type="button" class="btn btn-light"><span class="btn-xs btn-info">4</span><span
+                                    class="pl-1">&UpArrow;</span></button>
+                            <button type="button" class="btn btn-outline-light">0.2 V</button>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+
+            <div class="col bg-dark-1l sidebar">
+                <div class="btn-group-vertical btn-group-xs">
+                    <div class="btn-group btn-group-xs">
+                        <div class="btn-group btn-group-xs dropleft">
+                            <button type="button"
+                                class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
+                                data-toggle="dropdown"></button>
+                            <div class="dropdown-menu"></div>
+                        </div>
+                        <button type="button" data-toggle="button" class="btn btn-outline-secondary"
+                            id="Ch1-onoff">Ch1</button>
+                    </div>
+                    <button class="btn btn-outline-secondary static">1 V/div</button>
+                </div>
+                <div class="btn-group-vertical btn-group-xs">
+                    <div class="btn-group btn-group-xs">
+                        <div class="btn-group btn-group-xs dropleft">
+                            <button type="button"
+                                class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
+                                data-toggle="dropdown"></button>
+                            <div class="dropdown-menu"></div>
+                        </div>
+                        <button type="button" data-toggle="button" class="btn btn-outline-secondary"
+                            id="Ch2-onoff">Ch2</button>
+                    </div>
+                    <button class="btn btn-outline-secondary static">1 V/div</button>
+                </div>
+                <div class="btn-group-vertical btn-group-xs">
+                    <div class="btn-group btn-group-xs">
+                        <div class="btn-group btn-group-xs dropleft">
+                            <button type="button"
+                                class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
+                                data-toggle="dropdown"></button>
+                            <div class="dropdown-menu"></div>
+                        </div>
+                        <button type="button" data-toggle="button" class="btn btn-outline-secondary"
+                            id="Ch3-onoff">Ch3</button>
+                    </div>
+                    <button class="btn btn-outline-secondary static">1 V/div</button>
+                </div>
+                <div class="btn-group-vertical btn-group-xs">
+                    <div class="btn-group btn-group-xs">
+                        <div class="btn-group btn-group-xs dropleft">
+                            <button type="button"
+                                class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
+                                data-toggle="dropdown"></button>
+                            <div class="dropdown-menu"></div>
+                        </div>
+                        <button type="button" data-toggle="button" class="btn btn-outline-secondary"
+                            id="Ch4-onoff">Ch4</button>
+                    </div>
+                    <button class="btn btn-outline-secondary static">1 V/div</button>
+                </div>
+                <!-- <div class="btn-group-vertical btn-group-xs">
+                    <div class="btn-group btn-group-xs">
+                        <div class="btn-group btn-group-xs dropleft">
+                            <button type="button"
+                                class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
+                                data-toggle="dropdown"></button>
+                            <div class="dropdown-menu"></div>
+                        </div>
+                        <button type="button" data-toggle="button" class="btn btn-outline-secondary">Trigger</button>
+                    </div>
+                    <button type="button" class="btn btn-outline-secondary static"><span
+                            class="btn-xs btn-info">Ch4</span><span class="pl-1">&UpArrow;</span></button>
+                </div> -->
+            </div>
         </div>
-        <div class="btn-group-vertical btn-group-xs">
-            <div class="btn-group btn-group-xs">
-                <div class="btn-group btn-group-xs dropleft">
-                    <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
-                    <div class="dropdown-menu"></div>
-                </div>
-                <button type="button"  data-toggle="button" class="btn btn-outline-secondary" id="Ch2-onoff">Ch2</button>
-            </div>
-            <button class="btn btn-outline-secondary static">1 V/div</button>
-        </div>
-        <div class="btn-group-vertical btn-group-xs">
-            <div class="btn-group btn-group-xs">
-                <div class="btn-group btn-group-xs dropleft">
-                    <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
-                    <div class="dropdown-menu"></div>
-                </div>
-                <button type="button"  data-toggle="button" class="btn btn-outline-secondary" id="Ch3-onoff">Ch3</button>
-            </div>
-            <button class="btn btn-outline-secondary static">1 V/div</button>
-        </div>
-        <div class="btn-group-vertical btn-group-xs">
-            <div class="btn-group btn-group-xs">
-                <div class="btn-group btn-group-xs dropleft">
-                    <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
-                    <div class="dropdown-menu"></div>
-                </div>
-                <button type="button"  data-toggle="button" class="btn btn-outline-secondary" id="Ch4-onoff">Ch4</button>
-            </div>
-            <button class="btn btn-outline-secondary static">1 V/div</button>
-        </div>
-        <!-- <div class="btn-group-vertical btn-group-xs">
-            <div class="btn-group btn-group-xs">
-                <div class="btn-group btn-group-xs dropleft">
-                    <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-toggle="dropdown"></button>
-                    <div class="dropdown-menu"></div>
-                </div>
-                <button type="button"  data-toggle="button" class="btn btn-outline-secondary">Trigger</button>
-            </div>
-            <button type="button" class="btn btn-outline-secondary static"><span class="btn-xs btn-info">Ch4</span><span class="pl-1">&UpArrow;</span></button>
-        </div> -->
-        </div>
-    </div>
-    <div class="row bg-dark text-white align-items-center py-2">
-        <div class="col-6"></div>
-        <div class="col-6 text-end">
-        <div class="btn-group" role="group">
-            <div class="btn-group btn-group-xs dropup" role="group">
-                <button id="btnGroupDrop1" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
-                    Measure
-                </button>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#">Ch1</a>
-                    <a class="dropdown-item" href="#">Ch2</a>
-                    <a class="dropdown-item" href="#">Ch3</a>
-                    <a class="dropdown-item" href="#">Ch4</a>
+        <div class="row bg-dark text-white align-items-center py-2">
+            <div class="col-6" id="version"></div>
+            <div class="col-6 text-end">
+                <div class="btn-group" role="group">
+                    <div class="btn-group btn-group-xs dropup" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-outline-secondary dropdown-toggle"
+                            data-toggle="dropdown">
+                            Measure
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="#">Ch1</a>
+                            <a class="dropdown-item" href="#">Ch2</a>
+                            <a class="dropdown-item" href="#">Ch3</a>
+                            <a class="dropdown-item" href="#">Ch4</a>
+                        </div>
+                    </div>
+                    <div class="btn-group btn-group-xs dropup" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-outline-secondary dropdown-toggle"
+                            data-toggle="dropdown">
+                            Save
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="#">Save CSV</a>
+                            <a class="dropdown-item" href="#">Save Screenshot</a>
+                        </div>
+                    </div>
+                    <div class="btn-group btn-group-xs dropup" role="group">
+                        <button id="btnGroupDrop2" type="button" class="btn btn-outline-secondary dropdown-toggle"
+                            data-toggle="dropdown">
+                            Update
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="#">Update nScope Firmware</a>
+                            <a class="dropdown-item" href="#">Check for Updates</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="btn-group btn-group-xs dropup" role="group">
-                <button id="btnGroupDrop1" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
-                    Save
-                </button>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#">Save CSV</a>
-                    <a class="dropdown-item" href="#">Save Screenshot</a>
-                </div>
-            </div>
-            <div class="btn-group btn-group-xs dropup" role="group">
-                <button id="btnGroupDrop2" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
-                    Update
-                </button>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#">Update nScope Firmware</a>
-                    <a class="dropdown-item" href="#">Check for Updates</a>
-                </div>
-            </div>
-        </div>
-    </div>
-  </main>
-  </body>
- <script src="app/renderer.js"></script>
+    </main>
+</body>
+<script src="app/renderer.js"></script>
+
 </html>

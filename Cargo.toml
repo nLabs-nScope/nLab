@@ -1,0 +1,15 @@
+[package]
+name = "nscope-nodejs"
+version = "1.0.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+nscope = {path = "../nscope-rs", version = "1.0.0-dev.1"}
+
+[dependencies.neon]
+version = "0.10"
+default-features = false
+features = ["napi-6"]

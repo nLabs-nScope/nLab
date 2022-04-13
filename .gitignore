@@ -1,5 +1,6 @@
 dist
 app
+target
 npm-debug.log
 node_modules
 .vscode
