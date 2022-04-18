@@ -64,22 +64,6 @@ html, body {
     padding: 0.1rem 0.6rem;
 }
 
-
-.nscope-power-usage-bar {
-    pointer-events: none;   
-    position: relative;
-    display:inline-block;
-}
-
-.nscope-power-usage-bar > div:not(:first-child) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-}
-
-.nscope-power-usage-bar .btn {
-    width:100px;
+.hidden {
+    visibility: hidden;
 }

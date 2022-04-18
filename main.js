@@ -28,6 +28,7 @@ app.on('ready', function () {
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             devTools: !app.isPackaged,
+            contextIsolation: false,
         }
     })
 
