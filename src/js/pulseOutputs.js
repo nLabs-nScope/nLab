@@ -1,6 +1,4 @@
-const path = require("path");
-const nScopeAPI = require(path.resolve('app/js/nScopeAPI'));
-
+import {getId} from './Utils.js';
 
 function valToDuty(val) {
     val = parseFloat(val);
@@ -48,130 +46,130 @@ function freqToString(freq) {
     return freqString;
 }
 
-exports.initInput = () => {
+export function initInput() {
     
     let frequency, duty, label, freqString, dutyString;
 
-    frequency = nScopeAPI.get_PX_frequency_in_hz(1);
-    duty = nScopeAPI.get_PX_duty_percentage(1);
+    // TODO: Get frequency and duty from API
+    frequency = 10;
+    duty = 50;
 
-    label = $("label[for='P1-freq']");
-    
+    label = getId("P1-freq").labels[0]
     freqString = freqToString(frequency);
-    label.html(freqString.number);
-    label.next().html(freqString.unit);
-    $("#P1-freq").val(freqToVal(frequency));
+    label.textContent = freqString.number;
+    label.nextElementSibling.textContent = freqString.unit;
+    getId("P1-freq").value = freqToVal(frequency);
 
-    label = $("label[for='P1-duty']");
-
-    dutyString = dutyToString(duty);;
-    label.html(dutyString.number);
-    label.next().html(dutyString.unit);
-    $("#P1-duty").val(dutyToVal(duty));
-
-    frequency = nScopeAPI.get_PX_frequency_in_hz(2);
-    duty = nScopeAPI.get_PX_duty_percentage(2);
-
-    label = $("label[for='P2-freq']");
-    
-    freqString = freqToString(frequency);
-    label.html(freqString.number);
-    label.next().html(freqString.unit);
-    $("#P2-freq").val(freqToVal(frequency));
-
-    label = $("label[for='P2-duty']");
-
+    label = getId("P1-duty").labels[0]
     dutyString = dutyToString(duty);
-    label.html(dutyString.number);
-    label.next().html(dutyString.unit);
-    $("#P2-duty").val(dutyToVal(duty));
+    label.textContent = dutyString.number;
+    label.nextElementSibling.textContent = dutyString.unit;
+    getId("P1-duty").value = dutyToVal(duty);
 
+    // TODO: Get frequency and duty from API
+    frequency = 10;
+    duty = 50;
+
+    label = getId("P2-freq").labels[0]
+    freqString = freqToString(frequency);
+    label.textContent = freqString.number;
+    label.nextElementSibling.textContent = freqString.unit;
+    getId("P2-freq").value = freqToVal(frequency);
+
+    label = getId("P2-duty").labels[0]
+    dutyString = dutyToString(duty);
+    label.textContent = dutyString.number;
+    label.nextElementSibling.textContent = dutyString.unit;
+    getId("P2-duty").value = dutyToVal(duty);
+    
 }
 
-exports.updateStatus = () => {
+// exports.updateStatus = () => {
 
-    if(monitorScope.isOpen)
-    {
-        let isOn = nScopeAPI.get_PX_on(1);
-        if(isOn) {
-            $("#P1-onoff").addClass('active');
-        } else {
-            $("#P1-onoff").removeClass('active');
-        }
+//     if(monitorScope.isOpen)
+//     {
+//         let isOn = nScopeAPI.get_PX_on(1);
+//         if(isOn) {
+//             $("#P1-onoff").addClass('active');
+//         } else {
+//             $("#P1-onoff").removeClass('active');
+//         }
 
-        let frequency = nScopeAPI.get_PX_frequency_in_hz(1);
-        let duty = nScopeAPI.get_PX_duty_percentage(1);
-        let freqString = freqToString(frequency);
-        let dutyString = dutyToString(duty);
+//         let frequency = nScopeAPI.get_PX_frequency_in_hz(1);
+//         let duty = nScopeAPI.get_PX_duty_percentage(1);
+//         let freqString = freqToString(frequency);
+//         let dutyString = dutyToString(duty);
 
-        $("#P1-status").html(freqString.number+' '+freqString.unit+' '+dutyString.number+' '+dutyString.unit);
+//         $("#P1-status").html(freqString.number+' '+freqString.unit+' '+dutyString.number+' '+dutyString.unit);
 
-        isOn = nScopeAPI.get_PX_on(2);
-        if(isOn) {
-            $("#P2-onoff").addClass('active');
-        } else {
-            $("#P2-onoff").removeClass('active');
-        }
+//         isOn = nScopeAPI.get_PX_on(2);
+//         if(isOn) {
+//             $("#P2-onoff").addClass('active');
+//         } else {
+//             $("#P2-onoff").removeClass('active');
+//         }
 
-        frequency = nScopeAPI.get_PX_frequency_in_hz(2);
-        duty = nScopeAPI.get_PX_duty_percentage(2);
-        freqString = freqToString(frequency);
-        dutyString = dutyToString(duty);
-        $("#P2-status").html(freqString.number+' '+freqString.unit+' '+dutyString.number+' '+dutyString.unit);
+//         frequency = nScopeAPI.get_PX_frequency_in_hz(2);
+//         duty = nScopeAPI.get_PX_duty_percentage(2);
+//         freqString = freqToString(frequency);
+//         dutyString = dutyToString(duty);
+//         $("#P2-status").html(freqString.number+' '+freqString.unit+' '+dutyString.number+' '+dutyString.unit);
 
-    } else {
-        $("#P1-status").html("&nbsp;");
-        $("#P2-status").html("&nbsp;");
-    }
-    window.requestAnimationFrame(this.updateStatus);
+//     } else {
+//         $("#P1-status").html("&nbsp;");
+//         $("#P2-status").html("&nbsp;");
+//     }
+//     window.requestAnimationFrame(this.updateStatus);
+// }
+
+getId("P1-onoff").onclick = function(){
+    let checked = this.classList.contains("active");
+    // TODO: API call to turn on/off
 }
 
-$("#P1-onoff").on("click", function(){
-    let wasChecked = $(this).hasClass('active');
-    if(wasChecked) {nScopeAPI.set_PX_on(1,false)}
-    if(!wasChecked) {nScopeAPI.set_PX_on(1,true)}
-}); 
+getId("P2-onoff").onclick = function(){
+    let checked = this.classList.contains("active");
+    // TODO: API call to turn on/off
+}
 
-$("#P2-onoff").on("click", function(){
-    let wasChecked = $(this).hasClass('active');
-    if(wasChecked) {nScopeAPI.set_PX_on(2,false)}
-    if(!wasChecked) {nScopeAPI.set_PX_on(2,true)}
-}); 
-
-$("#P1-freq,#P2-freq").on("input change", function(){
-    let label = $("label[for='" + $(this).attr('id') + "']");
-    let frequency = valToFreq($(this).val())
+getId("P1-freq").onchange = getId("P1-freq").oninput =
+getId("P2-freq").onchange = getId("P2-freq").oninput = function(){
+    let label = this.labels[0];
+    let frequency = valToFreq(this.value);
     let freqString = freqToString(frequency);
-    label.html(freqString.number);
-    label.next().html(freqString.unit);
-})
+    label.textContent = freqString.number;
+    label.nextElementSibling.textContent = freqString.unit;
+}
+// TODO: API call to set frequency
 
-$("#P1-freq").on("change", function(){
-    let frequency = valToFreq($(this).val())
-    nScopeAPI.set_PX_frequency_in_hz(1,frequency);
-})
+// $("#P1-freq").on("change", function(){
+//     let frequency = valToFreq($(this).val())
+//     nScopeAPI.set_PX_frequency_in_hz(1,frequency);
+// })
 
-$("#P2-freq").on("change", function(){
-    let frequency = valToFreq($(this).val())
-    nScopeAPI.set_PX_frequency_in_hz(2,frequency);
-})
+// $("#P2-freq").on("change", function(){
+//     let frequency = valToFreq($(this).val())
+//     nScopeAPI.set_PX_frequency_in_hz(2,frequency);
+// })
 
-$("#P1-duty,#P2-duty").on("input change", function(){
-    let label = $("label[for='" + $(this).attr('id') + "']");
-    let duty = valToDuty($(this).val())
-    let dutyString = dutyToString(duty);;
-    label.html(dutyString.number);
-    label.next().html(dutyString.unit);
-})
+getId("P1-duty").onchange = getId("P1-duty").oninput = 
+getId("P2-duty").onchange = getId("P2-duty").oninput = function(){
+    let label = this.labels[0];
+    let duty = valToDuty(this.value);
+    let dutyString = dutyToString(duty);
+    label.textContent = dutyString.number;
+    label.nextElementSibling.textContent = dutyString.unit;
+}
+// TODO: API call to set duty
 
-$("#P1-duty").on("change", function(){
-    let duty = valToDuty($(this).val());
-    nScopeAPI.set_PX_duty_percentage(1,duty);
-})
+// $("#P1-duty").on("change", function(){
+//     let duty = valToDuty($(this).val());
+//     nScopeAPI.set_PX_duty_percentage(1,duty);
+// })
 
-$("#P2-duty").on("change", function(){
-    let duty = valToDuty($(this).val());
-    nScopeAPI.set_PX_duty_percentage(2,duty);
-})
+// $("#P2-duty").on("change", function(){
+//     let duty = valToDuty($(this).val());
+//     nScopeAPI.set_PX_duty_percentage(2,duty);
+// })
 
-window.requestAnimationFrame(this.updateStatus);
+// window.requestAnimationFrame(this.updateStatus);

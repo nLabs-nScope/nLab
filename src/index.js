@@ -1,31 +1,28 @@
-
-
 import './scss/custom_bootstrap.scss'
 import './css/nscope.css'
+import bootstrap from 'bootstrap'
 
-import * as powerStatus from './js/power_status.js'
+export function byId( id ) { return document.getElementById( id ); }
 
-// const path = require("path");
-// const nScopeAPI = require(path.resolve('app/js/nScopeAPI'));
+
+import * as powerStatus from './js/PowerStatus.js'
+import * as pulseOutputs from './js/PulseOutputs.js'
+
 // const nsAnalogInputs = require(path.resolve('app/js/analogInputs'))
 // const nsAnalogOutputs = require(path.resolve('app/js/analogOutputs'));
 // const nsPulseOutput = require(path.resolve('app/js/pulseOutputs'));
 const Plotly = require('plotly.js-basic-dist');
 
-global.byId = function( id ) { return document.getElementById( id ); };
 
 
-function initPowerUsage()
-{
-    updatePowerUsage(-1, 0);
-}
 
-function requestData(){
-    clearData();
-    let err;
+
+// function requestData(){
+//     clearData();
+//     let err;
     
-    err = nScopeAPI.request_data(1200);
-}
+//     err = nScopeAPI.request_data(1200);
+// }
 
 
 // $('.dropdown-menu.clickable').click(function(e) {
@@ -162,19 +159,14 @@ Plotly.newPlot('glcanvas-div', computeData(), layout,  {responsive: true, displa
 
 
 function monitorScope(){
-
     let powerState = nscope.monitor_nscope(nScope);
-
     powerStatus.update(powerState);
-
     window.requestAnimationFrame(monitorScope);
 }
 
 
-// Monitor the state of the nScope:
-// initPowerUsage();
 monitorScope();
-
+pulseOutputs.initInput();
 
 
 version.innerHTML = nscope.version();

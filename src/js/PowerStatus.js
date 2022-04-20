@@ -35,15 +35,13 @@ export function update(powerState)
             show('usb-status-bar');
             show('usb-status');
             var percentage = powerState.usage*100/2.5;
-            update.percentage = update.percentage*0.8+percentage*0.2 || percentage;
+            update.percentage = update.percentage*0.8+percentage*0.2;
 
-            // byId('nscope-power-usage-bar').style.width = `${update.percentage}%`;
             byId('nscope-power-usage').style.width = `${update.percentage}%`;
 
             byId('usb-status-bar').innerHTML = `${(update.percentage/100*2.5).toFixed(2)} W`;
             byId('usb-status').innerHTML = `${(update.percentage/100*2.5).toFixed(2)} W`;
-            // $(".nscope-power-usage-bar .nscope-power-usage").css("width",update.percentage+'%');
-            // $('#usb-status-bar, #usb-status').html((update.percentage/100*2.5).toFixed(2)+' W');
+
             break;
         }
         case "Shorted":
