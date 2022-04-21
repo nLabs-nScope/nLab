@@ -1,4 +1,4 @@
-import {getId, isEmpty} from './Utils.js';
+import { getId, isEmpty } from './Utils.js';
 
 function valToDuty(val) {
     val = parseFloat(val);
@@ -18,82 +18,71 @@ function dutyToString(duty) {
 
 function valToFreq(val) {
     val = parseFloat(val);
-    let freq = Math.pow(10,val/100.0*4.3);
+    let freq = Math.pow(10, val / 100.0 * 4.3);
     return freq;
 }
 
 function freqToVal(freq) {
-    let val = Math.log10(freq)/4.3*100.0;
+    let val = Math.log10(freq) / 4.3 * 100.0;
     return val;
 }
 
 function freqToString(freq) {
 
     let freqString = {};
-    if(freq < 10) {
+    if (freq < 10) {
         freqString.number = freq.toPrecision(2);
         freqString.unit = "Hz";
-    } else if(freq < 1000) {
+    } else if (freq < 1000) {
         freqString.number = freq.toPrecision(3);
         freqString.unit = "Hz";
     } else if (freq < 1000000) {
-        freqString.number = (freq/1000).toPrecision(3);
+        freqString.number = (freq / 1000).toPrecision(3);
         freqString.unit = "kHz";
     } else {
-        freqString.number = (freq/1000000).toPrecision(3);
+        freqString.number = (freq / 1000000).toPrecision(3);
         freqString.unit = "MHz";
     }
     return freqString;
 }
 
 export function initInput() {
-    
+
     let frequency, duty, label, freqString, dutyString;
 
-    // TODO: Get frequency and duty from API
-    frequency = 10;
-    duty = 50;
 
-    label = getId("P1-freq").labels[0]
-    freqString = freqToString(frequency);
-    label.textContent = freqString.number;
-    label.nextElementSibling.textContent = freqString.unit;
-    getId("P1-freq").value = freqToVal(frequency);
+    let pxState = nscope.getPxStatus(nScope);
 
-    label = getId("P1-duty").labels[0]
-    dutyString = dutyToString(duty);
-    label.textContent = dutyString.number;
-    label.nextElementSibling.textContent = dutyString.unit;
-    getId("P1-duty").value = dutyToVal(duty);
+    for (let ch of ["P1", "P2"]) {
 
-    // TODO: Get frequency and duty from API
-    frequency = 10;
-    duty = 50;
+        let freqString = freqToString(pxState[ch].frequency);
+        let dutyString = dutyToString(pxState[ch].duty);
 
-    label = getId("P2-freq").labels[0]
-    freqString = freqToString(frequency);
-    label.textContent = freqString.number;
-    label.nextElementSibling.textContent = freqString.unit;
-    getId("P2-freq").value = freqToVal(frequency);
+        let freqLabel = getId(`${ch}-freq`).labels[0];
+        let dutyLabel = getId(`${ch}-duty`).labels[0];
 
-    label = getId("P2-duty").labels[0]
-    dutyString = dutyToString(duty);
-    label.textContent = dutyString.number;
-    label.nextElementSibling.textContent = dutyString.unit;
-    getId("P2-duty").value = dutyToVal(duty);
-    
+        freqLabel.textContent = freqString.number;
+        freqLabel.nextElementSibling.textContent = freqString.unit;
+
+        dutyLabel.textContent = dutyString.number;
+        dutyLabel.nextElementSibling.textContent = dutyString.unit;
+
+        getId(`${ch}-freq`).value = freqToVal(pxState[ch].frequency);
+        getId(`${ch}-duty`).value = freqToVal(pxState[ch].duty);
+    }
+
 }
 
 export function update(pxState) {
 
-    if(isEmpty(pxState)) {
+    if (isEmpty(pxState)) {
         console.log("Empty: handle this");
         return;
     }
-    
+
 
     for (let ch of ["P1", "P2"]) {
-        if(pxState[ch].isOn){
+        if (pxState[ch].isOn) {
             getId(`${ch}-onoff`).classList.add("active");
         } else {
             getId(`${ch}-onoff`).classList.remove("active")
@@ -102,65 +91,56 @@ export function update(pxState) {
         let freqString = freqToString(pxState[ch].frequency);
         let dutyString = dutyToString(pxState[ch].duty);
 
-        getId(`${ch}-status`).innerHTML = freqString.number+' '+freqString.unit+' '+dutyString.number+' '+dutyString.unit;
+        getId(`${ch}-status`).innerHTML = freqString.number + ' ' + freqString.unit + ' ' + dutyString.number + ' ' + dutyString.unit;
     }
 
 }
 
-getId("P1-onoff").onclick = function(){
+getId("P1-onoff").onclick = function () {
     let checked = this.classList.contains("active");
     nscope.setPxOn(nScope, "P1", checked);
-    // TODO: API call to turn on/off
 }
 
-getId("P2-onoff").onclick = function(){
+getId("P2-onoff").onclick = function () {
     let checked = this.classList.contains("active");
     nscope.setPxOn(nScope, "P2", checked);
-    // TODO: API call to turn on/off
 }
 
 getId("P1-freq").onchange = getId("P1-freq").oninput =
-getId("P2-freq").onchange = getId("P2-freq").oninput = function(){
-    let label = this.labels[0];
-    let frequency = valToFreq(this.value);
-    let freqString = freqToString(frequency);
-    label.textContent = freqString.number;
-    label.nextElementSibling.textContent = freqString.unit;
+    getId("P2-freq").onchange = getId("P2-freq").oninput = function () {
+        let label = this.labels[0];
+        let frequency = valToFreq(this.value);
+        let freqString = freqToString(frequency);
+        label.textContent = freqString.number;
+        label.nextElementSibling.textContent = freqString.unit;
+    }
+
+getId("P1-freq").onchange = function () {
+    let frequency = valToFreq(this.value)
+    nscope.setPxFrequency(nScope, "P1", frequency)
 }
 
-// getId("P2-freq").onchange = function() {
-//     let frequency = valToFreq($(this).val())
-// }
-// TODO: API call to set frequency
-
-// $("#P1-freq").on("change", function(){
-//     let frequency = valToFreq($(this).val())
-//     nScopeAPI.set_PX_frequency_in_hz(1,frequency);
-// })
-
-// $("#P2-freq").on("change", function(){
-//     let frequency = valToFreq($(this).val())
-//     nScopeAPI.set_PX_frequency_in_hz(2,frequency);
-// })
-
-getId("P1-duty").onchange = getId("P1-duty").oninput = 
-getId("P2-duty").onchange = getId("P2-duty").oninput = function(){
-    let label = this.labels[0];
-    let duty = valToDuty(this.value);
-    let dutyString = dutyToString(duty);
-    label.textContent = dutyString.number;
-    label.nextElementSibling.textContent = dutyString.unit;
+getId("P2-freq").onchange = function () {
+    let frequency = valToFreq(this.value)
+    nscope.setPxFrequency(nScope, "P2", frequency)
 }
-// TODO: API call to set duty
 
-// $("#P1-duty").on("change", function(){
-//     let duty = valToDuty($(this).val());
-//     nScopeAPI.set_PX_duty_percentage(1,duty);
-// })
+getId("P1-duty").onchange = getId("P1-duty").oninput =
+    getId("P2-duty").onchange = getId("P2-duty").oninput = function () {
+        let label = this.labels[0];
+        let duty = valToDuty(this.value);
+        let dutyString = dutyToString(duty);
+        label.textContent = dutyString.number;
+        label.nextElementSibling.textContent = dutyString.unit;
+    }
 
-// $("#P2-duty").on("change", function(){
-//     let duty = valToDuty($(this).val());
-//     nScopeAPI.set_PX_duty_percentage(2,duty);
-// })
 
-// window.requestAnimationFrame(this.updateStatus);
+getId("P1-duty").onchange = function () {
+    let duty = valToDuty(this.value)
+    nscope.setPxDuty(nScope, "P1", duty)
+}
+
+getId("P2-duty").onchange = function () {
+    let duty = valToDuty(this.value)
+    nscope.setPxDuty(nScope, "P2", duty)
+}

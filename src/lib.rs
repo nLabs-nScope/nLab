@@ -38,8 +38,10 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("new_nscope", new_nscope)?;
     cx.export_function("monitor_nscope", monitor::monitor_nscope)?;
 
-    
+
     cx.export_function("getPxStatus", pulse_output::get_px_status)?;
     cx.export_function("setPxOn", pulse_output::set_px_on)?;
+    cx.export_function("setPxFrequency", pulse_output::set_px_frequency_hz)?;
+    cx.export_function("setPxDuty", pulse_output::set_px_duty)?;
     Ok(())
 }

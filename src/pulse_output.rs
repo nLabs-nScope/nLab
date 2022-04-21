@@ -13,7 +13,7 @@ impl Objectify for PulseOutput {
         let frequency = cx.number(self.frequency);
         obj.set(cx, "frequency", frequency)?;
 
-        let duty = cx.number(self.duty);
+        let duty = cx.number(self.duty * 100.);
         obj.set(cx, "duty", duty)?;
 
         Ok(obj)
@@ -56,6 +56,48 @@ pub fn set_px_on(mut cx: FunctionContext) -> JsResult<JsNull> {
                 _ => panic!("Invalid channel string")
             };
             nscope.set_px_on(ch, turn_on);
+        }
+    }
+
+    Ok(cx.null())
+}
+
+pub fn set_px_frequency_hz(mut cx: FunctionContext) -> JsResult<JsNull> {
+    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let channel = cx.argument::<JsString>(1)?.value(&mut cx);
+    let frequeny = cx.argument::<JsNumber>(2)?.value(&mut cx);
+    let nscope_handle = js_nscope_handle.borrow();
+
+    if let Some(nscope) = &nscope_handle.scope {
+        if nscope.is_connected() {
+
+            let ch = match channel.as_str() {
+                "P1" => 0,
+                "P2" => 1,
+                _ => panic!("Invalid channel string")
+            };
+            nscope.set_px_frequency_hz(ch, frequeny);
+        }
+    }
+
+    Ok(cx.null())
+}
+
+pub fn set_px_duty(mut cx: FunctionContext) -> JsResult<JsNull> {
+    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let channel = cx.argument::<JsString>(1)?.value(&mut cx);
+    let duty = cx.argument::<JsNumber>(2)?.value(&mut cx) / 100.;
+    let nscope_handle = js_nscope_handle.borrow();
+
+    if let Some(nscope) = &nscope_handle.scope {
+        if nscope.is_connected() {
+
+            let ch = match channel.as_str() {
+                "P1" => 0,
+                "P2" => 1,
+                _ => panic!("Invalid channel string")
+            };
+            nscope.set_px_duty(ch, duty);
         }
     }
 
