@@ -48,9 +48,6 @@ function freqToString(freq) {
 
 export function initInput() {
 
-    let frequency, duty, label, freqString, dutyString;
-
-
     let pxState = nscope.getPxStatus(nScope);
 
     for (let ch of ["P1", "P2"]) {

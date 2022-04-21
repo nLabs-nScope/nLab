@@ -9,9 +9,6 @@ import * as analogOutputs from './js/AnalogOutputs.js'
 const Plotly = require('plotly.js-basic-dist');
 
 
-
-
-
 // function requestData(){
 //     clearData();
 //     let err;
@@ -19,19 +16,25 @@ const Plotly = require('plotly.js-basic-dist');
 //     err = nScopeAPI.request_data(1200);
 // }
 
+window.onload = function() {    
+    let dropdowns = document.getElementsByClassName("dropdown-menu clickable");
 
-// $('.dropdown-menu.clickable').click(function(e) {
-//     e.stopPropagation();
-// });
+    for(let dropdown of dropdowns) {
+        dropdown.onclick = function (evt) {
+            evt.stopPropagation();
+        }
+    }
 
-// $("label[contenteditable='true'").keypress(function(e) { 
-//     return false;
-//     // if(e.which == 13)
-//     // {
+    let labels = document.getElementsByTagName("label");
 
-//     // }   
-//     return e.which != 13; 
-// });
+    for(let label of labels) {
+        label.onkeydown = function(evt) {
+            return false; // TODO, this function doesn't work
+            // console.log(evt.key);
+            // return evt.key != "Enter";
+        }
+    }
+};
 
   
 var layout = {
