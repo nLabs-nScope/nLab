@@ -1,4 +1,4 @@
-import {getId} from './Utils.js';
+import {getId, isEmpty} from './Utils.js';
 
 function valToDuty(val) {
     val = parseFloat(val);
@@ -84,51 +84,38 @@ export function initInput() {
     
 }
 
-// exports.updateStatus = () => {
+export function update(pxState) {
 
-//     if(monitorScope.isOpen)
-//     {
-//         let isOn = nScopeAPI.get_PX_on(1);
-//         if(isOn) {
-//             $("#P1-onoff").addClass('active');
-//         } else {
-//             $("#P1-onoff").removeClass('active');
-//         }
+    if(isEmpty(pxState)) {
+        console.log("Empty: handle this");
+        return;
+    }
+    
 
-//         let frequency = nScopeAPI.get_PX_frequency_in_hz(1);
-//         let duty = nScopeAPI.get_PX_duty_percentage(1);
-//         let freqString = freqToString(frequency);
-//         let dutyString = dutyToString(duty);
+    for (let ch of ["P1", "P2"]) {
+        if(pxState[ch].isOn){
+            getId(`${ch}-onoff`).classList.add("active");
+        } else {
+            getId(`${ch}-onoff`).classList.remove("active")
+        }
 
-//         $("#P1-status").html(freqString.number+' '+freqString.unit+' '+dutyString.number+' '+dutyString.unit);
+        let freqString = freqToString(pxState[ch].frequency);
+        let dutyString = dutyToString(pxState[ch].duty);
 
-//         isOn = nScopeAPI.get_PX_on(2);
-//         if(isOn) {
-//             $("#P2-onoff").addClass('active');
-//         } else {
-//             $("#P2-onoff").removeClass('active');
-//         }
+        getId(`${ch}-status`).innerHTML = freqString.number+' '+freqString.unit+' '+dutyString.number+' '+dutyString.unit;
+    }
 
-//         frequency = nScopeAPI.get_PX_frequency_in_hz(2);
-//         duty = nScopeAPI.get_PX_duty_percentage(2);
-//         freqString = freqToString(frequency);
-//         dutyString = dutyToString(duty);
-//         $("#P2-status").html(freqString.number+' '+freqString.unit+' '+dutyString.number+' '+dutyString.unit);
-
-//     } else {
-//         $("#P1-status").html("&nbsp;");
-//         $("#P2-status").html("&nbsp;");
-//     }
-//     window.requestAnimationFrame(this.updateStatus);
-// }
+}
 
 getId("P1-onoff").onclick = function(){
     let checked = this.classList.contains("active");
+    nscope.setPxOn(nScope, "P1", checked);
     // TODO: API call to turn on/off
 }
 
 getId("P2-onoff").onclick = function(){
     let checked = this.classList.contains("active");
+    nscope.setPxOn(nScope, "P2", checked);
     // TODO: API call to turn on/off
 }
 
@@ -140,6 +127,10 @@ getId("P2-freq").onchange = getId("P2-freq").oninput = function(){
     label.textContent = freqString.number;
     label.nextElementSibling.textContent = freqString.unit;
 }
+
+// getId("P2-freq").onchange = function() {
+//     let frequency = valToFreq($(this).val())
+// }
 // TODO: API call to set frequency
 
 // $("#P1-freq").on("change", function(){

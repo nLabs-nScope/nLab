@@ -1,18 +1,19 @@
+import { getId } from './Utils.js'
+
 import '../css/power_status.css'
 
 function hide(id) {
-    let element = document.getElementById(id);
+    let element = getId(id);
     element.classList.add("hidden");
 }
 
 function show(id) {
-    let element = document.getElementById(id);
+    let element = getId(id);
     element.classList.remove("hidden");
 }
 
 export function update(powerState)
 {
-    console.log(powerState.state);
     switch(powerState.state)
     {
         case "PowerOff":
@@ -37,10 +38,10 @@ export function update(powerState)
             var percentage = powerState.usage*100/2.5;
             update.percentage = update.percentage*0.8+percentage*0.2;
 
-            byId('nscope-power-usage').style.width = `${update.percentage}%`;
+            getId('nscope-power-usage').style.width = `${update.percentage}%`;
 
-            byId('usb-status-bar').innerHTML = `${(update.percentage/100*2.5).toFixed(2)} W`;
-            byId('usb-status').innerHTML = `${(update.percentage/100*2.5).toFixed(2)} W`;
+            getId('usb-status-bar').innerHTML = `${(update.percentage/100*2.5).toFixed(2)} W`;
+            getId('usb-status').innerHTML = `${(update.percentage/100*2.5).toFixed(2)} W`;
 
             break;
         }

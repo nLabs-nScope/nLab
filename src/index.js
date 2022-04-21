@@ -2,15 +2,10 @@ import './scss/custom_bootstrap.scss'
 import './css/nscope.css'
 import bootstrap from 'bootstrap'
 
-export function byId( id ) { return document.getElementById( id ); }
-
-
 import * as powerStatus from './js/PowerStatus.js'
 import * as pulseOutputs from './js/PulseOutputs.js'
+import * as analogOutputs from './js/AnalogOutputs.js'
 
-// const nsAnalogInputs = require(path.resolve('app/js/analogInputs'))
-// const nsAnalogOutputs = require(path.resolve('app/js/analogOutputs'));
-// const nsPulseOutput = require(path.resolve('app/js/pulseOutputs'));
 const Plotly = require('plotly.js-basic-dist');
 
 
@@ -159,14 +154,20 @@ Plotly.newPlot('glcanvas-div', computeData(), layout,  {responsive: true, displa
 
 
 function monitorScope(){
+    
     let powerState = nscope.monitor_nscope(nScope);
     powerStatus.update(powerState);
+
+    let pxState = nscope.getPxStatus(nScope);
+    pulseOutputs.update(pxState);
+
     window.requestAnimationFrame(monitorScope);
 }
 
 
 monitorScope();
 pulseOutputs.initInput();
+analogOutputs.initInput();
 
 
 version.innerHTML = nscope.version();
