@@ -1,4 +1,4 @@
-import { getId } from './Utils.js';
+import { getId, isEmpty } from './Utils.js';
 
 function valToAmplitude(val) {
     val = parseFloat(val);
@@ -52,104 +52,63 @@ function freqToString(freq) {
 
 export function initInput() {
 
-    let frequency, amplitude, label, freqString, amplitudeString, wave, isUnipolar;
+    let axState = nscope.getAxStatus(nScope);
 
-    // TODO: Get frequency and amplitude from API
-    frequency = 10;
-    amplitude = 5.0;
+    for (let ch of ["A1", "A2"]) {
 
-    label = getId("A1-freq").labels[0]
-    freqString = freqToString(frequency);
-    label.textContent = freqString.number;
-    label.nextElementSibling.textContent = freqString.unit;
-    getId("A1-freq").value = freqToVal(frequency);
+        let freqString = freqToString(axState[ch].frequency);
+        let amplitudeString = amplitudeToString(axState[ch].amplitude);
 
-    label = getId("A1-amplitude").labels[0]
-    amplitudeString = amplitudeToString(amplitude);
-    label.textContent = amplitudeString.number;
-    label.nextElementSibling.textContent = amplitudeString.unit;
-    getId("A1-amplitude").value = amplitudeToVal(amplitude);
+        let freqLabel = getId(`${ch}-freq`).labels[0];
+        let amplitudeLabel = getId(`${ch}-amplitude`).labels[0];
 
-    // TODO: Get frequency and amplitude from API
-    frequency = 10;
-    amplitude = 5.0;
+        freqLabel.textContent = freqString.number;
+        freqLabel.nextElementSibling.textContent = freqString.unit;
 
-    label = getId("A2-freq").labels[0]
-    freqString = freqToString(frequency);
-    label.textContent = freqString.number;
-    label.nextElementSibling.textContent = freqString.unit;
-    getId("A2-freq").value = freqToVal(frequency);
+        amplitudeLabel.textContent = amplitudeString.number;
+        amplitudeLabel.nextElementSibling.textContent = amplitudeString.unit;
 
-    label = getId("A2-amplitude").labels[0]
-    amplitudeString = amplitudeToString(amplitude);
-    label.textContent = amplitudeString.number;
-    label.nextElementSibling.textContent = amplitudeString.unit;
-    getId("A2-amplitude").value = amplitudeToVal(amplitude);
+        getId(`${ch}-freq`).value = freqToVal(axState[ch].frequency);
+        getId(`${ch}-amplitude`).value = amplitudeToVal(axState[ch].amplitude);
 
-
-    // wave = nScopeAPI.get_AX_wave_type(1);
-    // $("input[type=radio][name=A1-waveType][value="+wave+"]").prop("checked",true);
-
-    // wave = nScopeAPI.get_AX_wave_type(2);
-    // $("input[type=radio][name=A2-waveType][value="+wave+"]").prop("checked",true);
-
-    // isUnipolar = nScopeAPI.get_AX_unipolar(1);
-    // $("#A1-unipolar").prop("checked",!isUnipolar);
-
-    // isUnipolar = nScopeAPI.get_AX_unipolar(2);
-    // $("#A2-unipolar").prop("checked",!isUnipolar);
+        document.querySelector(`input[name=${ch}-waveType][value=${axState[ch].waveType}]`).checked = true;
+        document.querySelector(`input[name=${ch}-polarity][value=${axState[ch].polarity}]`).checked = true;
+    }
 }
 
 
-// exports.updateStatus = () => {
+export function update(axState) {
 
-//     if(monitorScope.isOpen) {
-
-//         let isOn = nScopeAPI.get_AX_on(1);
-//         if(isOn) {
-//             $("#A1-onoff").addClass('active');
-//         } else {
-//             $("#A1-onoff").removeClass('active');
-//         }
-
-//         let frequency = nScopeAPI.get_AX_frequency_in_hz(1);
-//         let amplitude = nScopeAPI.get_AX_amplitude(1);
-//         let freqString = freqToString(frequency);
-//         let amplitudeString = amplitudeToString(amplitude);
-
-//         $("#A1-status").html(freqString.number+' '+freqString.unit+' '+amplitudeString.number+' '+amplitudeString.unit);
+    if (isEmpty(axState)) {
+        console.log("Empty: handle this");
+        return;
+    }
 
 
-//         isOn = nScopeAPI.get_AX_on(2);
-//         if(isOn) {
-//             $("#A2-onoff").addClass('active');
-//         } else {
-//             $("#A2-onoff").removeClass('active');
-//         }
+    for (let ch of ["A1", "A2"]) {
+        if (axState[ch].isOn) {
+            getId(`${ch}-onoff`).classList.add("active");
+        } else {
+            getId(`${ch}-onoff`).classList.remove("active")
+        }
 
-//         frequency = nScopeAPI.get_AX_frequency_in_hz(2);
-//         amplitude = nScopeAPI.get_AX_amplitude(2);
-//         freqString = freqToString(frequency);
-//         amplitudeString = amplitudeToString(amplitude);
+        let freqString = freqToString(axState[ch].frequency);
+        let amplitudeString = amplitudeToString(axState[ch].amplitude);
 
-//         $("#A2-status").html(freqString.number+' '+freqString.unit+' '+amplitudeString.number+' '+amplitudeString.unit);
+        getId(`${ch}-status`).innerHTML = freqString.number + ' ' + freqString.unit + ' ' + amplitudeString.number + ' ' + amplitudeString.unit;
+    }
 
-//     } else {
-//         $("#A1-status").html("&nbsp;");
-//         $("#A2-status").html("&nbsp;");
-//     }
+}
 
-//     window.requestAnimationFrame(this.updateStatus);
-// }
 
 getId("A1-onoff").onclick = function () {
     let checked = this.classList.contains("active");
-    // TODO: API call to turn on/off
+    nscope.setAxOn(nScope, "A1", checked);
 }
 
 getId("A2-onoff").onclick = function () {
     let checked = this.classList.contains("active");
-    // TODO: API call to turn on/off
+    nscope.setAxOn(nScope, "A2", checked);
 }
 
 getId("A1-freq").onchange = getId("A1-freq").oninput =
@@ -161,61 +120,61 @@ getId("A1-freq").onchange = getId("A1-freq").oninput =
         label.nextElementSibling.textContent = freqString.unit;
     }
 
-// TODO: API call to set frequency
-
-// $("#A1-freq").on("change", function(){
-//     let frequency = valToFreq($(this).val())
-//     nScopeAPI.set_AX_frequency_in_hz(1,frequency);
-// })
-
-// $("#A2-freq").on("change", function(){
-//     let frequency = valToFreq($(this).val())
-//     nScopeAPI.set_AX_frequency_in_hz(2,frequency);
-// })
-
-
-getId("A1-amplitude").onchange = getId("A1-amplitude").oninput = 
-getId("A2-amplitude").onchange = getId("A2-amplitude").oninput = function(){
-    let label = this.labels[0];
-    let amplitude = valToAmplitude(this.value);
-    let amplitudeString = amplitudeToString(amplitude);
-    label.textContent = amplitudeString.number;
-    label.nextElementSibling.textContent = amplitudeString.unit;
+getId("A1-freq").onchange = function () {
+    let frequency = valToFreq(this.value)
+    nscope.setAxFrequency(nScope, "A1", frequency)
 }
 
-// TODO: API call to set amplitude
-
-// $("#A1-amplitude").on("change", function(){
-//     let amplitude = valToAmplitude($(this).val());
-//     nScopeAPI.set_AX_amplitude(1,amplitude);
-// })
-
-// $("#A2-amplitude").on("change", function(){
-//     let amplitude = valToAmplitude($(this).val());
-//     nScopeAPI.set_AX_amplitude(2,amplitude);
-// })
+getId("A2-freq").onchange = function () {
+    let frequency = valToFreq(this.value)
+    nscope.setAxFrequency(nScope, "A2", frequency)
+}
 
 
+getId("A1-amplitude").onchange = getId("A1-amplitude").oninput =
+    getId("A2-amplitude").onchange = getId("A2-amplitude").oninput = function () {
+        let label = this.labels[0];
+        let amplitude = valToAmplitude(this.value);
+        let amplitudeString = amplitudeToString(amplitude);
+        label.textContent = amplitudeString.number;
+        label.nextElementSibling.textContent = amplitudeString.unit;
+    }
+
+getId("A1-amplitude").onchange = function () {
+    let amplitude = valToAmplitude(this.value)
+    nscope.setAxAmplitude(nScope, "A1", amplitude)
+}
+
+getId("A2-amplitude").onchange = function () {
+    let amplitude = valToAmplitude(this.value)
+    nscope.setAxAmplitude(nScope, "A2", amplitude)
+}
 
 
-// $("#A1-unipolar").on("change", function(){
-//     let unipolar = !$(this).prop("checked");
-//     nScopeAPI.set_AX_unipolar(1,unipolar);
-// })
+for (let button of document.querySelectorAll("input[name=A1-waveType]")) {
+    button.onchange = function () {
+        let wave = this.value;
+        nscope.setAxWaveType(nScope, "A1", wave);
+    }
+}
 
-// $("#A2-unipolar").on("change", function(){
-//     let unipolar = !$(this).prop("checked");
-//     nScopeAPI.set_AX_unipolar(2,unipolar);
-// })
+for (let button of document.querySelectorAll("input[name=A2-waveType]")) {
+    button.onchange = function () {
+        let wave = this.value;
+        nscope.setAxWaveType(nScope, "A2", wave);
+    }
+}
 
-// $("input[name=A1-waveType]").on("change", function(){
-//     let wave = $("input[name=A1-waveType]:checked").val();
-//     nScopeAPI.set_AX_wave_type(1,wave);
-// })
+for (let button of document.querySelectorAll("input[name=A1-polarity]")) {
+    button.onchange = function () {
+        let wave = this.value;
+        nscope.setAxPolarity(nScope, "A1", wave);
+    }
+}
 
-// $("input[name=A2-waveType]").on("change", function(){
-//     var wave = $("input[type='radio'][name='A2-waveType']:checked").val();
-//     nScopeAPI.set_AX_wave_type(2,wave);
-// })
-
-// window.requestAnimationFrame(this.updateStatus);
+for (let button of document.querySelectorAll("input[name=A2-polarity]")) {
+    button.onchange = function () {
+        let wave = this.value;
+        nscope.setAxPolarity(nScope, "A2", wave);
+    }
+}

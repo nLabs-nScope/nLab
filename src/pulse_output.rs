@@ -30,9 +30,9 @@ pub fn get_px_status(mut cx: FunctionContext) -> JsResult<JsObject> {
         if nscope.is_connected() {
             for ch in 0..2 {
                 let channel_name = format!("P{}", ch + 1);
-                let pulse_channel = nscope.get_px(ch);
+                let pulse_output = nscope.get_px(ch);
 
-                let channel_status = pulse_channel.to_object(&mut cx)?;
+                let channel_status = pulse_output.to_object(&mut cx)?;
                 px_status.set(&mut cx, channel_name.as_str(), channel_status)?;
             }
         }

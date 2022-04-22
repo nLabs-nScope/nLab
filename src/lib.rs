@@ -3,6 +3,7 @@ use std::cell::RefCell;
 
 mod monitor;
 mod pulse_output;
+mod analog_output;
 
 fn version_string(mut cx: FunctionContext) -> JsResult<JsString> {
     Ok(cx.string(format!("{}", nscope::ver())))
@@ -43,5 +44,13 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("setPxOn", pulse_output::set_px_on)?;
     cx.export_function("setPxFrequency", pulse_output::set_px_frequency_hz)?;
     cx.export_function("setPxDuty", pulse_output::set_px_duty)?;
+
+    cx.export_function("getAxStatus", analog_output::get_ax_status)?;
+    cx.export_function("setAxOn", analog_output::set_ax_on)?;
+    cx.export_function("setAxFrequency", analog_output::set_ax_frequency_hz)?;
+    cx.export_function("setAxAmplitude", analog_output::set_ax_amplitude)?;
+    cx.export_function("setAxWaveType", analog_output::set_ax_wave_type)?;
+    cx.export_function("setAxPolarity", analog_output::set_ax_polarity)?;
+
     Ok(())
 }

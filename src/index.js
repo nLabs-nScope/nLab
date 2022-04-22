@@ -16,25 +16,19 @@ const Plotly = require('plotly.js-basic-dist');
 //     err = nScopeAPI.request_data(1200);
 // }
 
-window.onload = function() {    
-    let dropdowns = document.getElementsByClassName("dropdown-menu clickable");
-
-    for(let dropdown of dropdowns) {
-        dropdown.onclick = function (evt) {
-            evt.stopPropagation();
-        }
+for(let dropdown of document.getElementsByClassName("dropdown-menu clickable")) {
+    dropdown.onclick = function (evt) {
+        evt.stopPropagation();
     }
+}
 
-    let labels = document.getElementsByTagName("label");
-
-    for(let label of labels) {
-        label.onkeydown = function(evt) {
-            return false; // TODO, this function doesn't work
-            // console.log(evt.key);
-            // return evt.key != "Enter";
-        }
+for(let label of document.getElementsByTagName("label")) {
+    label.onkeydown = function(evt) {
+        return false; // TODO, this function doesn't work
+        // console.log(evt.key);
+        // return evt.key != "Enter";
     }
-};
+}
 
   
 var layout = {
@@ -163,6 +157,9 @@ function monitorScope(){
 
     let pxState = nscope.getPxStatus(nScope);
     pulseOutputs.update(pxState);
+
+    let axState = nscope.getAxStatus(nScope);
+    analogOutputs.update(axState);
 
     window.requestAnimationFrame(monitorScope);
 }

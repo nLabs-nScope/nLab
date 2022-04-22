@@ -65,7 +65,7 @@ export function initInput() {
         dutyLabel.nextElementSibling.textContent = dutyString.unit;
 
         getId(`${ch}-freq`).value = freqToVal(pxState[ch].frequency);
-        getId(`${ch}-duty`).value = freqToVal(pxState[ch].duty);
+        getId(`${ch}-duty`).value = dutyToVal(pxState[ch].duty);
     }
 
 }
