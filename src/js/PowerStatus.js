@@ -36,7 +36,7 @@ export function update(powerState)
             show('usb-status-bar');
             show('usb-status');
             var percentage = powerState.usage*100/2.5;
-            update.percentage = update.percentage*0.8+percentage*0.2;
+            update.percentage = (update.percentage || 0.0)*0.8+percentage*0.2;
 
             getId('nscope-power-usage').style.width = `${update.percentage}%`;
 
