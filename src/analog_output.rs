@@ -8,19 +8,19 @@ impl Objectify for AnalogOutput {
     fn to_object<'a>(&self, cx: &mut FunctionContext<'a>) -> JsResult<'a, JsObject> {
         let obj = cx.empty_object();
 
-        let is_on = cx.boolean(self.is_on);
+        let is_on = cx.boolean(self.is_on());
         obj.set(cx, "isOn", is_on)?;
 
-        let frequency = cx.number(self.frequency);
+        let frequency = cx.number(self.frequency());
         obj.set(cx, "frequency", frequency)?;
 
-        let amplitude = cx.number(self.amplitude);
+        let amplitude = cx.number(self.amplitude());
         obj.set(cx, "amplitude", amplitude)?;
 
-        let wave_type = cx.string(format!("{:?}", self.wave_type));
+        let wave_type = cx.string(format!("{:?}", self.wave_type()));
         obj.set(cx, "waveType", wave_type)?;
 
-        let polarity = cx.string(format!("{:?}", self.polarity));
+        let polarity = cx.string(format!("{:?}", self.polarity()));
         obj.set(cx, "polarity", polarity)?;
 
         Ok(obj)
@@ -35,12 +35,12 @@ pub fn get_ax_status(mut cx: FunctionContext) -> JsResult<JsObject> {
 
     if let Some(nscope) = &nscope_handle.scope {
         if nscope.is_connected() {
-            for ch in 0..2 {
-                let channel_name = format!("A{}", ch + 1);
-                let analog_output = nscope.get_ax(ch);
-
-                let channel_status = analog_output.to_object(&mut cx)?;
-                ax_status.set(&mut cx, channel_name.as_str(), channel_status)?;
+            for ch in 1..=2 {
+                let channel_name = format!("A{}", ch);
+                if let Some(analog_output) = nscope.analog_output(ch) {
+                    let channel_status = analog_output.to_object(&mut cx)?;
+                    ax_status.set(&mut cx, channel_name.as_str(), channel_status)?;
+                }
             }
         }
     }
@@ -56,12 +56,16 @@ pub fn set_ax_on(mut cx: FunctionContext) -> JsResult<JsNull> {
 
     if let Some(nscope) = &nscope_handle.scope {
         if nscope.is_connected() {
-            let ch = match channel.as_str() {
-                "A1" => 0,
-                "A2" => 1,
+            let analog_output = match channel.as_str() {
+                "A1" => &nscope.a1,
+                "A2" => &nscope.a2,
                 _ => panic!("Invalid channel string"),
             };
-            nscope.set_ax_on(ch, turn_on);
+            if turn_on {
+                analog_output.turn_on();
+            } else {
+                analog_output.turn_off();
+            }
         }
     }
 
@@ -71,17 +75,17 @@ pub fn set_ax_on(mut cx: FunctionContext) -> JsResult<JsNull> {
 pub fn set_ax_frequency_hz(mut cx: FunctionContext) -> JsResult<JsNull> {
     let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
-    let frequeny = cx.argument::<JsNumber>(2)?.value(&mut cx);
+    let frequency = cx.argument::<JsNumber>(2)?.value(&mut cx);
     let nscope_handle = js_nscope_handle.borrow();
 
     if let Some(nscope) = &nscope_handle.scope {
         if nscope.is_connected() {
-            let ch = match channel.as_str() {
-                "A1" => 0,
-                "A2" => 1,
+            let analog_output = match channel.as_str() {
+                "A1" => &nscope.a1,
+                "A2" => &nscope.a2,
                 _ => panic!("Invalid channel string"),
             };
-            nscope.set_ax_frequency_hz(ch, frequeny);
+            analog_output.set_frequency(frequency);
         }
     }
 
@@ -96,12 +100,12 @@ pub fn set_ax_amplitude(mut cx: FunctionContext) -> JsResult<JsNull> {
 
     if let Some(nscope) = &nscope_handle.scope {
         if nscope.is_connected() {
-            let ch = match channel.as_str() {
-                "A1" => 0,
-                "A2" => 1,
+            let analog_output = match channel.as_str() {
+                "A1" => &nscope.a1,
+                "A2" => &nscope.a2,
                 _ => panic!("Invalid channel string"),
             };
-            nscope.set_ax_amplitude(ch, amplitude);
+            analog_output.set_amplitude(amplitude);
         }
     }
 
@@ -116,13 +120,13 @@ pub fn set_ax_wave_type(mut cx: FunctionContext) -> JsResult<JsNull> {
 
     if let Some(nscope) = &nscope_handle.scope {
         if nscope.is_connected() {
-            let ch = match channel.as_str() {
-                "A1" => 0,
-                "A2" => 1,
+            let analog_output = match channel.as_str() {
+                "A1" => &nscope.a1,
+                "A2" => &nscope.a2,
                 _ => panic!("Invalid channel string"),
             };
             if let Ok(wave_type) = AnalogWaveType::from_str(wave_type.as_str()) {
-                nscope.set_ax_wave_type(ch, wave_type);
+                analog_output.set_wave_type(wave_type);
             }
         }
     }
@@ -138,13 +142,13 @@ pub fn set_ax_polarity(mut cx: FunctionContext) -> JsResult<JsNull> {
 
     if let Some(nscope) = &nscope_handle.scope {
         if nscope.is_connected() {
-            let ch = match channel.as_str() {
-                "A1" => 0,
-                "A2" => 1,
+            let analog_output = match channel.as_str() {
+                "A1" => &nscope.a1,
+                "A2" => &nscope.a2,
                 _ => panic!("Invalid channel string"),
             };
             if let Ok(polarity) = AnalogSignalPolarity::from_str(polarity.as_str()) {
-                nscope.set_ax_polarity(ch, polarity);
+                analog_output.set_polarity(polarity);
             }
         }
     }

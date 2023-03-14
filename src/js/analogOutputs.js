@@ -1,4 +1,4 @@
-import { getId, isEmpty } from './Utils.js';
+import {getId, isEmpty} from './Utils.js';
 
 function valToAmplitude(val) {
     val = parseFloat(val);
@@ -84,7 +84,6 @@ export function update(axState) {
         return;
     }
 
-
     for (let ch of ["A1", "A2"]) {
         if (axState[ch].isOn) {
             getId(`${ch}-onoff`).classList.add("active");
@@ -100,19 +99,19 @@ export function update(axState) {
 
 }
 
+for (let ch of ["A1", "A2"]) {
 
-getId("A1-onoff").onclick = function () {
-    let checked = this.classList.contains("active");
-    nscope.setAxOn(nScope, "A1", checked);
-}
+    getId(`${ch}-onoff`).onclick = function () {
+        let checked = this.classList.contains("active");
+        nscope.setAxOn(nScope, ch, checked);
+    }
 
-getId("A2-onoff").onclick = function () {
-    let checked = this.classList.contains("active");
-    nscope.setAxOn(nScope, "A2", checked);
-}
+    getId(`${ch}-freq`).onchange = function () {
+        let frequency = valToFreq(this.value)
+        nscope.setAxFrequency(nScope, ch, frequency)
+    }
 
-getId("A1-freq").onchange = getId("A1-freq").oninput =
-    getId("A2-freq").onchange = getId("A2-freq").oninput = function () {
+    getId(`${ch}-freq`).oninput = function () {
         let label = this.labels[0];
         let frequency = valToFreq(this.value);
         let freqString = freqToString(frequency);
@@ -120,19 +119,12 @@ getId("A1-freq").onchange = getId("A1-freq").oninput =
         label.nextElementSibling.textContent = freqString.unit;
     }
 
-getId("A1-freq").onchange = function () {
-    let frequency = valToFreq(this.value)
-    nscope.setAxFrequency(nScope, "A1", frequency)
-}
+    getId(`${ch}-amplitude`).onchange = function () {
+        let amplitude = valToAmplitude(this.value)
+        nscope.setAxAmplitude(nScope, ch, amplitude)
+    }
 
-getId("A2-freq").onchange = function () {
-    let frequency = valToFreq(this.value)
-    nscope.setAxFrequency(nScope, "A2", frequency)
-}
-
-
-getId("A1-amplitude").onchange = getId("A1-amplitude").oninput =
-    getId("A2-amplitude").onchange = getId("A2-amplitude").oninput = function () {
+    getId(`${ch}-amplitude`).oninput = function () {
         let label = this.labels[0];
         let amplitude = valToAmplitude(this.value);
         let amplitudeString = amplitudeToString(amplitude);
@@ -140,41 +132,17 @@ getId("A1-amplitude").onchange = getId("A1-amplitude").oninput =
         label.nextElementSibling.textContent = amplitudeString.unit;
     }
 
-getId("A1-amplitude").onchange = function () {
-    let amplitude = valToAmplitude(this.value)
-    nscope.setAxAmplitude(nScope, "A1", amplitude)
-}
-
-getId("A2-amplitude").onchange = function () {
-    let amplitude = valToAmplitude(this.value)
-    nscope.setAxAmplitude(nScope, "A2", amplitude)
-}
-
-
-for (let button of document.querySelectorAll("input[name=A1-waveType]")) {
-    button.onchange = function () {
-        let wave = this.value;
-        nscope.setAxWaveType(nScope, "A1", wave);
+    for (let button of document.querySelectorAll(`input[name=${ch}-waveType]`)) {
+        button.onchange = function () {
+            let wave = this.value;
+            nscope.setAxWaveType(nScope, ch, wave);
+        }
     }
-}
 
-for (let button of document.querySelectorAll("input[name=A2-waveType]")) {
-    button.onchange = function () {
-        let wave = this.value;
-        nscope.setAxWaveType(nScope, "A2", wave);
-    }
-}
-
-for (let button of document.querySelectorAll("input[name=A1-polarity]")) {
-    button.onchange = function () {
-        let wave = this.value;
-        nscope.setAxPolarity(nScope, "A1", wave);
-    }
-}
-
-for (let button of document.querySelectorAll("input[name=A2-polarity]")) {
-    button.onchange = function () {
-        let wave = this.value;
-        nscope.setAxPolarity(nScope, "A2", wave);
+    for (let button of document.querySelectorAll(`input[name=${ch}-polarity]`)) {
+        button.onchange = function () {
+            let wave = this.value;
+            nscope.setAxPolarity(nScope, ch, wave);
+        }
     }
 }

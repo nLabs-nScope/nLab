@@ -6,7 +6,7 @@ mod pulse_output;
 mod analog_output;
 
 fn version_string(mut cx: FunctionContext) -> JsResult<JsString> {
-    Ok(cx.string(format!("{}", nscope::ver())))
+    Ok(cx.string(format!("{}", nscope::version())))
 }
 
 trait Objectify {
