@@ -25,7 +25,7 @@ pub fn monitor_nscope(mut cx: FunctionContext) -> JsResult<JsObject> {
     let power_status = cx.empty_object();
 
     if let Some(scope) = &nscope_handle.scope {
-        let status = scope.power_status().expect("hello");
+        let status = scope.power_status().expect("Cannot retrieve power status");
 
         let state = cx.string(format!("{:?}", status.state));
         let usage = cx.number(status.usage);

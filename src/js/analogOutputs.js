@@ -106,27 +106,19 @@ for (let ch of ["A1", "A2"]) {
         nscope.setAxOn(nScope, ch, checked);
     }
 
-    getId(`${ch}-freq`).onchange = function () {
-        let frequency = valToFreq(this.value)
-        nscope.setAxFrequency(nScope, ch, frequency)
-    }
-
-    getId(`${ch}-freq`).oninput = function () {
+    getId(`${ch}-freq`).oninput = getId(`${ch}-freq`).onchange = function () {
         let label = this.labels[0];
         let frequency = valToFreq(this.value);
+        nscope.setAxFrequency(nScope, ch, frequency)
         let freqString = freqToString(frequency);
         label.textContent = freqString.number;
         label.nextElementSibling.textContent = freqString.unit;
     }
 
-    getId(`${ch}-amplitude`).onchange = function () {
-        let amplitude = valToAmplitude(this.value)
-        nscope.setAxAmplitude(nScope, ch, amplitude)
-    }
-
-    getId(`${ch}-amplitude`).oninput = function () {
+    getId(`${ch}-amplitude`).oninput = getId(`${ch}-amplitude`).onchange = function () {
         let label = this.labels[0];
         let amplitude = valToAmplitude(this.value);
+        nscope.setAxAmplitude(nScope, ch, amplitude)
         let amplitudeString = amplitudeToString(amplitude);
         label.textContent = amplitudeString.number;
         label.nextElementSibling.textContent = amplitudeString.unit;

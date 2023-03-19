@@ -93,51 +93,29 @@ export function update(pxState) {
 
 }
 
-getId("P1-onoff").onclick = function () {
-    let checked = this.classList.contains("active");
-    nscope.setPxOn(nScope, "P1", checked);
-}
+for (let ch of ["P1", "P2"]) {
 
-getId("P2-onoff").onclick = function () {
-    let checked = this.classList.contains("active");
-    nscope.setPxOn(nScope, "P2", checked);
-}
+    getId(`${ch}-onoff`).onclick = function () {
+        let checked = this.classList.contains("active");
+        nscope.setPxOn(nScope, ch, checked);
+    }
 
-getId("P1-freq").onchange = getId("P1-freq").oninput =
-    getId("P2-freq").onchange = getId("P2-freq").oninput = function () {
+    getId(`${ch}-freq`).onchange = getId(`${ch}-freq`).oninput = function () {
         let label = this.labels[0];
         let frequency = valToFreq(this.value);
+        nscope.setPxFrequency(nScope, ch, frequency)
         let freqString = freqToString(frequency);
         label.textContent = freqString.number;
         label.nextElementSibling.textContent = freqString.unit;
     }
 
-getId("P1-freq").onchange = function () {
-    let frequency = valToFreq(this.value)
-    nscope.setPxFrequency(nScope, "P1", frequency)
-}
-
-getId("P2-freq").onchange = function () {
-    let frequency = valToFreq(this.value)
-    nscope.setPxFrequency(nScope, "P2", frequency)
-}
-
-getId("P1-duty").onchange = getId("P1-duty").oninput =
-    getId("P2-duty").onchange = getId("P2-duty").oninput = function () {
+    getId(`${ch}-duty`).onchange = getId(`${ch}-duty`).oninput = function () {
         let label = this.labels[0];
         let duty = valToDuty(this.value);
+        nscope.setPxDuty(nScope, ch, duty)
         let dutyString = dutyToString(duty);
         label.textContent = dutyString.number;
         label.nextElementSibling.textContent = dutyString.unit;
     }
 
-
-getId("P1-duty").onchange = function () {
-    let duty = valToDuty(this.value)
-    nscope.setPxDuty(nScope, "P1", duty)
-}
-
-getId("P2-duty").onchange = function () {
-    let duty = valToDuty(this.value)
-    nscope.setPxDuty(nScope, "P2", duty)
 }
