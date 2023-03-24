@@ -5,6 +5,7 @@ import bootstrap from 'bootstrap'
 import * as powerStatus from './js/PowerStatus.js'
 import * as pulseOutputs from './js/PulseOutputs.js'
 import * as analogOutputs from './js/AnalogOutputs.js'
+import * as analogInputs from './js/AnalogInputs'
 
 const Plotly = require('plotly.js-basic-dist');
 
@@ -22,21 +23,21 @@ for(let dropdown of document.getElementsByClassName("dropdown-menu clickable")) 
     }
 }
 
-for(let label of document.getElementsByTagName("label")) {
-    label.onkeydown = function(evt) {
+for (let label of document.getElementsByTagName("label")) {
+    label.onkeydown = function (evt) {
         return false; // TODO, this function doesn't work
         // console.log(evt.key);
         // return evt.key != "Enter";
     }
 }
 
-  
+
 var layout = {
     margin: {
-        l:20,
-        t:1,
-        r:20,
-        b:0
+        l: 20,
+        t: 1,
+        r: 20,
+        b: 0
     },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
@@ -64,24 +65,21 @@ var layout = {
     }
 };
 
-
-var chData = [];
-function clearData() {
-    
-    chData[0] = [];
-    chData[1] = [];
-    chData[2] = [];
-    chData[3] = [];
-}
-clearData();
-
-
-var colors = [
+let traces = [];
+const colors = [
     'rgb(233,102,86)',
     'rgb(52,210,146)',
     'rgb(58,176,226)',
     'rgb(246,216,97)'
 ];
+for (let ch = 0; ch < 4; ch++) {
+    traces.push(
+        {
+            x: [],
+            y: [],
+            line: {color: colors[ch], width: 2}
+        })
+}
 
 function computeData() {
 
@@ -131,29 +129,33 @@ function computeData() {
     // }
 
 
-
-
     // return traces;
 }
 
 function updatePlot() {
-    
-    // traces =  computeData();
-    // update = {
+
+    let trace_data = nscope.get_traces(nScope);
+
+    // Plotly.restyle('glcanvas-div', {
     //     x:[traces[0].x,traces[1].x,traces[2].x,traces[3].x],
     //     y:[traces[0].y,traces[1].y,traces[2].y,traces[3].y]
-    // };
-    // Plotly.restyle('glcanvas-div',update);
-    // window.requestAnimationFrame(updatePlot);
+    // });
+
+    // console.log(trace_data);
+    Plotly.restyle('glcanvas-div', trace_data);
+    window.requestAnimationFrame(updatePlot);
 }
 
-Plotly.newPlot('glcanvas-div', computeData(), layout,  {responsive: true, displayModeBar: false});
+Plotly.newPlot('glcanvas-div', traces, layout, {responsive: true, displayModeBar: false});
 
 
-function monitorScope(){
-    
+function monitorScope() {
+
     let powerState = nscope.monitor_nscope(nScope);
     powerStatus.update(powerState);
+
+    let chState = nscope.getChStatus(nScope);
+    analogInputs.update(chState);
 
     let pxState = nscope.getPxStatus(nScope);
     pulseOutputs.update(pxState);
@@ -168,6 +170,7 @@ function monitorScope(){
 monitorScope();
 pulseOutputs.initInput();
 analogOutputs.initInput();
+updatePlot();
 
 
 version.innerHTML = nscope.version();

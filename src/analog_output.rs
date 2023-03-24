@@ -33,7 +33,7 @@ pub fn get_ax_status(mut cx: FunctionContext) -> JsResult<JsObject> {
 
     let ax_status = cx.empty_object();
 
-    if let Some(nscope) = &nscope_handle.scope {
+    if let Some(nscope) = &nscope_handle.device {
         if nscope.is_connected() {
             for ch in 1..=2 {
                 let channel_name = format!("A{}", ch);
@@ -54,7 +54,7 @@ pub fn set_ax_on(mut cx: FunctionContext) -> JsResult<JsNull> {
     let turn_on = cx.argument::<JsBoolean>(2)?.value(&mut cx);
     let nscope_handle = js_nscope_handle.borrow();
 
-    if let Some(nscope) = &nscope_handle.scope {
+    if let Some(nscope) = &nscope_handle.device {
         if nscope.is_connected() {
             let analog_output = match channel.as_str() {
                 "A1" => &nscope.a1,
@@ -63,8 +63,10 @@ pub fn set_ax_on(mut cx: FunctionContext) -> JsResult<JsNull> {
             };
             if turn_on {
                 analog_output.turn_on();
+                println!("In rust! turning on");
             } else {
                 analog_output.turn_off();
+                println!("In rust! turning off");
             }
         }
     }
@@ -78,7 +80,7 @@ pub fn set_ax_frequency_hz(mut cx: FunctionContext) -> JsResult<JsNull> {
     let frequency = cx.argument::<JsNumber>(2)?.value(&mut cx);
     let nscope_handle = js_nscope_handle.borrow();
 
-    if let Some(nscope) = &nscope_handle.scope {
+    if let Some(nscope) = &nscope_handle.device {
         if nscope.is_connected() {
             let analog_output = match channel.as_str() {
                 "A1" => &nscope.a1,
@@ -98,7 +100,7 @@ pub fn set_ax_amplitude(mut cx: FunctionContext) -> JsResult<JsNull> {
     let amplitude = cx.argument::<JsNumber>(2)?.value(&mut cx);
     let nscope_handle = js_nscope_handle.borrow();
 
-    if let Some(nscope) = &nscope_handle.scope {
+    if let Some(nscope) = &nscope_handle.device {
         if nscope.is_connected() {
             let analog_output = match channel.as_str() {
                 "A1" => &nscope.a1,
@@ -118,7 +120,7 @@ pub fn set_ax_wave_type(mut cx: FunctionContext) -> JsResult<JsNull> {
     let wave_type = cx.argument::<JsString>(2)?.value(&mut cx);
     let nscope_handle = js_nscope_handle.borrow();
 
-    if let Some(nscope) = &nscope_handle.scope {
+    if let Some(nscope) = &nscope_handle.device {
         if nscope.is_connected() {
             let analog_output = match channel.as_str() {
                 "A1" => &nscope.a1,
@@ -140,7 +142,7 @@ pub fn set_ax_polarity(mut cx: FunctionContext) -> JsResult<JsNull> {
     let polarity = cx.argument::<JsString>(2)?.value(&mut cx);
     let nscope_handle = js_nscope_handle.borrow();
 
-    if let Some(nscope) = &nscope_handle.scope {
+    if let Some(nscope) = &nscope_handle.device {
         if nscope.is_connected() {
             let analog_output = match channel.as_str() {
                 "A1" => &nscope.a1,

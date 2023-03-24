@@ -59,8 +59,6 @@ app.on('ready', function () {
     }
 
     mainWindow.on('closed', function () {
-        // nScopeAPI.close();
-        // nScopeAPI.clean();
         app.quit()
     })
 })

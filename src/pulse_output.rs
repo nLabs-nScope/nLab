@@ -26,7 +26,7 @@ pub fn get_px_status(mut cx: FunctionContext) -> JsResult<JsObject> {
 
     let px_status = cx.empty_object();
 
-    if let Some(nscope) = &nscope_handle.scope {
+    if let Some(nscope) = &nscope_handle.device {
         if nscope.is_connected() {
             for ch in 1..=2 {
                 let channel_name = format!("P{}", ch);
@@ -47,7 +47,7 @@ pub fn set_px_on(mut cx: FunctionContext) -> JsResult<JsNull> {
     let turn_on = cx.argument::<JsBoolean>(2)?.value(&mut cx);
     let nscope_handle = js_nscope_handle.borrow();
 
-    if let Some(nscope) = &nscope_handle.scope {
+    if let Some(nscope) = &nscope_handle.device {
         if nscope.is_connected() {
             let pulse_output = match channel.as_str() {
                 "P1" => &nscope.p1,
@@ -71,7 +71,7 @@ pub fn set_px_frequency_hz(mut cx: FunctionContext) -> JsResult<JsNull> {
     let frequency = cx.argument::<JsNumber>(2)?.value(&mut cx);
     let nscope_handle = js_nscope_handle.borrow();
 
-    if let Some(nscope) = &nscope_handle.scope {
+    if let Some(nscope) = &nscope_handle.device {
         if nscope.is_connected() {
             let pulse_output = match channel.as_str() {
                 "P1" => &nscope.p1,
@@ -91,7 +91,7 @@ pub fn set_px_duty(mut cx: FunctionContext) -> JsResult<JsNull> {
     let duty = cx.argument::<JsNumber>(2)?.value(&mut cx) / 100.;
     let nscope_handle = js_nscope_handle.borrow();
 
-    if let Some(nscope) = &nscope_handle.scope {
+    if let Some(nscope) = &nscope_handle.device {
         if nscope.is_connected() {
             let pulse_output = match channel.as_str() {
                 "P1" => &nscope.p1,
