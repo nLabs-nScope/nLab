@@ -10,13 +10,6 @@ import * as analogInputs from './js/AnalogInputs'
 const Plotly = require('plotly.js-basic-dist');
 
 
-// function requestData(){
-//     clearData();
-//     let err;
-    
-//     err = nScopeAPI.request_data(1200);
-// }
-
 for(let dropdown of document.getElementsByClassName("dropdown-menu clickable")) {
     dropdown.onclick = function (evt) {
         evt.stopPropagation();
@@ -81,67 +74,9 @@ for (let ch = 0; ch < 4; ch++) {
         })
 }
 
-function computeData() {
-
-    // let rtrn = [];
-    // for(let ch=0;ch<4;ch++)
-    // {
-
-    //     while(true){
-    //         rtrn[ch] = nScopeAPI.read_data(ch+1);
-    //         if(rtrn[ch] > -100)
-    //         {
-    //             chData[ch].push(rtrn[ch]);
-    //         } else {
-    //             break;
-    //         }
-    //     }
-    // }
-    // if(rtrn.every(function(x){
-    //     return x==-104;
-    // }))
-    // {
-    //     requestData();
-    // }
-
-    // let traces = [];
-
-    // for(let ch=0;ch<4;ch++)
-    // {
-    //     traces.push({x:[], y:[],
-    //         line: {
-    //         color: colors[ch],
-    //         width: 2
-    //         }
-    //     })
-    // }
-
-    // for(let ch=0;ch<4;ch++){
-    //     let data = chData[ch];
-    //     for(let i=0; i<data.length;i++)
-    //     {
-    //         let x,y;
-    //         x = i/100;
-    //         y = data[i];
-    //         traces[ch].x.push(x);
-    //         traces[ch].y.push(y);
-    //     }
-    // }
-
-
-    // return traces;
-}
-
 function updatePlot() {
 
     let trace_data = nscope.get_traces(nScope);
-
-    // Plotly.restyle('glcanvas-div', {
-    //     x:[traces[0].x,traces[1].x,traces[2].x,traces[3].x],
-    //     y:[traces[0].y,traces[1].y,traces[2].y,traces[3].y]
-    // });
-
-    // console.log(trace_data);
     Plotly.restyle('glcanvas-div', trace_data);
     window.requestAnimationFrame(updatePlot);
 }
@@ -166,11 +101,9 @@ function monitorScope() {
     window.requestAnimationFrame(monitorScope);
 }
 
-
 monitorScope();
 pulseOutputs.initInput();
 analogOutputs.initInput();
 updatePlot();
-
 
 version.innerHTML = nscope.version();

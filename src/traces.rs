@@ -8,27 +8,26 @@ impl Objectify for NscopeTraces {
     fn to_object<'a>(&self, cx: &mut FunctionContext<'a>) -> JsResult<'a, JsObject> {
         let obj = cx.empty_object();
 
-        // todo!("Remove the hardcoded value of 4");
-        let x_data = JsArray::new(cx, 4);
-        let y_data = JsArray::new(cx, 4);
+        let x_data = JsArray::new(cx, nscope::Sample::num_channels());
+        let y_data = JsArray::new(cx, nscope::Sample::num_channels());
 
-        for ch in 0u32..4 {
+        for ch in 0u32..nscope::Sample::num_channels() {
             let empty_array = JsArray::new(cx, self.samples.len() as u32);
-            x_data.set(cx, ch, empty_array);
+            x_data.set(cx, ch, empty_array)?;
             let empty_array = JsArray::new(cx, self.samples.len() as u32);
-            y_data.set(cx, ch, empty_array);
+            y_data.set(cx, ch, empty_array)?;
         }
 
         for (idx, sample) in self.samples.iter().enumerate() {
-            for ch in 0usize..4 {
+            for ch in 0usize..nscope::Sample::num_channels() as usize {
                 let x_array: Handle<JsArray> = x_data.get(cx, ch as u32).unwrap();
                 let t = cx.number(idx as f64 / 100.0f64);
-                x_array.set(cx, idx as u32, t);
+                x_array.set(cx, idx as u32, t)?;
 
-                if let Some(data) = self.samples[idx].data[ch] {
+                if let Some(data) = sample.data[ch] {
                     let y_array: Handle<JsArray> = y_data.get(cx, ch as u32).unwrap();
                     let y = cx.number(data);
-                    y_array.set(cx, idx as u32, y);
+                    y_array.set(cx, idx as u32, y)?;
                 }
             }
         }
