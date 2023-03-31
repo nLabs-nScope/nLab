@@ -1,8 +1,11 @@
 use std::sync::mpsc::TryRecvError;
 
 use neon::prelude::*;
+use nscope::Sample;
 
 use crate::{JsNscopeHandle, NscopeTraces, Objectify, RunState};
+
+const TRACE_GAP: usize = 20;
 
 impl Objectify for NscopeTraces {
     fn to_object<'a>(&self, cx: &mut FunctionContext<'a>) -> JsResult<'a, JsObject> {
@@ -53,9 +56,11 @@ pub fn get_traces(mut cx: FunctionContext) -> JsResult<JsObject> {
 
     if nscope_handle.receiver.is_none() {
         if nscope_handle.run_state != RunState::Stopped {
-            nscope_handle.receiver = Some(nscope_handle.get_device().request(1000.0, 1200));
+            nscope_handle.receiver = Some(nscope_handle.get_device().request(100.0, 1200));
             nscope_handle.traces.current_head = 0;
-            println!("New Request!");
+            for idx in 0..TRACE_GAP {
+                nscope_handle.traces.samples[idx].clear();
+            }
         }
         if nscope_handle.run_state == RunState::Single {
             nscope_handle.run_state = RunState::Stopped;
@@ -67,8 +72,10 @@ pub fn get_traces(mut cx: FunctionContext) -> JsResult<JsObject> {
             match nscope_handle.rx().try_recv() {
                 Ok(sample) => {
                     let idx = nscope_handle.traces.current_head;
-                    println!("{}: {:?}", idx, sample.data);
                     nscope_handle.traces.samples[idx] = sample;
+                    if idx+TRACE_GAP < nscope_handle.traces.samples.len() {
+                        nscope_handle.traces.samples[idx+TRACE_GAP].clear();
+                    }
                     nscope_handle.traces.current_head += 1;
                 }
                 Err(TryRecvError::Empty) => { break; }
