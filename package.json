@@ -32,6 +32,6 @@
     "build-app":  "webpack --mode=production",
     "build": "npm run build-native && npm run build-app",
     "start": "npm run build && electron .",
-    "dev": "RUST_LOG=trace concurrently -k \"webpack --watch --mode=development\" \"npm run build-native && electron . debug\""
+    "dev": "concurrently -k \"webpack --watch --mode=development\" \"npm run build-native && electron . debug\""
   }
 }

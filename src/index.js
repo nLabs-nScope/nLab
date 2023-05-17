@@ -5,7 +5,8 @@ import bootstrap from 'bootstrap'
 import * as powerStatus from './js/PowerStatus.js'
 import * as pulseOutputs from './js/PulseOutputs.js'
 import * as analogOutputs from './js/AnalogOutputs.js'
-import * as analogInputs from './js/AnalogInputs'
+import * as analogInputs from './js/AnalogInputs.js'
+import * as runState from './js/RunState.js'
 
 const Plotly = require('plotly.js-basic-dist');
 
@@ -76,7 +77,7 @@ for (let ch = 0; ch < 4; ch++) {
 
 function updatePlot() {
 
-    let trace_data = nscope.get_traces(nScope);
+    let trace_data = nscope.getTraces(nScope);
     Plotly.restyle('glcanvas-div', trace_data);
     window.requestAnimationFrame(updatePlot);
 }
@@ -86,7 +87,7 @@ Plotly.newPlot('glcanvas-div', traces, layout, {responsive: true, displayModeBar
 
 function monitorScope() {
 
-    let powerState = nscope.monitor_nscope(nScope);
+    let powerState = nscope.monitorNscope(nScope);
     powerStatus.update(powerState);
 
     let chState = nscope.getChStatus(nScope);
@@ -97,6 +98,9 @@ function monitorScope() {
 
     let axState = nscope.getAxStatus(nScope);
     analogOutputs.update(axState);
+
+    let currentRunState = nscope.getRunState(nScope);
+    runState.update(currentRunState);
 
     window.requestAnimationFrame(monitorScope);
 }

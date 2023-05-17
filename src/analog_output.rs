@@ -63,10 +63,8 @@ pub fn set_ax_on(mut cx: FunctionContext) -> JsResult<JsNull> {
             };
             if turn_on {
                 analog_output.turn_on();
-                println!("In rust! turning on");
             } else {
                 analog_output.turn_off();
-                println!("In rust! turning off");
             }
         }
     }
