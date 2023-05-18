@@ -3,7 +3,6 @@ use std::sync::mpsc::Receiver;
 
 use neon::prelude::*;
 use nscope;
-use nscope::RequestHandle;
 
 use crate::RunState::{Run, Single, Stopped};
 
@@ -50,10 +49,6 @@ impl Finalize for NscopeHandle {
 impl NscopeHandle {
     fn get_device(&self) -> &nscope::Nscope {
         self.device.as_ref().unwrap()
-    }
-
-    fn request_handle(&self) -> &RequestHandle {
-        self.request_handle.as_ref().unwrap()
     }
 
     fn stop_request(&self) {

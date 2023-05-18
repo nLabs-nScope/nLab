@@ -63,7 +63,7 @@ pub fn get_traces(mut cx: FunctionContext) -> JsResult<JsObject> {
 
     if nscope_handle.request_handle.is_none() {
         if nscope_handle.run_state != RunState::Stopped {
-            nscope_handle.request_handle = Some(nscope_handle.get_device().request(1000.0, 1200));
+            nscope_handle.request_handle = Some(nscope_handle.get_device().request(1000.0, 1200, None));
             nscope_handle.traces.current_head = 0;
             for idx in 0..TRACE_GAP {
                 nscope_handle.traces.samples[idx].clear();
