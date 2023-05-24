@@ -50,6 +50,11 @@ export function initInput() {
 
     let pxState = nscope.getPxStatus(nScope);
 
+    if (isEmpty(pxState)) {
+        // console.log("Empty: handle this");
+        return;
+    }
+
     for (let ch of ["P1", "P2"]) {
 
         let freqString = freqToString(pxState[ch].frequency);
@@ -73,7 +78,7 @@ export function initInput() {
 export function update(pxState) {
 
     if (isEmpty(pxState)) {
-        console.log("Empty: handle this");
+        // console.log("Empty: handle this");
         return;
     }
 

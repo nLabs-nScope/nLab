@@ -3,7 +3,7 @@ import { getId, isEmpty } from './Utils.js';
 export function update(chState) {
 
     if (isEmpty(chState)) {
-        console.log("Empty: handle this");
+        // console.log("Empty: handle this");
         return;
     }
 

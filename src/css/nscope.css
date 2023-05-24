@@ -67,3 +67,15 @@ html, body {
 .hidden {
     visibility: hidden;
 }
+
+#horizontal-info {
+    width: 140px;
+}
+#time-per-div {
+    width: 80px;
+}
+#sample-rate {
+    width: 60px;
+    line-height: 0.9;
+    font-size: x-small;
+}

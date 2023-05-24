@@ -54,6 +54,11 @@ export function initInput() {
 
     let axState = nscope.getAxStatus(nScope);
 
+    if (isEmpty(axState)) {
+        // console.log("Empty: handle this");
+        return;
+    }
+
     for (let ch of ["A1", "A2"]) {
 
         let freqString = freqToString(axState[ch].frequency);
@@ -80,7 +85,7 @@ export function initInput() {
 export function update(axState) {
 
     if (isEmpty(axState)) {
-        console.log("Empty: handle this");
+        // console.log("Empty: handle this");
         return;
     }
 

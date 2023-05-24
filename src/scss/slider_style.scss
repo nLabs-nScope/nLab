@@ -1,0 +1,20 @@
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/functions";
+
+$form-range-track-width:          100%;
+$form-range-track-height:         .2rem;
+$form-range-track-cursor:         pointer;
+$form-range-track-bg:             $gray-600;
+$form-range-track-border-radius:  1rem;
+$form-range-track-box-shadow:     $box-shadow-inset;
+
+$form-range-thumb-width:                   0.8rem;
+$form-range-thumb-height:                  $form-range-thumb-width;
+$form-range-thumb-bg:                      $secondary;
+$form-range-thumb-border:                  0;
+$form-range-thumb-border-radius:           1rem;
+$form-range-thumb-box-shadow:              0 .1rem .25rem rgba($black, .1);
+$form-range-thumb-focus-box-shadow:        None;
+$form-range-thumb-active-bg:               tint-color($secondary, 10%);
+$form-range-thumb-disabled-bg:             $gray-500;
+$form-range-thumb-transition:              background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;

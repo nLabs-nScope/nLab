@@ -7,6 +7,7 @@ import * as pulseOutputs from './js/PulseOutputs.js'
 import * as analogOutputs from './js/AnalogOutputs.js'
 import * as analogInputs from './js/AnalogInputs.js'
 import * as runState from './js/RunState.js'
+import * as timing from './js/Timing.js'
 
 const Plotly = require('plotly.js-basic-dist');
 
@@ -108,6 +109,7 @@ function monitorScope() {
 monitorScope();
 pulseOutputs.initInput();
 analogOutputs.initInput();
+timing.initTiming();
 updatePlot();
 
 version.innerHTML = nscope.version();
