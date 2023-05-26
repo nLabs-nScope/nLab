@@ -85,7 +85,6 @@ fn set_run_control(mut cx: FunctionContext) -> JsResult<JsNull> {
     nscope_handle.run_state = match state.as_str() {
         "run" => {
             if nscope_handle.request_handle.is_none() {
-                nscope_handle.stop_request();
                 nscope_handle.traces.clear();
             }
             Run
@@ -96,7 +95,10 @@ fn set_run_control(mut cx: FunctionContext) -> JsResult<JsNull> {
             }
             Single
         }
-        "stop" => Stopped,
+        "stop" => {
+            nscope_handle.stop_request();
+            Stopped
+        },
         _ => panic!("Invalid run control string"),
     };
 
