@@ -23,7 +23,7 @@ impl Objectify for NscopeTraces {
         for (idx, sample) in self.samples.iter().enumerate() {
             for ch in 0usize..nscope::Sample::num_channels() as usize {
                 let x_array: Handle<JsArray> = x_data.get(cx, ch as u32).unwrap();
-                let t = cx.number(idx as f64 / 100.0f64);
+                let t = cx.number(idx as f64 * 12.0 / self.num_samples as f64);
                 x_array.set(cx, idx as u32, t)?;
 
                 if let Some(data) = sample.data[ch] {
@@ -63,7 +63,7 @@ pub fn get_traces(mut cx: FunctionContext) -> JsResult<JsObject> {
 
     if nscope_handle.request_handle.is_none() {
         if nscope_handle.run_state != RunState::Stopped {
-            nscope_handle.request_handle = Some(nscope_handle.get_device().request(1000.0, 1200, None));
+            nscope_handle.request_handle = Some(nscope_handle.get_device().request(nscope_handle.sample_rate, nscope_handle.traces.num_samples as u32, None));
             nscope_handle.traces.current_head = 0;
             for idx in 0..TRACE_GAP {
                 nscope_handle.traces.samples[idx].clear();

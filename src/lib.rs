@@ -29,6 +29,7 @@ enum RunState {
 
 struct NscopeTraces {
     samples: Vec<nscope::Sample>,
+    num_samples: usize,
     current_head: usize,
 }
 
@@ -36,6 +37,7 @@ struct NscopeHandle {
     bench: nscope::LabBench,
     device: Option<nscope::Nscope>,
     run_state: RunState,
+    sample_rate: f64,
     request_handle: Option<nscope::RequestHandle>,
     traces: NscopeTraces,
 }
@@ -68,9 +70,11 @@ fn new_nscope(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
         bench: nscope::LabBench::new().expect("Creating LabBench"),
         device: None,
         run_state: Run,
+        sample_rate: 400.0,
         request_handle: None,
         traces: NscopeTraces {
-            samples: vec![nscope::Sample::default(); 1200],
+            samples: vec![nscope::Sample::default(); 4800],
+            num_samples: 4800,
             current_head: 0,
         },
     };
@@ -118,6 +122,22 @@ fn get_run_control(mut cx: FunctionContext) -> JsResult<JsString> {
     Ok(run_state)
 }
 
+fn set_timing_parameters(mut cx: FunctionContext) -> JsResult<JsNull> {
+    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let sample_rate = cx.argument::<JsNumber>(1)?.value(&mut cx);
+    let num_samples = cx.argument::<JsNumber>(2)?.value(&mut cx);
+    let mut nscope_handle = js_nscope_handle.borrow_mut();
+
+    nscope_handle.sample_rate = sample_rate;
+    nscope_handle.traces.num_samples = num_samples as usize;
+    if nscope_handle.request_handle.is_some() {
+        nscope_handle.stop_request();
+        nscope_handle.traces.clear();
+    }
+
+    Ok(cx.null())
+}
+
 #[neon::main]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("version", version_string)?;
@@ -125,6 +145,7 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("monitorNscope", monitor::monitor_nscope)?;
     cx.export_function("setRunState", set_run_control)?;
     cx.export_function("getRunState", get_run_control)?;
+    cx.export_function("setTimingParameters", set_timing_parameters)?;
     cx.export_function("getTraces", traces::get_traces)?;
 
     cx.export_function("getPxStatus", pulse_output::get_px_status)?;
