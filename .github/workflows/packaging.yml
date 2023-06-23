@@ -33,4 +33,4 @@ jobs:
           node-version: ${{ matrix.node_version }}
           architecture: ${{ matrix.architecture }}
       - run: npm ci
-      - run: npm run build-app
+      - run: npm run build
