@@ -37,3 +37,8 @@ jobs:
         run: npm run build
       - name: Package
         run: npm run make
+      - name: Archive the distributable
+        uses: actions/upload-artifact@v3
+        with:
+          name: nScope amd64 deb
+          path: out/make/deb/x64/nscope_0.9.0_amd64.deb
