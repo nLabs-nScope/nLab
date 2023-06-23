@@ -19,11 +19,6 @@ jobs:
           - 16
         architecture:
           - x64
-        # an extra windows-x86 run:
-#        include:
-#          - os: windows-2016
-#            node_version: 12
-#            architecture: x86
     name: Node ${{ matrix.node_version }} - ${{ matrix.architecture }} on ${{ matrix.os }}
     steps:
       - name: Install libusb
@@ -40,3 +35,5 @@ jobs:
         run: npm ci
       - name: Build nScope
         run: npm run build
+      - name: Package
+        run: npm run make
