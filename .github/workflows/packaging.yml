@@ -26,11 +26,17 @@ jobs:
 #            architecture: x86
     name: Node ${{ matrix.node_version }} - ${{ matrix.architecture }} on ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
-      - name: Setup node
+      - name: Install libusb
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get install libusb-1.0-0-dev libudev-dev
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up node
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node_version }}
           architecture: ${{ matrix.architecture }}
-      - run: npm ci
-      - run: npm run build
+      - name: Install NPM Dependencies
+        run: npm ci
+      - name: Build nScope
+        run: npm run build
