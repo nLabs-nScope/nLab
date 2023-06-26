@@ -19,6 +19,13 @@ jobs:
           - 16
         architecture:
           - x64
+        include:
+          - os: ubuntu-latest
+            artifact_path: out/make/deb/x64/nscope_*.deb
+          - os: macos-latest
+            artifact_path: out/**/nScope.app
+          - os: windows-latest
+            artifact_path: out/**/*
     name: Node ${{ matrix.node_version }} - ${{ matrix.architecture }} on ${{ matrix.os }}
     steps:
       - name: Install libusb
@@ -41,4 +48,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: nScope amd64 deb
-          path: out/make/deb/x64/nscope_0.9.0_amd64.deb
+          path: ${{ matrix.artifact_path }}
