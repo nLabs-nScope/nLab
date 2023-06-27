@@ -17,17 +17,19 @@ jobs:
           - windows-latest
         node_version:
           - 16
+        node_architecture:
+          - x64
         include:
           - os: ubuntu-latest
             artifact_path: out/make/deb/x64/nscope_*.deb
-            architecture: x64
+            target_architecture: x64
           - os: macos-latest
             artifact_path: out/make/nScope*.dmg
-            architecture: universal
+            target_architecture: universal
           - os: windows-latest
             artifact_path: out/**/*
-            architecture: x64
-    name: Node ${{ matrix.node_version }} - ${{ matrix.architecture }} on ${{ matrix.os }}
+            target_architecture: x64
+    name: Node ${{ matrix.node_version }} - ${{ matrix.target_architecture }} on ${{ matrix.os }}
     steps:
       - name: Install libusb
         if: matrix.os == 'ubuntu-latest'
@@ -38,13 +40,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node_version }}
-          architecture: ${{ matrix.architecture }}
+          architecture: ${{ matrix.node_architecture }}
       - name: Install NPM Dependencies
         run: npm ci
       - name: Build nScope
         run: npm run build
       - name: Package
-        run: electron-forge make --arch ${{ matrix.architecture }}
+        run: electron-forge make --arch ${{ matrix.target_architecture }}
       - name: Archive the distributable
         uses: actions/upload-artifact@v3
         with:
