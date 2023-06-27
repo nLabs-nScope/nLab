@@ -23,7 +23,7 @@ jobs:
           - os: ubuntu-latest
             artifact_path: out/make/deb/x64/nscope_*.deb
           - os: macos-latest
-            artifact_path: out/**/nScope.app
+            artifact_path: out/make/nScope*.dmg
           - os: windows-latest
             artifact_path: out/**/*
     name: Node ${{ matrix.node_version }} - ${{ matrix.architecture }} on ${{ matrix.os }}
@@ -47,5 +47,5 @@ jobs:
       - name: Archive the distributable
         uses: actions/upload-artifact@v3
         with:
-          name: nScope amd64 deb
+          name: nScope Installers
           path: ${{ matrix.artifact_path }}
