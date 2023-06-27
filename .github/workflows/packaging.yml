@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         os:
-#          - ubuntu-latest
+          - ubuntu-latest
           - macos-latest
           - windows-latest
         node_version:
@@ -20,9 +20,9 @@ jobs:
         node_architecture:
           - x64
         include:
-#          - os: ubuntu-latest
-#            artifact_path: out/make/deb/x64/nscope_*.deb
-#            target_architecture: x64
+          - os: ubuntu-latest
+            artifact_path: out/make/deb/x64/nscope_*.deb
+            target_architecture: x64
           - os: macos-latest
             artifact_path: out/make/nScope*.dmg
             target_architecture: universal
@@ -46,7 +46,7 @@ jobs:
       - name: Build nScope
         run: npm run build
       - name: Package
-        run: electron-forge make --arch ${{ matrix.target_architecture }}
+        run: npm run make -- --arch ${{ matrix.target_architecture }}
       - name: Archive the distributable
         uses: actions/upload-artifact@v3
         with:

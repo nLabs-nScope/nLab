@@ -38,7 +38,9 @@
     "build-app": "webpack --mode=production",
     "build": "npm run build-native && npm run build-app",
     "start": "electron-forge start",
-    "dev": "concurrently -k \"webpack --watch --mode=development\" \"npm run build-native && electron . debug\""
+    "dev": "concurrently -k \"webpack --watch --mode=development\" \"npm run build-native && electron . debug\"",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0"
