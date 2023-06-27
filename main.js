@@ -8,9 +8,11 @@ const BrowserWindow = electron.BrowserWindow
 
 const icon = electron.nativeImage.createFromPath(path.join(__dirname, 'app/assets/icons/icon_256x256.png'));
 
-require('electron-reload')(__dirname, {
-    electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
-});
+if (!app.isPackaged) {
+    require('electron-reload')(__dirname, {
+        electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
+    });
+}
 
 
 app.setName(config.productName)
