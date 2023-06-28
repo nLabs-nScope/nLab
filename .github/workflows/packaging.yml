@@ -27,7 +27,7 @@ jobs:
             artifact_path: out/make/nScope*.dmg
             target_architecture: universal
           - os: windows-latest
-            artifact_path: out/**/*
+            artifact_path: out/make/squirrel.windows/x64/nScope*Setup.exe
             target_architecture: x64
     name: ${{ matrix.target_architecture }} on ${{ matrix.os }}
     steps:
