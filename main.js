@@ -16,7 +16,10 @@ if (!app.isPackaged) {
 
 
 app.setName(config.productName)
-app.dock.setIcon(icon);
+
+if (process.platform === "darwin") {
+    app.dock.setIcon(icon);
+}
 var mainWindow = null
 app.on('ready', function () {
     mainWindow = new BrowserWindow({
