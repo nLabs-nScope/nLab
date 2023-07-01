@@ -5,7 +5,9 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
+defaults:
+  run:
+    shell: bash
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -33,6 +35,7 @@ jobs:
             target_architecture: x64
             executable_path: out/nScope-win32-x64/nScope.exe
             artifact_path: out/make/squirrel.windows/x64/nScope*Setup.exe
+            shell: cmd
     name: ${{ matrix.target_architecture }} on ${{ matrix.os }}
     steps:
       - name: Install libusb
