@@ -1,5 +1,13 @@
 'use strict'
-
+if(process.env.NSCOPE_SMOKE_TEST === '1') {
+    process.stdout.write("Running smoke test... ")
+    process.on('uncaughtException', e => {
+        process.stdout.write(" Fail\n")
+        process.stdout.write(e.message)
+        process.stdout.write(e.stack)
+        app.exit(1)
+    })
+}
 const electron = require('electron')
 const app = electron.app
 const path = require('path')
@@ -8,13 +16,18 @@ const BrowserWindow = electron.BrowserWindow
 
 const icon = electron.nativeImage.createFromPath(path.join(__dirname, 'app/assets/icons/icon_256x256.png'));
 
-require('electron-reload')(__dirname, {
-    electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
-});
+if (!app.isPackaged) {
+    require('electron-reload')(__dirname, {
+        electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
+    });
+}
 
 
 app.setName(config.productName)
-app.dock.setIcon(icon);
+
+if (process.platform === "darwin") {
+    app.dock.setIcon(icon);
+}
 var mainWindow = null
 app.on('ready', function () {
     mainWindow = new BrowserWindow({
@@ -67,10 +80,19 @@ app.on('web-contents-created', (event, contents) => {
     contents.on('will-navigate', (event) => {
         event.preventDefault()
     })
-})
-
-app.on('web-contents-created', (event, contents) => {
     contents.setWindowOpenHandler(() => {
         return { action: 'deny' }
     })
+})
+
+app.on('ready', (event, contents) => {
+    if(process.env.NSCOPE_SMOKE_TEST === '1'){
+        mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
+            process.stdout.write(" Fail\n")
+            process.stdout.write(errorDescription)
+            app.exit(1)
+        })
+        process.stdout.write(" Complete\n")
+        app.quit()
+    }
 })
