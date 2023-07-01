@@ -3,6 +3,8 @@ if(process.env.NSCOPE_SMOKE_TEST === '1') {
     process.stdout.write("Running smoke test... ")
     process.on('uncaughtException', e => {
         process.stdout.write(" Fail\n")
+        process.stdout.write(e.message)
+        process.stdout.write(e.stack)
         app.exit(1)
     })
 }
@@ -85,8 +87,9 @@ app.on('web-contents-created', (event, contents) => {
 
 app.on('ready', (event, contents) => {
     if(process.env.NSCOPE_SMOKE_TEST === '1'){
-        mainWindow.webContents.on('did-fail-load', function () {
+        mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
             process.stdout.write(" Fail\n")
+            process.stdout.write(errorDescription)
             app.exit(1)
         })
         process.stdout.write(" Complete\n")
