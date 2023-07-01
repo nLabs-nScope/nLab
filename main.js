@@ -1,5 +1,11 @@
 'use strict'
-
+if(process.env.NSCOPE_SMOKE_TEST === '1') {
+    process.stdout.write("Running smoke test... ")
+    process.on('uncaughtException', e => {
+        process.stdout.write(" Fail\n")
+        app.exit(1)
+    })
+}
 const electron = require('electron')
 const app = electron.app
 const path = require('path')
@@ -72,10 +78,18 @@ app.on('web-contents-created', (event, contents) => {
     contents.on('will-navigate', (event) => {
         event.preventDefault()
     })
-})
-
-app.on('web-contents-created', (event, contents) => {
     contents.setWindowOpenHandler(() => {
         return { action: 'deny' }
     })
+})
+
+app.on('ready', (event, contents) => {
+    if(process.env.NSCOPE_SMOKE_TEST === '1'){
+        mainWindow.webContents.on('did-fail-load', function () {
+            process.stdout.write(" Fail\n")
+            app.exit(1)
+        })
+        process.stdout.write(" Complete\n")
+        app.quit()
+    }
 })
