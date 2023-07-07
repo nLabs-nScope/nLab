@@ -55,9 +55,9 @@ app.on('ready', function () {
 
     // Open the DevTools.
     const isDebug = typeof process.argv.find(item => item === 'debug') !== 'undefined';
-    if (isDebug) {
+    // if (isDebug) {
         mainWindow.openDevTools();
-    }
+    // }
     // Prevent zooming
     // let webContents = mainWindow.webContents;
     // webContents.on('did-finish-load', () => {
