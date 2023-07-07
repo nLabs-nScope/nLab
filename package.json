@@ -34,7 +34,9 @@
     "webpack-cli": "^4.9.2"
   },
   "scripts": {
-    "build-native": "cargo-cp-artifact -ac nscope-nodejs app/nscope.node  -- cargo build --message-format=json-render-diagnostics",
+    "build-native-arm": "cargo-cp-artifact -ac nscope-nodejs app/nscope.node.x86  -- cargo build --release --target=x86_64-apple-darwin --message-format=json-render-diagnostics",
+    "build-native-x86": "cargo-cp-artifact -ac nscope-nodejs app/nscope.node.arm  -- cargo build --release --target=aarch64-apple-darwin --message-format=json-render-diagnostics",
+    "build-native": "npm run build-native-x86 && npm run build-native-arm && lipo -create -output app/nscope.node app/nscope.node.x86 app/nscope.node.arm",
     "build-app": "webpack --mode=production",
     "build": "npm run build-native && npm run build-app",
     "start": "electron-forge start",
