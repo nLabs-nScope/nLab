@@ -40,7 +40,7 @@ app.on('ready', function () {
         icon: icon,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
-            devTools: !app.isPackaged,
+            devTools: true, //!app.isPackaged,
             contextIsolation: false,
         }
     })

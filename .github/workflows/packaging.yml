@@ -60,6 +60,8 @@ jobs:
         run: npm run build
       - name: Package
         run: npm run make -- --arch ${{ matrix.target_architecture }}
+        env:
+          DEBUG: "electron-packager"
       - name: Smoke Test
         run: ${{ matrix.executable_path }}
         env:
