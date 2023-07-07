@@ -3,6 +3,7 @@ module.exports = {
     asar: true,
     osxSign: {
       identity: "84Z8NUVVD8",
+      hardenedRuntime: true,
         // optionsForFile: (filePath) => {
         //     // Here, we keep it simple and return a single entitlements.plist file.
         //     // You can use this callback to map different sets of entitlements
