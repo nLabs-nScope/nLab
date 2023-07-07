@@ -50,6 +50,12 @@ jobs:
           architecture: ${{ matrix.node_architecture }}
       - name: Install NPM Dependencies
         run: npm ci
+      - name: Add MacOS certs
+        if: matrix.os == 'macos-latest'
+        run: chmod +x add-osx-cert.sh && ./add-osx-cert.sh
+        env:
+          CERTIFICATE_OSX_APPLICATION: ${{ secrets.TEST_DEV_CERT }}
+          CERTIFICATE_PASSWORD: ${{ secrets.TEST_DEV_CERT_PW }}
       - name: Build nScope
         run: npm run build
       - name: Package

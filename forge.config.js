@@ -1,6 +1,17 @@
 module.exports = {
   packagerConfig: {
     asar: true,
+    osxSign: {
+      identity: "84Z8NUVVD8",
+        // optionsForFile: (filePath) => {
+        //     // Here, we keep it simple and return a single entitlements.plist file.
+        //     // You can use this callback to map different sets of entitlements
+        //     // to specific files in your packaged app.
+        //     return {
+        //         entitlements: 'entitlements.plist'
+        //     };
+        // }
+    }
   },
   rebuildConfig: {},
   makers: [
