@@ -38,6 +38,11 @@ jobs:
             shell: cmd
     name: ${{ matrix.target_architecture }} on ${{ matrix.os }}
     steps:
+      - name: Install Rust Toolchains
+        if: matrix.os == 'macos-latest'
+        run: |
+          rustup target add x86_64-apple-darwin
+          rustup target add aarch64-apple-darwin
       - name: Install libusb
         if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get install libusb-1.0-0-dev libudev-dev
