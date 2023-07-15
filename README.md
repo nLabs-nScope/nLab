@@ -18,11 +18,27 @@ nScope can be built and run from source to enable users and developers to quickl
 After installing the development dependencies, check to make sure you have a working environment by running version commands for each of the required tools.
 
 ```shell
+$ rustup --version
 $ cargo --version
 $ node --version
 $ npm --version
 ```
 The above commands should print a version successfully.
+
+###### macOS specifics
+On macOS the project is configured to build a universal binary, including both x86 and Apple Silicon binaries in one. To enable that, we must add both rust target toolchains as follows:
+```shell
+rustup target add x86_64-apple-darwin
+rustup target add aarch64-apple-darwin
+```
+
+###### Linux specific
+On linux distributions, we need the system library headers for `libusb` and `libudev`. To install these on an Ubuntu distribtion, the following command should work.
+```shell
+sudo apt-get install libusb-1.0-0-dev libudev-dev
+```
+On other distributions, developers should look to their package managers for these development headers. 
+
 
 ##### Clone and Install Development Dependencies
 
