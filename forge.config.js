@@ -1,6 +1,7 @@
 module.exports = {
   packagerConfig: {
     asar: true,
+    icon: 'icons/nscope_icon'
   },
   rebuildConfig: {},
   makers: [
