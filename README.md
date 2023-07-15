@@ -25,14 +25,16 @@ $ npm --version
 ```
 The above commands should print a version successfully.
 
-> **Note**
+> **Note** - macOS specifics
+> 
 > On macOS the project is configured to build a universal binary, including both x86 and Apple Silicon binaries in one. To enable that, we must add both rust target toolchains as follows:
 > ```shell
 > rustup target add x86_64-apple-darwin
 > rustup target add aarch64-apple-darwin
 > ```
 
-> **Note**
+> **Note** - Linux specifics
+> 
 > On linux distributions, we need the system library headers for `libusb` and `libudev`. To install these on an Ubuntu distribtion, the following command should work.
 > ```shell
 > sudo apt-get install libusb-1.0-0-dev libudev-dev
