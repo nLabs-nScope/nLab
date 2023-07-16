@@ -79,11 +79,11 @@ for (let ch = 0; ch < 4; ch++) {
 function updatePlot() {
 
     let trace_data = nscope.getTraces(nScope);
-    Plotly.restyle('glcanvas-div', trace_data);
+    Plotly.restyle('scope-graph', trace_data);
     window.requestAnimationFrame(updatePlot);
 }
 
-Plotly.newPlot('glcanvas-div', traces, layout, {responsive: true, displayModeBar: false});
+Plotly.newPlot('scope-graph', traces, layout, {responsive: true, displayModeBar: false});
 
 
 function monitorScope() {
