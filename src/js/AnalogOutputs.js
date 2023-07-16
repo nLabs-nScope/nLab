@@ -50,19 +50,23 @@ function freqToString(freq) {
     return freqString;
 }
 
-export function initInput() {
-
-    let axState = nscope.getAxStatus(nScope);
+export function update(axState) {
 
     if (isEmpty(axState)) {
-        // console.log("Empty: handle this");
         return;
     }
 
     for (let ch of ["A1", "A2"]) {
+        if (axState[ch].isOn) {
+            getId(`${ch}-onoff`).classList.add("active");
+        } else {
+            getId(`${ch}-onoff`).classList.remove("active")
+        }
 
         let freqString = freqToString(axState[ch].frequency);
         let amplitudeString = amplitudeToString(axState[ch].amplitude);
+
+        getId(`${ch}-status`).innerHTML = freqString.number + ' ' + freqString.unit + ' ' + amplitudeString.number + ' ' + amplitudeString.unit;
 
         let freqLabel = getId(`${ch}-freq`).labels[0];
         let amplitudeLabel = getId(`${ch}-amplitude`).labels[0];
@@ -79,29 +83,12 @@ export function initInput() {
         document.querySelector(`input[name=${ch}-waveType][value=${axState[ch].waveType}]`).checked = true;
         document.querySelector(`input[name=${ch}-polarity][value=${axState[ch].polarity}]`).checked = true;
     }
+
 }
 
-
-export function update(axState) {
-
-    if (isEmpty(axState)) {
-        // console.log("Empty: handle this");
-        return;
-    }
-
-    for (let ch of ["A1", "A2"]) {
-        if (axState[ch].isOn) {
-            getId(`${ch}-onoff`).classList.add("active");
-        } else {
-            getId(`${ch}-onoff`).classList.remove("active")
-        }
-
-        let freqString = freqToString(axState[ch].frequency);
-        let amplitudeString = amplitudeToString(axState[ch].amplitude);
-
-        getId(`${ch}-status`).innerHTML = freqString.number + ' ' + freqString.unit + ' ' + amplitudeString.number + ' ' + amplitudeString.unit;
-    }
-
+export function initInput() {
+    let axState = nscope.getAxStatus(nScope);
+    update(axState);
 }
 
 for (let ch of ["A1", "A2"]) {

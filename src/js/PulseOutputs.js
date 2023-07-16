@@ -46,19 +46,23 @@ function freqToString(freq) {
     return freqString;
 }
 
-export function initInput() {
-
-    let pxState = nscope.getPxStatus(nScope);
+export function update(pxState) {
 
     if (isEmpty(pxState)) {
-        // console.log("Empty: handle this");
         return;
     }
 
     for (let ch of ["P1", "P2"]) {
+        if (pxState[ch].isOn) {
+            getId(`${ch}-onoff`).classList.add("active");
+        } else {
+            getId(`${ch}-onoff`).classList.remove("active")
+        }
 
         let freqString = freqToString(pxState[ch].frequency);
         let dutyString = dutyToString(pxState[ch].duty);
+
+        getId(`${ch}-status`).innerHTML = freqString.number + ' ' + freqString.unit + ' ' + dutyString.number + ' ' + dutyString.unit;
 
         let freqLabel = getId(`${ch}-freq`).labels[0];
         let dutyLabel = getId(`${ch}-duty`).labels[0];
@@ -75,27 +79,9 @@ export function initInput() {
 
 }
 
-export function update(pxState) {
-
-    if (isEmpty(pxState)) {
-        // console.log("Empty: handle this");
-        return;
-    }
-
-
-    for (let ch of ["P1", "P2"]) {
-        if (pxState[ch].isOn) {
-            getId(`${ch}-onoff`).classList.add("active");
-        } else {
-            getId(`${ch}-onoff`).classList.remove("active")
-        }
-
-        let freqString = freqToString(pxState[ch].frequency);
-        let dutyString = dutyToString(pxState[ch].duty);
-
-        getId(`${ch}-status`).innerHTML = freqString.number + ' ' + freqString.unit + ' ' + dutyString.number + ' ' + dutyString.unit;
-    }
-
+export function initInput() {
+    let pxState = nscope.getPxStatus(nScope);
+    update(pxState);
 }
 
 for (let ch of ["P1", "P2"]) {
