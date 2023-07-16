@@ -28,7 +28,6 @@ getId("horizontal-slider").oninput = function () {
 }
 
 export function initTiming() {
-    // console.log("Running!");
     getId("horizontal-slider").value = 0;
     getId("horizontal-slider").dispatchEvent(new Event('input'));
 }

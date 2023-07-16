@@ -46,6 +46,7 @@ impl NscopeTraces {
         for s in &mut self.samples {
             s.clear()
         }
+        self.current_head = 0;
     }
 }
 
