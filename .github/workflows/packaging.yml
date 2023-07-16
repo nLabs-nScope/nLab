@@ -18,10 +18,6 @@ jobs:
           - ubuntu-latest
           - macos-latest
           - windows-latest
-        node_version:
-          - 18
-        node_architecture:
-          - x64
         include:
           - os: ubuntu-latest
             target_architecture: x64
@@ -30,11 +26,11 @@ jobs:
           - os: macos-latest
             target_architecture: universal
             executable_path: out/nScope-darwin-universal/nScope.app/Contents/MacOS/nScope
-            artifact_path: out/make/nScope*.dmg
+            artifact_path: 'out/make/nScope Installer.dmg'
           - os: windows-latest
             target_architecture: x64
             executable_path: out/nScope-win32-x64/nScope.exe
-            artifact_path: out/make/squirrel.windows/x64/nScope*Setup.exe
+            artifact_path: 'out/make/squirrel.windows/x64/nScope Installer.exe'
             shell: cmd
     name: ${{ matrix.target_architecture }} on ${{ matrix.os }}
     steps:
@@ -51,8 +47,7 @@ jobs:
       - name: Set up node
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node_version }}
-          architecture: ${{ matrix.node_architecture }}
+          node-version: 18
       - name: Install NPM Dependencies
         run: npm ci
       - name: Build nScope
