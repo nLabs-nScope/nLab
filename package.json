@@ -5,7 +5,7 @@
   "description": "nScope",
   "private": true,
   "main": "main.js",
-  "author": "David J. Meyer",
+  "author": "nLabs",
   "license": "GPL3",
   "devDependencies": {
     "@electron-forge/cli": "^6.2.1",

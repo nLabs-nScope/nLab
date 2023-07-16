@@ -10,6 +10,7 @@ if(process.env.NSCOPE_SMOKE_TEST === '1') {
 }
 const electron = require('electron')
 const app = electron.app
+if (require('electron-squirrel-startup')) app.quit();
 const path = require('path')
 const config = require(path.join(__dirname, 'package.json'))
 const BrowserWindow = electron.BrowserWindow
