@@ -8,7 +8,9 @@ module.exports = {
     {
       name: '@electron-forge/maker-squirrel',
       config: {
+        setupExe: 'nScope Installer.exe',
         loadingGif: 'src/assets/gif/installing.gif',
+        iconURL: 'https://www.nscope.org/user/themes/nscope/images/favicon.png',
         setupIcon: 'src/assets/icons/nscope_icon.ico'
       },
     },
@@ -16,6 +18,8 @@ module.exports = {
       name: '@electron-forge/maker-dmg',
       config: {
         format: 'ULFO',
+        icon: 'src/assets/icons/nscope_icon.icns',
+        name: 'nScope Installer',
       }
     },
     {
