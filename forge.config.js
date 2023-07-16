@@ -1,14 +1,15 @@
 module.exports = {
   packagerConfig: {
     asar: true,
-    icon: 'icons/nscope_icon'
+    icon: 'src/assets/icons/nscope_icon'
   },
   rebuildConfig: {},
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        setupIcon: 'icons/nscope_icon.ico'
+        loadingGif: 'src/assets/gif/installing.gif',
+        setupIcon: 'src/assets/icons/nscope_icon.ico'
       },
     },
     {
