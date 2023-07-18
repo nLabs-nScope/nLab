@@ -16,7 +16,11 @@ pub fn monitor_nscope(mut cx: FunctionContext) -> JsResult<JsObject> {
     // If we have no scope, then try to connect
     if nscope_handle.device.is_none() {
         nscope_handle.bench.refresh();
-        if let Ok(scope) = nscope_handle.bench.open_first_available(true) {
+        if let Ok(mut scope) = nscope_handle.bench.open_first_available(true) {
+            scope.ch1.turn_on();
+            scope.ch2.turn_off();
+            scope.ch3.turn_off();
+            scope.ch4.turn_off();
             nscope_handle.device = Some(scope);
         }
     }

@@ -51,8 +51,8 @@ let time_per_div_1 = [
     ["0.2 ms/div", "2400 pts\n1M Sa/s", 2400, 1000000.0],
     ["0.1 ms/div", "2400 pts\n2M Sa/s", 2400, 2000000.0],
     ["50 µs/div", "2400 pts\n4M Sa/s", 2400, 4000000.0],
-    ["20 µs/div", "960 pts\n1M Sa/s", 960, 4000000.0],
-    ["10 µs/div", "480 pts\n1M Sa/s", 480, 4000000.0]
+    ["20 µs/div", "960 pts\n4M Sa/s", 960, 4000000.0],
+    ["10 µs/div", "480 pts\n4M Sa/s", 480, 4000000.0]
 ]
 
 let time_per_div = {

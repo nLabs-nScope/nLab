@@ -73,7 +73,7 @@ fn new_nscope(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
         sample_rate: 400.0,
         request_handle: None,
         traces: NscopeTraces {
-            samples: vec![nscope::Sample::default(); 4800],
+            samples: vec![nscope::Sample::default(); 19200],
             num_samples: 4800,
             current_head: 0,
         },
