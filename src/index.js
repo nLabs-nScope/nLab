@@ -1,5 +1,6 @@
 import './scss/custom_bootstrap.scss'
 import './css/nscope.css'
+import { version } from '../package.json'
 import bootstrap from 'bootstrap'
 
 import * as powerStatus from './js/PowerStatus.js'
@@ -112,4 +113,5 @@ analogOutputs.initInput();
 timing.initTiming();
 updatePlot();
 
-version.innerHTML = nscope.version();
+version_display.innerHTML = version;
+//nscope.version();
