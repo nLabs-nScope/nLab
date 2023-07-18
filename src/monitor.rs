@@ -16,7 +16,7 @@ pub fn monitor_nscope(mut cx: FunctionContext) -> JsResult<JsObject> {
     // If we have no scope, then try to connect
     if nscope_handle.device.is_none() {
         nscope_handle.bench.refresh();
-        if let Ok(scope) = nscope_handle.bench.open_first_available() {
+        if let Ok(scope) = nscope_handle.bench.open_first_available(true) {
             nscope_handle.device = Some(scope);
         }
     }
