@@ -46,6 +46,13 @@ function freqToString(freq) {
     return freqString;
 }
 
+let sliders_free = {
+    "P1-freq": true,
+    "P2-freq": true,
+    "P1-duty": true,
+    "P2-duty": true,
+}
+
 export function update(pxState) {
 
     if (isEmpty(pxState)) {
@@ -92,6 +99,7 @@ for (let ch of ["P1", "P2"]) {
     }
 
     getId(`${ch}-freq`).onchange = getId(`${ch}-freq`).oninput = function () {
+        sliders_free[`${ch}-freq`] = false;
         let label = this.labels[0];
         let frequency = valToFreq(this.value);
         nscope.setPxFrequency(nScope, ch, frequency)
@@ -100,7 +108,12 @@ for (let ch of ["P1", "P2"]) {
         label.nextElementSibling.textContent = freqString.unit;
     }
 
+    getId(`${ch}-freq`).addEventListener('mouseup', function () {
+        sliders_free[`${ch}-freq`] = true;
+    });
+
     getId(`${ch}-duty`).onchange = getId(`${ch}-duty`).oninput = function () {
+        sliders_free[`${ch}-duty`] = false;
         let label = this.labels[0];
         let duty = valToDuty(this.value);
         nscope.setPxDuty(nScope, ch, duty)
@@ -108,5 +121,9 @@ for (let ch of ["P1", "P2"]) {
         label.textContent = dutyString.number;
         label.nextElementSibling.textContent = dutyString.unit;
     }
+
+    getId(`${ch}-duty`).addEventListener('mouseup', function () {
+        sliders_free[`${ch}-duty`] = true;
+    });
 
 }
