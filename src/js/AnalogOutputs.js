@@ -107,7 +107,6 @@ for (let ch of ["A1", "A2"]) {
 
     getId(`${ch}-onoff`).onclick = function () {
         let checked = this.classList.contains("active");
-        console.log("Clicked!");
         nscope.setAxOn(nScope, ch, checked);
     }
 
