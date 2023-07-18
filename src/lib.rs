@@ -73,7 +73,7 @@ fn new_nscope(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
         sample_rate: 400.0,
         request_handle: None,
         traces: NscopeTraces {
-            samples: vec![nscope::Sample::default(); 4800],
+            samples: vec![nscope::Sample::default(); 19200],
             num_samples: 4800,
             current_head: 0,
         },
@@ -175,6 +175,7 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
 
     cx.export_function("getChStatus", analog_inputs::get_ch_status)?;
     cx.export_function("setChOn", analog_inputs::set_ch_on)?;
+    cx.export_function("getSamplingChannels", analog_inputs::get_sampling_channels)?;
 
     Ok(())
 }

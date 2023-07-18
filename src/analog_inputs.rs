@@ -24,8 +24,8 @@ pub fn get_ch_status(mut cx: FunctionContext) -> JsResult<JsObject> {
         if nscope.is_connected() {
             for ch in 1..=4 {
                 let channel_name = format!("Ch{}", ch);
-                if let Some(pulse_output) = nscope.channel(ch) {
-                    let channel_status = pulse_output.to_object(&mut cx)?;
+                if let Some(analog_input) = nscope.channel(ch) {
+                    let channel_status = analog_input.to_object(&mut cx)?;
                     ch_status.set(&mut cx, channel_name.as_str(), channel_status)?;
                 }
             }
@@ -33,6 +33,32 @@ pub fn get_ch_status(mut cx: FunctionContext) -> JsResult<JsObject> {
     }
 
     Ok(ch_status)
+}
+
+pub fn get_sampling_channels(mut cx: FunctionContext) -> JsResult<JsNumber> {
+    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let nscope_handle = js_nscope_handle.borrow();
+
+    let mut num_channels_on: usize = 0;
+
+    if let Some(nscope) = &nscope_handle.device {
+        if nscope.is_connected() {
+            for ch in 1..=4 {
+                if let Some(analog_input) = nscope.channel(ch) {
+                    if analog_input.is_on() {
+                        num_channels_on += 1;
+                    }
+                }
+            }
+        }
+    }
+
+    match num_channels_on {
+        0..=1 => Ok(cx.number(1)),
+        2 => Ok(cx.number(2)),
+        3..=4 => Ok(cx.number(4)),
+        _ => Ok(cx.number(4))
+    }
 }
 
 pub fn set_ch_on(mut cx: FunctionContext) -> JsResult<JsNull> {
