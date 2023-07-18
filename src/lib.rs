@@ -175,6 +175,7 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
 
     cx.export_function("getChStatus", analog_inputs::get_ch_status)?;
     cx.export_function("setChOn", analog_inputs::set_ch_on)?;
+    cx.export_function("getSamplingChannels", analog_inputs::get_sampling_channels)?;
 
     Ok(())
 }
