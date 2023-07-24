@@ -3,7 +3,7 @@ module.exports = {
     asar: true,
     icon: 'src/assets/icons/nscope_icon',
     osxSign: {
-      identity: "84Z8NUVVD8",
+      identity: "W74MCWRPFC",
       hardenedRuntime: true,
         // optionsForFile: (filePath) => {
         //     // Here, we keep it simple and return a single entitlements.plist file.
