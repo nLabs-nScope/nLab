@@ -69,10 +69,10 @@ jobs:
           MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
         if: matrix.os == 'macos-latest'
         run: |
-          echo $MACOS_CERTIFICATE | base64 —decode > certificate.p12
-          security create-keychain -p <your-password> build.keychain
+          echo $MACOS_CERTIFICATE | base64 —decode > nscope_mac_cert.p12
+          security create-keychain -p my_cert_pwd build.keychain
           security default-keychain -s build.keychain
-          security unlock-keychain -p <your-password> build.keychain
-          security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k <your-password> build.keychain
-          /usr/bin/codesign --force -s <identity-id> ./path/to/you/app -v
+          security unlock-keychain -p my_cert_pwd build.keychain
+          security import cnscope_mac_cert.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k my_cert_pwd build.keychain
+          /usr/bin/codesign --force -s <identity-id> ${{ matrix.artifact_path }} -v
