@@ -1,11 +1,11 @@
 {
   "name": "nScope",
   "productName": "nScope",
-  "version": "0.9.0",
+  "version": "1.0.0-alpha.1",
   "description": "nScope",
   "private": true,
   "main": "main.js",
-  "author": "David J. Meyer",
+  "author": "nLabs",
   "license": "GPL3",
   "devDependencies": {
     "@electron-forge/cli": "^6.2.1",
@@ -28,6 +28,7 @@
     "node-sass": "^9.0.0",
     "plotly.js-basic-dist": "^2.11",
     "postcss-loader": "^6.2.1",
+    "run-script-os": "^1.1.6",
     "sass": "^1.50",
     "sass-loader": "^13.3.2",
     "style-loader": "^3.3.1",
@@ -35,9 +36,16 @@
     "webpack-cli": "^4.9.2"
   },
   "scripts": {
-    "build-native": "cargo-cp-artifact -ac nscope-nodejs app/nscope.node  -- cargo build --message-format=json-render-diagnostics",
+    "build-x86_64-apple-darwin": "cargo-cp-artifact -ac nscope-nodejs app/nscope.node.x86  -- cargo build --release --target=x86_64-apple-darwin --message-format=json-render-diagnostics",
+    "build-aarch64-apple-darwin": "cargo-cp-artifact -ac nscope-nodejs app/nscope.node.arm  -- cargo build --release --target=aarch64-apple-darwin --message-format=json-render-diagnostics",
+    "build-native:macos": "npm run build-x86_64-apple-darwin && npm run build-aarch64-apple-darwin && lipo -create -output app/nscope.node app/nscope.node.x86 app/nscope.node.arm && rm **/*.x86 **/*.arm",
+
+    "build-native:linux:win32": "cargo-cp-artifact -ac nscope-nodejs app/nscope.node  -- cargo build --release --message-format=json-render-diagnostics",
+    "build-native": "run-script-os",
+
     "build-app": "webpack --mode=production",
     "build": "npm run build-native && npm run build-app",
+
     "start": "electron-forge start",
     "dev": "concurrently -k \"webpack --watch --mode=development\" \"npm run build-native && electron . debug\"",
     "package": "electron-forge package",

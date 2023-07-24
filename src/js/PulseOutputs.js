@@ -46,19 +46,30 @@ function freqToString(freq) {
     return freqString;
 }
 
-export function initInput() {
+let sliders_free = {
+    "P1-freq": true,
+    "P2-freq": true,
+    "P1-duty": true,
+    "P2-duty": true,
+}
 
-    let pxState = nscope.getPxStatus(nScope);
+export function update(pxState) {
 
     if (isEmpty(pxState)) {
-        // console.log("Empty: handle this");
         return;
     }
 
     for (let ch of ["P1", "P2"]) {
+        if (pxState[ch].isOn) {
+            getId(`${ch}-onoff`).classList.add("active");
+        } else {
+            getId(`${ch}-onoff`).classList.remove("active")
+        }
 
         let freqString = freqToString(pxState[ch].frequency);
         let dutyString = dutyToString(pxState[ch].duty);
+
+        getId(`${ch}-status`).innerHTML = freqString.number + ' ' + freqString.unit + ' ' + dutyString.number + ' ' + dutyString.unit;
 
         let freqLabel = getId(`${ch}-freq`).labels[0];
         let dutyLabel = getId(`${ch}-duty`).labels[0];
@@ -75,27 +86,9 @@ export function initInput() {
 
 }
 
-export function update(pxState) {
-
-    if (isEmpty(pxState)) {
-        // console.log("Empty: handle this");
-        return;
-    }
-
-
-    for (let ch of ["P1", "P2"]) {
-        if (pxState[ch].isOn) {
-            getId(`${ch}-onoff`).classList.add("active");
-        } else {
-            getId(`${ch}-onoff`).classList.remove("active")
-        }
-
-        let freqString = freqToString(pxState[ch].frequency);
-        let dutyString = dutyToString(pxState[ch].duty);
-
-        getId(`${ch}-status`).innerHTML = freqString.number + ' ' + freqString.unit + ' ' + dutyString.number + ' ' + dutyString.unit;
-    }
-
+export function initInput() {
+    let pxState = nscope.getPxStatus(nScope);
+    update(pxState);
 }
 
 for (let ch of ["P1", "P2"]) {
@@ -106,6 +99,7 @@ for (let ch of ["P1", "P2"]) {
     }
 
     getId(`${ch}-freq`).onchange = getId(`${ch}-freq`).oninput = function () {
+        sliders_free[`${ch}-freq`] = false;
         let label = this.labels[0];
         let frequency = valToFreq(this.value);
         nscope.setPxFrequency(nScope, ch, frequency)
@@ -114,7 +108,12 @@ for (let ch of ["P1", "P2"]) {
         label.nextElementSibling.textContent = freqString.unit;
     }
 
+    getId(`${ch}-freq`).addEventListener('mouseup', function () {
+        sliders_free[`${ch}-freq`] = true;
+    });
+
     getId(`${ch}-duty`).onchange = getId(`${ch}-duty`).oninput = function () {
+        sliders_free[`${ch}-duty`] = false;
         let label = this.labels[0];
         let duty = valToDuty(this.value);
         nscope.setPxDuty(nScope, ch, duty)
@@ -122,5 +121,9 @@ for (let ch of ["P1", "P2"]) {
         label.textContent = dutyString.number;
         label.nextElementSibling.textContent = dutyString.unit;
     }
+
+    getId(`${ch}-duty`).addEventListener('mouseup', function () {
+        sliders_free[`${ch}-duty`] = true;
+    });
 
 }

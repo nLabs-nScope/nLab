@@ -50,42 +50,16 @@ function freqToString(freq) {
     return freqString;
 }
 
-export function initInput() {
-
-    let axState = nscope.getAxStatus(nScope);
-
-    if (isEmpty(axState)) {
-        // console.log("Empty: handle this");
-        return;
-    }
-
-    for (let ch of ["A1", "A2"]) {
-
-        let freqString = freqToString(axState[ch].frequency);
-        let amplitudeString = amplitudeToString(axState[ch].amplitude);
-
-        let freqLabel = getId(`${ch}-freq`).labels[0];
-        let amplitudeLabel = getId(`${ch}-amplitude`).labels[0];
-
-        freqLabel.textContent = freqString.number;
-        freqLabel.nextElementSibling.textContent = freqString.unit;
-
-        amplitudeLabel.textContent = amplitudeString.number;
-        amplitudeLabel.nextElementSibling.textContent = amplitudeString.unit;
-
-        getId(`${ch}-freq`).value = freqToVal(axState[ch].frequency);
-        getId(`${ch}-amplitude`).value = amplitudeToVal(axState[ch].amplitude);
-
-        document.querySelector(`input[name=${ch}-waveType][value=${axState[ch].waveType}]`).checked = true;
-        document.querySelector(`input[name=${ch}-polarity][value=${axState[ch].polarity}]`).checked = true;
-    }
+let sliders_free = {
+    "A1-freq": true,
+    "A2-freq": true,
+    "A1-amplitude": true,
+    "A2-amplitude": true,
 }
-
 
 export function update(axState) {
 
     if (isEmpty(axState)) {
-        // console.log("Empty: handle this");
         return;
     }
 
@@ -100,19 +74,44 @@ export function update(axState) {
         let amplitudeString = amplitudeToString(axState[ch].amplitude);
 
         getId(`${ch}-status`).innerHTML = freqString.number + ' ' + freqString.unit + ' ' + amplitudeString.number + ' ' + amplitudeString.unit;
+
+        let freqLabel = getId(`${ch}-freq`).labels[0];
+        let amplitudeLabel = getId(`${ch}-amplitude`).labels[0];
+
+        freqLabel.textContent = freqString.number;
+        freqLabel.nextElementSibling.textContent = freqString.unit;
+
+        amplitudeLabel.textContent = amplitudeString.number;
+        amplitudeLabel.nextElementSibling.textContent = amplitudeString.unit;
+
+        if(sliders_free[`${ch}-freq`]) {
+            getId(`${ch}-freq`).value = freqToVal(axState[ch].frequency);
+        }
+
+        if(sliders_free[`${ch}-amplitude`]) {
+            getId(`${ch}-amplitude`).value = amplitudeToVal(axState[ch].amplitude);
+        }
+
+        document.querySelector(`input[name=${ch}-waveType][value=${axState[ch].waveType}]`).checked = true;
+        document.querySelector(`input[name=${ch}-polarity][value=${axState[ch].polarity}]`).checked = true;
     }
 
+}
+
+export function initInput() {
+    let axState = nscope.getAxStatus(nScope);
+    update(axState);
 }
 
 for (let ch of ["A1", "A2"]) {
 
     getId(`${ch}-onoff`).onclick = function () {
         let checked = this.classList.contains("active");
-        console.log("Clicked!");
         nscope.setAxOn(nScope, ch, checked);
     }
 
     getId(`${ch}-freq`).oninput = getId(`${ch}-freq`).onchange = function () {
+        sliders_free[`${ch}-freq`] = false;
         let label = this.labels[0];
         let frequency = valToFreq(this.value);
         nscope.setAxFrequency(nScope, ch, frequency)
@@ -121,7 +120,12 @@ for (let ch of ["A1", "A2"]) {
         label.nextElementSibling.textContent = freqString.unit;
     }
 
+    getId(`${ch}-freq`).addEventListener('mouseup', function () {
+        sliders_free[`${ch}-freq`] = true;
+    });
+
     getId(`${ch}-amplitude`).oninput = getId(`${ch}-amplitude`).onchange = function () {
+        sliders_free[`${ch}-amplitude`] = false;
         let label = this.labels[0];
         let amplitude = valToAmplitude(this.value);
         nscope.setAxAmplitude(nScope, ch, amplitude)
@@ -129,6 +133,10 @@ for (let ch of ["A1", "A2"]) {
         label.textContent = amplitudeString.number;
         label.nextElementSibling.textContent = amplitudeString.unit;
     }
+
+    getId(`${ch}-amplitude`).addEventListener('mouseup', function () {
+        sliders_free[`${ch}-amplitude`] = true;
+    });
 
     for (let button of document.querySelectorAll(`input[name=${ch}-waveType]`)) {
         button.onchange = function () {

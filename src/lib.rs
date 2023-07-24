@@ -73,7 +73,7 @@ fn new_nscope(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
         sample_rate: 400.0,
         request_handle: None,
         traces: NscopeTraces {
-            samples: vec![nscope::Sample::default(); 4800],
+            samples: vec![nscope::Sample::default(); 19200],
             num_samples: 4800,
             current_head: 0,
         },
@@ -138,6 +138,18 @@ fn set_timing_parameters(mut cx: FunctionContext) -> JsResult<JsNull> {
     Ok(cx.null())
 }
 
+fn restart_traces(mut cx: FunctionContext) -> JsResult<JsNull> {
+    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let mut nscope_handle = js_nscope_handle.borrow_mut();
+
+    if nscope_handle.request_handle.is_some() {
+        nscope_handle.stop_request();
+        nscope_handle.traces.clear();
+    }
+
+    Ok(cx.null())
+}
+
 #[neon::main]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("version", version_string)?;
@@ -147,6 +159,7 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("getRunState", get_run_control)?;
     cx.export_function("setTimingParameters", set_timing_parameters)?;
     cx.export_function("getTraces", traces::get_traces)?;
+    cx.export_function("restartTraces", restart_traces)?;
 
     cx.export_function("getPxStatus", pulse_output::get_px_status)?;
     cx.export_function("setPxOn", pulse_output::set_px_on)?;
@@ -162,6 +175,7 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
 
     cx.export_function("getChStatus", analog_inputs::get_ch_status)?;
     cx.export_function("setChOn", analog_inputs::set_ch_on)?;
+    cx.export_function("getSamplingChannels", analog_inputs::get_sampling_channels)?;
 
     Ok(())
 }

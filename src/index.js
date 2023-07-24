@@ -1,5 +1,6 @@
 import './scss/custom_bootstrap.scss'
 import './css/nscope.css'
+import { version } from '../package.json'
 import bootstrap from 'bootstrap'
 
 import * as powerStatus from './js/PowerStatus.js'
@@ -79,11 +80,11 @@ for (let ch = 0; ch < 4; ch++) {
 function updatePlot() {
 
     let trace_data = nscope.getTraces(nScope);
-    Plotly.restyle('glcanvas-div', trace_data);
+    Plotly.restyle('scope-graph', trace_data);
     window.requestAnimationFrame(updatePlot);
 }
 
-Plotly.newPlot('glcanvas-div', traces, layout, {responsive: true, displayModeBar: false});
+Plotly.newPlot('scope-graph', traces, layout, {responsive: true, displayModeBar: false});
 
 
 function monitorScope() {
@@ -112,4 +113,5 @@ analogOutputs.initInput();
 timing.initTiming();
 updatePlot();
 
-version.innerHTML = nscope.version();
+version_display.innerHTML = version;
+//nscope.version();
