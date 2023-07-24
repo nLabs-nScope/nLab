@@ -54,8 +54,8 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: chmod +x add-osx-cert.sh && ./add-osx-cert.sh
         env:
-          CERTIFICATE_OSX_APPLICATION: ${{ secrets.TEST_DEV_CERT }}
-          CERTIFICATE_PASSWORD: ${{ secrets.TEST_DEV_CERT_PW }}
+          CERTIFICATE_OSX_APPLICATION: ${{ secrets.MACOS_CERTIFICATE }}
+          CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
       - name: Build nScope
         run: npm run build
       - name: Package
