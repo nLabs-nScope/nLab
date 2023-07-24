@@ -76,5 +76,3 @@ jobs:
           security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k <your-password> build.keychain
           /usr/bin/codesign --force -s <identity-id> ./path/to/you/app -v
-      
-	# We will fill this part shortly
