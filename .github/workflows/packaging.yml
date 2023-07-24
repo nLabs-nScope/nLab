@@ -52,7 +52,9 @@ jobs:
         run: npm ci
       - name: Add MacOS certs
         if: matrix.os == 'macos-latest'
-        run: chmod +x add-osx-cert.sh && ./add-osx-cert.sh
+        run: |
+          chmod +x add-osx-cert.sh && ./add-osx-cert.sh
+          security find-identity -v
         env:
           CERTIFICATE_OSX_APPLICATION: ${{ secrets.MACOS_CERTIFICATE }}
           CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
