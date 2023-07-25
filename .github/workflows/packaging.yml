@@ -62,6 +62,9 @@ jobs:
         run: npm run make -- --arch ${{ matrix.target_architecture }}
         env:
           DEBUG: "electron-packager"
+          MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.MACOS_NOTARIZATION_APPLE_ID }}
+          MACOS_NOTARIZATION_PWD: ${{ secrets.MACOS_NOTARIZATION_PWD }}
+          MACOS_NOTARIZATION_TEAM_ID: ${{ secrets.MACOS_NOTARIZATION_TEAM_ID }}
       - name: Smoke Test
         run: ${{ matrix.executable_path }}
         env:

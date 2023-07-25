@@ -41,7 +41,7 @@ app.on('ready', function () {
         icon: icon,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
-            devTools: true, //!app.isPackaged,
+            devTools: !app.isPackaged,
             contextIsolation: false,
         }
     })
@@ -56,9 +56,9 @@ app.on('ready', function () {
 
     // Open the DevTools.
     const isDebug = typeof process.argv.find(item => item === 'debug') !== 'undefined';
-    // if (isDebug) {
+    if (isDebug) {
         mainWindow.openDevTools();
-    // }
+    }
     // Prevent zooming
     // let webContents = mainWindow.webContents;
     // webContents.on('did-finish-load', () => {

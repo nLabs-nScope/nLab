@@ -2,17 +2,16 @@ module.exports = {
   packagerConfig: {
     asar: true,
     icon: 'src/assets/icons/nscope_icon',
+    appBundleId: 'org.nscope.nscopeapp',
     osxSign: {
       identity: "W74MCWRPFC",
       hardenedRuntime: true,
-        // optionsForFile: (filePath) => {
-        //     // Here, we keep it simple and return a single entitlements.plist file.
-        //     // You can use this callback to map different sets of entitlements
-        //     // to specific files in your packaged app.
-        //     return {
-        //         entitlements: 'entitlements.plist'
-        //     };
-        // }
+    },
+    osxNotarize: {
+      tool: 'notarytool',
+      appleId: process.env.MACOS_NOTARIZATION_APPLE_ID,
+      appleIdPassword: process.env.MACOS_NOTARIZATION_PWD,
+      teamId: process.env.MACOS_NOTARIZATION_TEAM_ID
     }
   },
   rebuildConfig: {},
