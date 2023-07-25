@@ -1,7 +1,18 @@
 module.exports = {
   packagerConfig: {
     asar: true,
-    icon: 'src/assets/icons/nscope_icon'
+    icon: 'src/assets/icons/nscope_icon',
+    appBundleId: 'org.nscope.nscopeapp',
+    osxSign: {
+      identity: "W74MCWRPFC",
+      hardenedRuntime: true,
+    },
+    osxNotarize: {
+      tool: 'notarytool',
+      appleId: process.env.MACOS_NOTARIZATION_APPLE_ID,
+      appleIdPassword: process.env.MACOS_NOTARIZATION_PWD,
+      teamId: process.env.MACOS_NOTARIZATION_TEAM_ID
+    }
   },
   rebuildConfig: {},
   makers: [

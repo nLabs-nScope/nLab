@@ -50,10 +50,21 @@ jobs:
           node-version: 18
       - name: Install NPM Dependencies
         run: npm ci
+      - name: Add MacOS certs
+        if: matrix.os == 'macos-latest'
+        run: ./.github/add-osx-cert.sh
+        env:
+          CERTIFICATE_OSX_APPLICATION: ${{ secrets.MACOS_CERTIFICATE }}
+          CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
       - name: Build nScope
         run: npm run build
       - name: Package
         run: npm run make -- --arch ${{ matrix.target_architecture }}
+        env:
+          DEBUG: "electron-packager"
+          MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.MACOS_NOTARIZATION_APPLE_ID }}
+          MACOS_NOTARIZATION_PWD: ${{ secrets.MACOS_NOTARIZATION_PWD }}
+          MACOS_NOTARIZATION_TEAM_ID: ${{ secrets.MACOS_NOTARIZATION_TEAM_ID }}
       - name: Smoke Test
         run: ${{ matrix.executable_path }}
         env:
