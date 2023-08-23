@@ -87,18 +87,6 @@ jobs:
           SM_HOST: ${{ secrets.DIGICERT_HOST }}
           SM_API_KEY: ${{ secrets.DIGICERT_API_KEY }}
           SM_CLIENT_CERT_PASSWORD: ${{ secrets.DIGICERT_CLIENT_CERT_PASSWORD }}
-          SM_CODE_SIGNING_CERT_SHA1_HASH: ${{ secrets.DIGICERT_CODE_SIGNING_CERT_SHA1_HASH }}
-          SM_CLIENT_CERT_FILE: D:\\Certificate_pkcs12.p12
-          CODE_SIGNING_CERT_FILE: D:\\certfile.crt
-      - name: Diagnostics
-        if: failure()
-        run: |
-          D:\a\nScope\nScope\node_modules\electron-winstaller\vendor\signtool.exe sign /csp "DigiCert Software Trust Manager KSP" /kc key_465178755 /f D:\\certfile.crt /tr http://timestamp.digicert.com /td SHA256 /fd SHA256 C:\Users\runneradmin\AppData\Local\SquirrelTemp\tempa\lib\net45\ffmpeg.dll
-        env:
-          SM_HOST: ${{ secrets.DIGICERT_HOST }}
-          SM_API_KEY: ${{ secrets.DIGICERT_API_KEY }}
-          SM_CLIENT_CERT_PASSWORD: ${{ secrets.DIGICERT_CLIENT_CERT_PASSWORD }}
-          SM_CODE_SIGNING_CERT_SHA1_HASH: ${{ secrets.DIGICERT_CODE_SIGNING_CERT_SHA1_HASH }}
           SM_CLIENT_CERT_FILE: D:\\Certificate_pkcs12.p12
           CODE_SIGNING_CERT_FILE: D:\\certfile.crt
       - name: Smoke Test
