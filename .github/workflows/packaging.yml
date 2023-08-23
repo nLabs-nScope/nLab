@@ -57,15 +57,14 @@ jobs:
         env:
           CERTIFICATE_OSX_APPLICATION: ${{ secrets.MACOS_CERTIFICATE }}
           CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-      - name: Setup Certificate
+      - name: Setup Windows certs
         if: matrix.os =='windows-latest'
         run: |
-          echo "${{ secrets.DIGICERT_CLIENT_CERT_FILE }}" | base64 --decode > /d/Certificate_pkcs12.p12
-          echo "${{ secrets.WINDOWS_SIGNING_CERT }}" | base64 --decode > /d/certfile.crt
+          echo "${{ secrets.DIGICERT_CLIENT_CERT_FILE }}" | base64 --decode > /d/digicert_sm_cert.p12
+          echo "${{ secrets.WINDOWS_SIGNING_CERT }}" | base64 --decode > /d/signing_cert.crt
         shell: bash
       - name: Package
-        run: |
-          npm run make -- --arch ${{ matrix.target_architecture }}
+        run: npm run make -- --arch ${{ matrix.target_architecture }}
         env:
           DEBUG: "electron-packager,electron-windows-installer:main"
           MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.MACOS_NOTARIZATION_APPLE_ID }}
@@ -74,8 +73,8 @@ jobs:
           SM_HOST: ${{ secrets.DIGICERT_HOST }}
           SM_API_KEY: ${{ secrets.DIGICERT_API_KEY }}
           SM_CLIENT_CERT_PASSWORD: ${{ secrets.DIGICERT_CLIENT_CERT_PASSWORD }}
-          SM_CLIENT_CERT_FILE: D:\\Certificate_pkcs12.p12
-          CODE_SIGNING_CERT_FILE: D:\\certfile.crt
+          SM_CLIENT_CERT_FILE: D:\\digicert_sm_cert.p12
+          CODE_SIGNING_CERT_FILE: D:\\signing_cert.crt
       - name: Smoke Test
         run: ${{ matrix.executable_path }}
         env:
