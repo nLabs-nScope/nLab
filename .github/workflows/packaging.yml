@@ -63,19 +63,6 @@ jobs:
           echo "${{ secrets.DIGICERT_CLIENT_CERT_FILE }}" | base64 --decode > /d/Certificate_pkcs12.p12
           echo "${{ secrets.WINDOWS_SIGNING_CERT }}" | base64 --decode > /d/certfile.crt
         shell: bash
-      - name: Setup Windows Certs
-        if: matrix.os =='windows-latest'
-        run: |
-          certutil.exe -csp "DigiCert Software Trust Manager KSP" -key -user
-          smksp_registrar.exe register
-          certutil.exe -csp "DigiCert Software Trust Manager KSP" -key -user
-          smctl healthcheck
-        env:
-          SM_HOST: ${{ secrets.DIGICERT_HOST }}
-          SM_API_KEY: ${{ secrets.DIGICERT_API_KEY }}
-          SM_CLIENT_CERT_PASSWORD: ${{ secrets.DIGICERT_CLIENT_CERT_PASSWORD }}
-          SM_CODE_SIGNING_CERT_SHA1_HASH: ${{ secrets.DIGICERT_CODE_SIGNING_CERT_SHA1_HASH }}
-          SM_CLIENT_CERT_FILE: D:\\Certificate_pkcs12.p12
       - name: Package
         run: |
           npm run make -- --arch ${{ matrix.target_architecture }}
