@@ -5,9 +5,6 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-defaults:
-  run:
-    shell: bash
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -31,7 +28,6 @@ jobs:
             target_architecture: x64
             executable_path: out/nScope-win32-x64/nScope.exe
             artifact_path: 'out/make/squirrel.windows/x64/nScope Installer.exe'
-            shell: cmd
     name: ${{ matrix.target_architecture }} on ${{ matrix.os }}
     steps:
       - name: Install Rust Toolchains
@@ -50,21 +46,35 @@ jobs:
           node-version: 18
       - name: Install NPM Dependencies
         run: npm ci
-      - name: Add MacOS certs
+      - name: Setup Digicert Keylocker
+        if: matrix.os =='windows-latest'
+        uses: digicert/ssm-code-signing@v0.0.2
+      - name: Build nScope
+        run: npm run build
+      - name: Setup MacOS certs
         if: matrix.os == 'macos-latest'
         run: ./.github/add-osx-cert.sh
         env:
           CERTIFICATE_OSX_APPLICATION: ${{ secrets.MACOS_CERTIFICATE }}
           CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-      - name: Build nScope
-        run: npm run build
+      - name: Setup Windows certs
+        if: matrix.os =='windows-latest'
+        run: |
+          echo "${{ secrets.DIGICERT_CLIENT_CERT_FILE }}" | base64 --decode > /d/digicert_sm_cert.p12
+          echo "${{ secrets.WINDOWS_SIGNING_CERT }}" | base64 --decode > /d/signing_cert.crt
+        shell: bash
       - name: Package
         run: npm run make -- --arch ${{ matrix.target_architecture }}
         env:
-          DEBUG: "electron-packager"
+          DEBUG: "electron-packager,electron-windows-installer:main"
           MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.MACOS_NOTARIZATION_APPLE_ID }}
           MACOS_NOTARIZATION_PWD: ${{ secrets.MACOS_NOTARIZATION_PWD }}
           MACOS_NOTARIZATION_TEAM_ID: ${{ secrets.MACOS_NOTARIZATION_TEAM_ID }}
+          SM_HOST: ${{ secrets.DIGICERT_HOST }}
+          SM_API_KEY: ${{ secrets.DIGICERT_API_KEY }}
+          SM_CLIENT_CERT_PASSWORD: ${{ secrets.DIGICERT_CLIENT_CERT_PASSWORD }}
+          SM_CLIENT_CERT_FILE: D:\\digicert_sm_cert.p12
+          CODE_SIGNING_CERT_FILE: D:\\signing_cert.crt
       - name: Smoke Test
         run: ${{ matrix.executable_path }}
         env:
