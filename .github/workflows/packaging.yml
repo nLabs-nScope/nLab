@@ -27,7 +27,7 @@ jobs:
           - os: windows-latest
             target_architecture: x64
             executable_path: out/nScope-win32-x64/nScope.exe
-            artifact_path: 'out/make/squirrel.windows/x64/nScope Installer.exe'
+            artifact_path: 'out/make/squirrel.windows/x64/*'
     name: ${{ matrix.target_architecture }} on ${{ matrix.os }}
     steps:
       - name: Install Rust Toolchains
