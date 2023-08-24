@@ -84,3 +84,17 @@ jobs:
         with:
           name: nScope Installers
           path: ${{ matrix.artifact_path }}
+      - name: Create Update Zips for macOS
+        if: matrix.os == 'macos-latest'
+        working-directory: ./out/make/zip/darwin/universal
+        run: |
+          f=$(echo nScope-darwin-universal-*.zip); cp "$f" $(sed 's:universal:x64:' <<< "$f")
+          f=$(echo nScope-darwin-universal-*.zip); cp "$f" $(sed 's:universal:arm64:' <<< "$f")
+      - name: Archive the updaters
+        if: matrix.os == 'macos-latest'
+        uses: actions/upload-artifact@v3
+        with:
+          name: nScope Installers
+          path: |
+            ./out/make/zip/darwin/universal/*x64*.zip
+            ./out/make/zip/darwin/universal/*arm64*.zip
