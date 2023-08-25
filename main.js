@@ -8,6 +8,7 @@ if(process.env.NSCOPE_SMOKE_TEST === '1') {
         app.exit(1)
     })
 }
+require('update-electron-app')()
 const electron = require('electron')
 const app = electron.app
 if (require('electron-squirrel-startup')) app.quit();
