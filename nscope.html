@@ -294,12 +294,34 @@
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
-                            <div class="dropdown-menu"></div>
+                            <div class="dropdown-menu">
+                                <div class="btn-group my-1 mx-4" role="group">
+                                    <input class="btn-check" type="radio" name="trigger-source" value="Ch1" id="trigger-source-Ch1" checked>
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="trigger-source-Ch1">Ch1</label>
+                                    <input class="btn-check" type="radio" name="trigger-source" value="Ch2" id="trigger-source-Ch2">
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="trigger-source-Ch2">Ch2</label>
+                                    <input class="btn-check" type="radio" name="trigger-source" value="Ch3" id="trigger-source-Ch3">
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="trigger-source-Ch3">Ch3</label>
+                                    <input class="btn-check" type="radio" name="trigger-source" value="Ch4" id="trigger-source-Ch4">
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="trigger-source-Ch4">Ch4</label>
+                                </div>
+                                <div class="btn-group my-1 mx-4" role="group">
+                                    <input class="btn-check" type="radio" name="trigger-type" value="RisingEdge" id="trigger-type-rising-edge" checked>
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="trigger-type-rising-edge">Rising</label>
+                                    <input class="btn-check" type="radio" name="trigger-type" value="FallingEdge" id="trigger-type-falling-edge">
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="trigger-type-falling-edge">Falling</label>
+                                </div>
+                                <div class="mx-3 form-group">
+                                    <span class="px-1">Trigger Level:</span><label for="trigger-level"
+                                                                               contenteditable="true">5</label><span class="px-1">V</span>
+                                    <input type="range" class="form-control-range" id="trigger-level">
+                                </div>
+                            </div>
                         </div>
-                        <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary">Trigger</button>
+                        <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary" id="trigger-onoff">Trigger</button>
                     </div>
                     <button type="button" class="btn btn-outline-secondary static"><span
-                            class="btn-xs btn-info">Ch4</span><span class="pl-1">&UpArrow;</span></button>
+                            class="btn-xs" id="trigger-source-display"></span></button>
                 </div>
             </div>
         </div>

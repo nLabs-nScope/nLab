@@ -75,6 +75,8 @@ export function setTiming() {
     getId("sample-rate").textContent = time_per_div[num_channels][time_slider_idx][1]
     let num_samples = time_per_div[num_channels][time_slider_idx][2];
     let sample_rate = time_per_div[num_channels][time_slider_idx][3];
+    let seconds_per_div = num_samples / 12 / sample_rate;
+    nscope.setTriggerDelay(nScope, seconds_per_div * 1_000_000);
     nscope.setTimingParameters(nScope, sample_rate, num_samples);
 }
 
