@@ -3,6 +3,7 @@ use std::sync::mpsc::Receiver;
 
 use neon::prelude::*;
 use nscope;
+use nscope::Trigger;
 
 use crate::RunState::{Run, Single, Stopped};
 
@@ -11,6 +12,7 @@ mod pulse_output;
 mod analog_output;
 mod analog_inputs;
 mod traces;
+mod trigger;
 
 fn version_string(mut cx: FunctionContext) -> JsResult<JsString> {
     Ok(cx.string(format!("{}", nscope::version())))
@@ -37,6 +39,7 @@ struct NscopeHandle {
     bench: nscope::LabBench,
     device: Option<nscope::Nscope>,
     run_state: RunState,
+    trigger: Trigger,
     sample_rate: f64,
     request_handle: Option<nscope::RequestHandle>,
     traces: NscopeTraces,
@@ -70,6 +73,7 @@ fn new_nscope(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
         bench: nscope::LabBench::new().expect("Creating LabBench"),
         device: None,
         run_state: Run,
+        trigger: Trigger::default(),
         sample_rate: 400.0,
         request_handle: None,
         traces: NscopeTraces {
@@ -150,6 +154,18 @@ fn restart_traces(mut cx: FunctionContext) -> JsResult<JsNull> {
     Ok(cx.null())
 }
 
+fn restrigger_if_not_triggered(mut cx: FunctionContext) -> JsResult<JsNull> {
+    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let nscope_handle = js_nscope_handle.borrow();
+
+
+    if nscope_handle.request_handle.is_some() && nscope_handle.traces.current_head == 0 {
+        nscope_handle.stop_request();
+    }
+
+    Ok(cx.null())
+}
+
 #[neon::main]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("version", version_string)?;
@@ -160,6 +176,7 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("setTimingParameters", set_timing_parameters)?;
     cx.export_function("getTraces", traces::get_traces)?;
     cx.export_function("restartTraces", restart_traces)?;
+    cx.export_function("reTriggerIfNotTriggered", restrigger_if_not_triggered)?;
 
     cx.export_function("getPxStatus", pulse_output::get_px_status)?;
     cx.export_function("setPxOn", pulse_output::set_px_on)?;
@@ -176,6 +193,13 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("getChStatus", analog_inputs::get_ch_status)?;
     cx.export_function("setChOn", analog_inputs::set_ch_on)?;
     cx.export_function("getSamplingChannels", analog_inputs::get_sampling_channels)?;
+
+    cx.export_function("getTriggerStatus", trigger::get_trigger_status)?;
+    cx.export_function("setTriggerOn", trigger::set_trigger_on)?;
+    cx.export_function("setTriggerDelay", trigger::set_trigger_delay)?;
+    cx.export_function("setTriggerSource", trigger::set_trigger_source)?;
+    cx.export_function("setTriggerLevel", trigger::set_trigger_level)?;
+    cx.export_function("setTriggerType", trigger::set_trigger_type)?;
 
     Ok(())
 }

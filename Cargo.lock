@@ -128,9 +128,9 @@ dependencies = [
 
 [[package]]
 name = "nscope"
-version = "1.0.0-dev.4"
+version = "1.0.0-dev.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "68b28c1b10013571d3cc96606ca3ea12bc992559132e7ee0903ed6e4705f5103"
+checksum = "f09136fe2167882c900b2550f7f6fe2df1fa6ffa1bef289b452a3e5ba76a4eac"
 dependencies = [
  "git-version",
  "hidapi",
