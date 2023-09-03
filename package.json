@@ -28,7 +28,7 @@
     "css-loader": "^6.7.1",
     "electron": "^18.3.7",
     "electron-reload": "^1.5.0",
-    "got": "^11.8.5",
+    "got": "^12.1",
     "ify-loader": "^1.1.0",
     "mini-css-extract-plugin": "^2.6.0",
     "node-sass": "^9.0.0",
