@@ -24,14 +24,20 @@ $custom-colors: (dark-1l: $gray-800);
   background-color: var(--bs-dark-1l);
 }
 
-;
-
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
 @import "slider_style";
+@import "button_style";
 
 
 /* -------end customization-------- */
 /* finally, import Bootstrap to set the changes! */
 
 @import "~bootstrap/scss/bootstrap";
+
+
+@each $color, $value in $theme-colors {
+  .btn-outline-#{$color} {
+    @include button-outline-variant-custom($value);
+  }
+}
