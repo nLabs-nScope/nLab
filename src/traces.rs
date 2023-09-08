@@ -4,8 +4,6 @@ use neon::prelude::*;
 
 use crate::{JsNscopeHandle, NscopeTraces, Objectify, RunState};
 
-const TRACE_GAP: usize = 20;
-
 impl Objectify for NscopeTraces {
     fn to_object<'a>(&self, cx: &mut FunctionContext<'a>) -> JsResult<'a, JsObject> {
         let obj = cx.empty_object();
@@ -70,7 +68,7 @@ pub fn get_traces(mut cx: FunctionContext) -> JsResult<JsObject> {
                 Some(nscope_handle.trigger)
             ));
             nscope_handle.traces.current_head = 0;
-            for idx in 0..TRACE_GAP {
+            for idx in 0..nscope_handle.traces.trace_gap() {
                 nscope_handle.traces.samples[idx].clear();
             }
         }
@@ -81,9 +79,10 @@ pub fn get_traces(mut cx: FunctionContext) -> JsResult<JsObject> {
             match nscope_handle.receiver().try_recv() {
                 Ok(sample) => {
                     let idx = nscope_handle.traces.current_head;
+                    let trace_gap = nscope_handle.traces.trace_gap();
                     nscope_handle.traces.samples[idx] = sample;
-                    if idx + TRACE_GAP < nscope_handle.traces.samples.len() {
-                        nscope_handle.traces.samples[idx + TRACE_GAP].clear();
+                    if idx + trace_gap < nscope_handle.traces.samples.len() {
+                        nscope_handle.traces.samples[idx + trace_gap].clear();
                     }
                     nscope_handle.traces.current_head += 1;
                 }

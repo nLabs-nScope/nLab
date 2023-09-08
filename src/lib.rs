@@ -35,6 +35,12 @@ struct NscopeTraces {
     current_head: usize,
 }
 
+impl NscopeTraces {
+    fn trace_gap(&self) -> usize {
+        self.num_samples / 120
+    }
+}
+
 struct NscopeHandle {
     bench: nscope::LabBench,
     device: Option<nscope::Nscope>,
