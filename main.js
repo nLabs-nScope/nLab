@@ -44,6 +44,7 @@ app.on('ready', function () {
             preload: path.join(__dirname, 'preload.js'),
             devTools: !app.isPackaged,
             contextIsolation: false,
+            nodeIntegration: true,
         }
     })
 
