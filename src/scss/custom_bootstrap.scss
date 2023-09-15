@@ -48,3 +48,7 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
   border: 1px solid $gray-700;
   box-shadow: 0px 0px 6px $gray-900;
 }
+
+.form-range::-webkit-slider-thumb, .form-range::-webkit-slider-runnable-track {
+  background-color: $gray-400;
+}
