@@ -80,4 +80,14 @@ export function setTiming() {
     nscope.setTimingParameters(nScope, sample_rate, num_samples);
 }
 
+export function update() {
+    if (nscope.isConnected(nScope)) {
+        getId("horizontal-info").classList.remove("disabled");
+        getId("horizontal-slider").classList.remove("disabled");
+    } else {
+        getId("horizontal-info").classList.add("disabled");
+        getId("horizontal-slider").classList.add("disabled");
+    }
+}
+
 getId("horizontal-slider").oninput = setTiming;

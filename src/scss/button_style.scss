@@ -48,7 +48,7 @@ $btn-active-border-tint-amount:   10%;
 
 @mixin button-outline-variant-custom(
   $color,
-  $background-hover: mix($color, transparent,30),
+  $background-hover: mix($color, transparent,40),
   $color-hover: color-contrast($background-hover),
   $active-background: $color,
   $active-border: $color,

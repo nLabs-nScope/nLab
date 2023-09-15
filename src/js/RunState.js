@@ -1,4 +1,4 @@
-import { getId, isEmpty } from './Utils.js';
+import {getId, isEmpty} from './Utils.js';
 
 for (let button of document.querySelectorAll("input[name=run-control]")) {
     button.onchange = function () {
@@ -9,11 +9,17 @@ for (let button of document.querySelectorAll("input[name=run-control]")) {
 }
 
 export function update(runState) {
-    for (let button of document.querySelectorAll("input[name=run-control]")) {
-        if (button.id === runState) {
-            button.checked = true;
-        } else {
-            button.checked = false;
+    if (nscope.isConnected(nScope)) {
+        getId('run-control').classList.remove("disabled");
+
+        for (let button of document.querySelectorAll("input[name=run-control]")) {
+            if (button.id === runState) {
+                button.checked = true;
+            } else {
+                button.checked = false;
+            }
         }
+    } else {
+        getId('run-control').classList.add("disabled");
     }
 }
