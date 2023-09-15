@@ -79,3 +79,17 @@ $btn-active-border-tint-amount:   10%;
     background-color: transparent;
   }
 }
+
+.btn-group-vertical > .btn:not(:first-child) {
+  //margin-left: -1px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.btn-group > .btn-group:not(:first-child) > .btn {
+  border-bottom-right-radius: 0;
+}
+
+.btn-group > .btn-group:first-child > .btn {
+  border-bottom-left-radius: 0;
+}
