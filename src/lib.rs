@@ -35,6 +35,12 @@ struct NscopeTraces {
     current_head: usize,
 }
 
+impl NscopeTraces {
+    fn trace_gap(&self) -> usize {
+        self.num_samples / 120
+    }
+}
+
 struct NscopeHandle {
     bench: nscope::LabBench,
     device: Option<nscope::Nscope>,
@@ -171,6 +177,7 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("version", version_string)?;
     cx.export_function("newNscope", new_nscope)?;
     cx.export_function("monitorNscope", monitor::monitor_nscope)?;
+    cx.export_function("isConnected", monitor::is_connected)?;
     cx.export_function("setRunState", set_run_control)?;
     cx.export_function("getRunState", get_run_control)?;
     cx.export_function("setTimingParameters", set_timing_parameters)?;

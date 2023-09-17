@@ -56,10 +56,15 @@ let sliders_free = {
 export function update(pxState) {
 
     if (isEmpty(pxState)) {
+        for (let ch of ["P1", "P2"]) {
+            getId(`${ch}-controls`).classList.add("disabled");
+        }
         return;
     }
 
     for (let ch of ["P1", "P2"]) {
+        getId(`${ch}-controls`).classList.remove("disabled");
+
         if (pxState[ch].isOn) {
             getId(`${ch}-onoff`).classList.add("active");
         } else {

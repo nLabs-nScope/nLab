@@ -8,7 +8,7 @@
 
 $theme-colors: (
         primary: $blue,
-        secondary: $gray-600,
+        secondary: $gray-400,
         success: $green,
         info: $cyan,
         warning: $yellow,
@@ -24,14 +24,31 @@ $custom-colors: (dark-1l: $gray-800);
   background-color: var(--bs-dark-1l);
 }
 
-;
-
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
 @import "slider_style";
+@import "button_style";
 
 
 /* -------end customization-------- */
 /* finally, import Bootstrap to set the changes! */
 
 @import "~bootstrap/scss/bootstrap";
+
+
+@each $color, $value in $theme-colors {
+  .btn-outline-#{$color} {
+    @include button-outline-variant-custom($value);
+  }
+}
+
+.dropdown-menu {
+  background-color: $gray-800;
+  color: $gray-400;
+  border: 1px solid $gray-700;
+  box-shadow: 0px 0px 6px $gray-900;
+}
+
+.form-range::-webkit-slider-thumb, .form-range::-webkit-slider-runnable-track {
+  background-color: $gray-400;
+}

@@ -30,8 +30,13 @@ pub fn get_trigger_status(mut cx: FunctionContext) -> JsResult<JsObject> {
     let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
     let nscope_handle = js_nscope_handle.borrow();
 
-    let trigger_status = nscope_handle.trigger.to_object(&mut cx)?;
-    Ok(trigger_status)
+    if let Some(nscope) = &nscope_handle.device {
+        if nscope.is_connected() {
+            return Ok(nscope_handle.trigger.to_object(&mut cx)?);
+        }
+    }
+
+    Ok(cx.empty_object())
 }
 
 pub fn set_trigger_on(mut cx: FunctionContext) -> JsResult<JsNull> {

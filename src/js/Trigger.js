@@ -7,8 +7,10 @@ let slider_free = false;
 export function update(triggerState) {
 
     if (isEmpty(triggerState)) {
+        getId('trigger-controls').classList.add("disabled");
         return;
     }
+    getId('trigger-controls').classList.remove("disabled");
 
     if (triggerState.isOn) {
         getId('trigger-onoff').classList.add("active");

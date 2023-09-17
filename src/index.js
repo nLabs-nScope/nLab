@@ -193,6 +193,8 @@ function monitorScope() {
     let currentRunState = nscope.getRunState(nScope);
     runState.update(currentRunState);
 
+    timing.update();
+
     window.requestAnimationFrame(monitorScope);
 }
 

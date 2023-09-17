@@ -2,6 +2,19 @@ use neon::prelude::*;
 
 use crate::JsNscopeHandle;
 
+pub fn is_connected(mut cx: FunctionContext) -> JsResult<JsBoolean> {
+    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let nscope_handle = js_nscope_handle.borrow();
+
+    if let Some(nscope) = &nscope_handle.device {
+        if nscope.is_connected() {
+            return Ok(cx.boolean(true));
+        }
+    }
+
+    Ok(cx.boolean(false))
+}
+
 pub fn monitor_nscope(mut cx: FunctionContext) -> JsResult<JsObject> {
     let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
     let mut nscope_handle = js_nscope_handle.borrow_mut();

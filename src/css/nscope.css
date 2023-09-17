@@ -3,7 +3,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
- }
+}
 
 .sidebar > .btn-group-vertical {
     margin-top: 10px;
@@ -14,11 +14,15 @@ html, body {
     -ms-flex: 0 0 120px;
     flex: 0 0 120px;
 }
-.sidebar > *{
-    vertical-align:top;
+
+.sidebar > * {
+    vertical-align: top;
 }
 
-
+.btn:disabled, .btn.disabled, .disabled {
+    pointer-events: none;
+    opacity: 0.30;
+}
 
 /* remove border from focused or active items */
 :focus, :active, .active {
@@ -42,6 +46,7 @@ html, body {
 .dropright .dropdown-toggle {
     width: 20px;
 }
+
 .dropleft .dropdown-toggle {
     width: 20px;
 }
@@ -71,9 +76,11 @@ html, body {
 #horizontal-info {
     width: 140px;
 }
+
 #time-per-div {
     width: 80px;
 }
+
 #sample-rate {
     width: 60px;
     line-height: 0.9;

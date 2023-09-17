@@ -60,10 +60,14 @@ let sliders_free = {
 export function update(axState) {
 
     if (isEmpty(axState)) {
+        for (let ch of ["A1", "A2"]) {
+            getId(`${ch}-controls`).classList.add("disabled");
+        }
         return;
     }
 
     for (let ch of ["A1", "A2"]) {
+        getId(`${ch}-controls`).classList.remove("disabled");
         if (axState[ch].isOn) {
             getId(`${ch}-onoff`).classList.add("active");
         } else {
