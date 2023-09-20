@@ -26,7 +26,7 @@ impl Objectify for NscopeTraces {
 
                 if let Some(data) = sample.data[ch] {
                     let y_array: Handle<JsArray> = y_data.get(cx, ch as u32).unwrap();
-                    let y = cx.number(data);
+                    let y = cx.number(data * self.channel_gains[ch]);
                     y_array.set(cx, idx as u32, y)?;
                 }
             }

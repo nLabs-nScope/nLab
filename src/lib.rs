@@ -31,6 +31,7 @@ enum RunState {
 
 struct NscopeTraces {
     samples: Vec<nscope::Sample>,
+    channel_gains: [f64; nscope::Sample::num_channels() as usize],
     num_samples: usize,
     current_head: usize,
 }
@@ -84,6 +85,7 @@ fn new_nscope(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
         request_handle: None,
         traces: NscopeTraces {
             samples: vec![nscope::Sample::default(); 19200],
+            channel_gains: [1.0; nscope::Sample::num_channels() as usize],
             num_samples: 4800,
             current_head: 0,
         },
@@ -199,6 +201,7 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
 
     cx.export_function("getChStatus", analog_inputs::get_ch_status)?;
     cx.export_function("setChOn", analog_inputs::set_ch_on)?;
+    cx.export_function("setChGain", analog_inputs::set_ch_gain)?;
     cx.export_function("getSamplingChannels", analog_inputs::get_sampling_channels)?;
 
     cx.export_function("getTriggerStatus", trigger::get_trigger_status)?;
