@@ -11,7 +11,7 @@ impl Objectify for NscopeTraces {
         let x_data = JsArray::new(cx, nscope::Sample::num_channels());
         let y_data = JsArray::new(cx, nscope::Sample::num_channels());
 
-        for ch in 0u32..nscope::Sample::num_channels() {
+        for ch in 0u32..nscope::Sample::num_channels() + 1 {
             let empty_array = JsArray::new(cx, self.samples.len() as u32);
             x_data.set(cx, ch, empty_array)?;
             let empty_array = JsArray::new(cx, self.samples.len() as u32);
@@ -26,7 +26,7 @@ impl Objectify for NscopeTraces {
 
                 if let Some(data) = sample.data[ch] {
                     let y_array: Handle<JsArray> = y_data.get(cx, ch as u32).unwrap();
-                    let y = cx.number(data * self.channel_gains[ch]);
+                    let y = cx.number(data);
                     y_array.set(cx, idx as u32, y)?;
                 }
             }

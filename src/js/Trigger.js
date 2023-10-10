@@ -1,5 +1,5 @@
 import {getId, isEmpty} from './Utils.js';
-import {colors} from '../index.js';
+import {colors} from './Axes.js';
 
 
 let slider_free = false;

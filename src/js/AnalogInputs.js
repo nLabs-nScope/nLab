@@ -4,6 +4,7 @@ import * as timing from './Timing.js'
 let sliders_free = {}
 for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
     sliders_free[`${ch}-scale`] = true;
+    // sliders_free[`${ch}-offset`] = true;
 }
 
 function gainToString(gain) {
@@ -41,6 +42,28 @@ function valToGain(val) {
 function gainToVal(gain) {
     return Math.log10(gain) * 100.0 / Math.log10(20);
 }
+//
+//
+// function valToOffset(val) {
+//     val = parseFloat(val);
+//     return val / 100.0 * 10.0 - 5.0;
+// }
+//
+// function offsetToVal(level) {
+//     return (level + 5.0) / 10.0 * 100.0;
+// }
+//
+//
+// function offsetToString(level) {
+//     let offsetString = {};
+//     if (Math.abs(level) < 0.99) {
+//         offsetString.number = level.toPrecision(1);
+//     } else {
+//         offsetString.number = level.toPrecision(2);
+//     }
+//     offsetString.unit = 'V';
+//     return offsetString
+// }
 
 export function update(chState) {
 
@@ -100,5 +123,23 @@ for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
     getId(`${ch}-scale`).addEventListener('mouseup', function () {
         sliders_free[`${ch}-scale`] = true;
     });
+
+
+//     getId(`${ch}-offset`).oninput = getId(`${ch}-offset`).onchange = function () {
+//         sliders_free[`${ch}-offset`] = false;
+//         let label = this.labels[0];
+//         let offset = valToOffset(this.value);
+//         // nscope.setTriggerLevel(nScope, level);
+//         let offsetString = offsetToString(offset);
+//         label.textContent = offsetString.number;
+//         label.nextElementSibling.textContent = offsetString.unit;
+//         // nscope.reTriggerIfNotTriggered(nScope);
+//     }
+//
+//
+//     getId(`${ch}-offset`).addEventListener('mouseup', function () {
+//         sliders_free[`${ch}-offset`] = true;
+//     });
+
 }
 

@@ -97,11 +97,11 @@ pub fn set_ch_gain(mut cx: FunctionContext) -> JsResult<JsNull> {
 
     if let Some(nscope) = &mut nscope_handle.device {
         if nscope.is_connected() {
-            let (scope_channel, idx) = match channel.as_str() {
-                "Ch1" => (&mut nscope.ch1, 0),
-                "Ch2" => (&mut nscope.ch2, 1),
-                "Ch3" => (&mut nscope.ch3, 2),
-                "Ch4" => (&mut nscope.ch4, 3),
+            let scope_channel = match channel.as_str() {
+                "Ch1" => &mut nscope.ch1,
+                "Ch2" => &mut nscope.ch2,
+                "Ch3" => &mut nscope.ch3,
+                "Ch4" => &mut nscope.ch4,
                 _ => panic!("Invalid channel string"),
             };
 
@@ -109,7 +109,6 @@ pub fn set_ch_gain(mut cx: FunctionContext) -> JsResult<JsNull> {
             let vmin = -5.0 / gain;
             let vmax = 5.0 / gain;
             scope_channel.set_range(vmin, vmax);
-            nscope_handle.traces.channel_gains[idx] = gain;
         }
     }
 

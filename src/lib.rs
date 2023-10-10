@@ -31,7 +31,6 @@ enum RunState {
 
 struct NscopeTraces {
     samples: Vec<nscope::Sample>,
-    channel_gains: [f64; nscope::Sample::num_channels() as usize],
     num_samples: usize,
     current_head: usize,
 }
@@ -85,7 +84,6 @@ fn new_nscope(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
         request_handle: None,
         traces: NscopeTraces {
             samples: vec![nscope::Sample::default(); 19200],
-            channel_gains: [1.0; nscope::Sample::num_channels() as usize],
             num_samples: 4800,
             current_head: 0,
         },
