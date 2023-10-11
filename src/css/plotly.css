@@ -2,17 +2,10 @@
     cursor: default !important;
 }
 
-.shapelayer > [data-index="2"] {
+.shapelayer > .shape-group {
     clip-path: none !important;
 }
 
-
-/* For modifying the editable function of shapes
-.shapelayer > .visual-cue {
-    visibility: hidden;
+.shapelayer path {
+    pointer-events: all !important;
 }
-
-.shapelayer > [data-index="0"] {
-    pointer-events: none !important;
-}
- */

@@ -1,7 +1,5 @@
 export function drawShapes(trigger_status) {
 
-
-
     return [
         { // Shape 0 is the vertical trigger line
             type: 'line',
@@ -56,3 +54,29 @@ export function drawShapes(trigger_status) {
         },
     ]
 }
+
+let dragging_anything = false;
+export function attachEventListeners() {
+
+    let shape = document.querySelector('.shapelayer .shape-group[data-index="2"]');
+    if (shape) {
+        shape.addEventListener('mousedown', () => {
+            console.log("got data index 2");
+            dragging_anything = true;
+        });
+    }
+}
+
+
+window.addEventListener('mousemove', () => {
+    if(dragging_anything) {
+        console.log("MOVE!");
+    }
+});
+
+window.addEventListener('mouseup', () => {
+    if(dragging_anything) {
+        dragging_anything = false;
+        console.log("up!");
+    }
+});

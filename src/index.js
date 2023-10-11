@@ -13,6 +13,7 @@ import * as timing from './js/Timing.js'
 import * as trigger from './js/Trigger.js'
 import * as flags from './js/Flags.js'
 import * as axes from './js/Axes.js'
+import {getId} from './js/Utils.js'
 
 const Plotly = require('plotly.js-basic-dist');
 
@@ -124,6 +125,7 @@ function updatePlot() {
 }
 
 Plotly.newPlot('scope-graph', traces, layout, config);
+getId('scope-graph').on('plotly_afterplot', flags.attachEventListeners)
 
 function monitorScope() {
 
