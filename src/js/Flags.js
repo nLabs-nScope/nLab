@@ -95,6 +95,7 @@ export function drawShapes(triggerState, chState) {
 }
 
 let current_drag = null;
+
 function attachEventListeners() {
     let gd = getId('scope-graph')
     let shape = document.querySelector('.shapelayer .shape-group[data-index="3"]');
@@ -116,12 +117,18 @@ export function initDragEvents() {
     gd.on('plotly_afterplot', attachEventListeners)
 
     window.addEventListener('mousemove', (event) => {
-        if(current_drag == null) {
+        if (current_drag == null) {
             return;
         }
-        if(["Ch1", "Ch2", "Ch3", "Ch4"].includes(current_drag.adjust)) {
-            let delta = current_drag.startY - event.pageY;
-            let new_zero_pixel = current_drag.startZP - delta;
+        if (["Ch1", "Ch2", "Ch3", "Ch4"].includes(current_drag.adjust)) {
+            let delta = event.pageY - current_drag.startY;
+            let new_zero_pixel = current_drag.startZP + delta;
+            if (new_zero_pixel < 10) {
+                new_zero_pixel = 10;
+            } else if (new_zero_pixel > current_drag.yaxis._length - 10) {
+                new_zero_pixel = current_drag.yaxis._length - 10;
+            }
+
             let new_center = current_drag.yaxis.p2r(new_zero_pixel);
             let range = current_drag.yaxis.range;
             ranges[current_drag.adjust] = [
@@ -132,7 +139,7 @@ export function initDragEvents() {
 
     });
     window.addEventListener('mouseup', (event) => {
-        if(current_drag) {
+        if (current_drag) {
             current_drag = null;
         }
     });
