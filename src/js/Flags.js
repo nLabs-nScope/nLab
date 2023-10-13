@@ -99,6 +99,7 @@ let current_drag = null;
 function attachEventListeners() {
     let gd = getId('scope-graph')
     let shape = document.querySelector('.shapelayer .shape-group[data-index="3"]');
+    shape.style.cursor = "grab";
     if (shape) {
         shape.addEventListener('mousedown', (event) => {
             current_drag = {
@@ -120,6 +121,8 @@ export function initDragEvents() {
         if (current_drag == null) {
             return;
         }
+        document.body.setAttribute('style', 'cursor: grab !important');
+
         if (["Ch1", "Ch2", "Ch3", "Ch4"].includes(current_drag.adjust)) {
             let delta = event.pageY - current_drag.startY;
             let new_zero_pixel = current_drag.startZP + delta;
@@ -141,6 +144,7 @@ export function initDragEvents() {
     window.addEventListener('mouseup', (event) => {
         if (current_drag) {
             current_drag = null;
+            document.body.removeAttribute('style');
         }
     });
 }
