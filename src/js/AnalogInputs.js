@@ -1,10 +1,10 @@
-import { getId, isEmpty } from './Utils.js';
+import {getId, isEmpty} from './Utils.js';
+import {ranges} from './Axes.js'
 import * as timing from './Timing.js'
 
 let sliders_free = {}
 for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
     sliders_free[`${ch}-scale`] = true;
-    // sliders_free[`${ch}-offset`] = true;
 }
 
 function gainToString(gain) {
@@ -29,12 +29,12 @@ function gainToString(gain) {
 
 function valToGain(val) {
     val = parseFloat(val);
-    let gain = Math.pow(10, val  / 100.0 * Math.log10(20));
+    let gain = Math.pow(10, val / 100.0 * Math.log10(20));
 
     // return gain;
     let gains = [1, 2, 4, 5, 10, 20];
 
-    return gains.reduce(function(prev, curr) {
+    return gains.reduce(function (prev, curr) {
         return (Math.abs(curr - gain) < Math.abs(prev - gain) ? curr : prev);
     });
 }
@@ -42,28 +42,6 @@ function valToGain(val) {
 function gainToVal(gain) {
     return Math.log10(gain) * 100.0 / Math.log10(20);
 }
-//
-//
-// function valToOffset(val) {
-//     val = parseFloat(val);
-//     return val / 100.0 * 10.0 - 5.0;
-// }
-//
-// function offsetToVal(level) {
-//     return (level + 5.0) / 10.0 * 100.0;
-// }
-//
-//
-// function offsetToString(level) {
-//     let offsetString = {};
-//     if (Math.abs(level) < 0.99) {
-//         offsetString.number = level.toPrecision(1);
-//     } else {
-//         offsetString.number = level.toPrecision(2);
-//     }
-//     offsetString.unit = 'V';
-//     return offsetString
-// }
 
 export function update(chState) {
 
@@ -92,7 +70,7 @@ export function update(chState) {
 
         getId(`${ch}-status`).innerHTML = scaleString.number + ' ' + scaleString.unit;
 
-        if(sliders_free[`${ch}-scale`]) {
+        if (sliders_free[`${ch}-scale`]) {
             getId(`${ch}-scale`).value = gainToVal(chState[ch].gain);
         }
     }
@@ -109,10 +87,18 @@ for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
         sliders_free[`${ch}-scale`] = false;
         let label = this.labels[0];
         let gain = valToGain(this.value);
-        nscope.setChGain(nScope, ch, gain);
+
         let scaleString = gainToString(gain);
         label.textContent = scaleString.number;
         label.nextElementSibling.textContent = scaleString.unit;
+
+        let old_range = ranges[ch];
+        let percentage = (-old_range[0]) / (old_range[1] - old_range[0]);
+
+        ranges[ch][0] = -10.0 / gain * percentage;
+        ranges[ch][1] = ranges[ch][0] + 10.0 / gain
+
+        nscope.setChGain(nScope, ch, gain);
         nscope.reTriggerIfNotTriggered(nScope);
     }
 
@@ -123,23 +109,6 @@ for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
     getId(`${ch}-scale`).addEventListener('mouseup', function () {
         sliders_free[`${ch}-scale`] = true;
     });
-
-
-//     getId(`${ch}-offset`).oninput = getId(`${ch}-offset`).onchange = function () {
-//         sliders_free[`${ch}-offset`] = false;
-//         let label = this.labels[0];
-//         let offset = valToOffset(this.value);
-//         // nscope.setTriggerLevel(nScope, level);
-//         let offsetString = offsetToString(offset);
-//         label.textContent = offsetString.number;
-//         label.nextElementSibling.textContent = offsetString.unit;
-//         // nscope.reTriggerIfNotTriggered(nScope);
-//     }
-//
-//
-//     getId(`${ch}-offset`).addEventListener('mouseup', function () {
-//         sliders_free[`${ch}-offset`] = true;
-//     });
 
 }
 

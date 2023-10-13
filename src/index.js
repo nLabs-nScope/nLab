@@ -13,7 +13,7 @@ import * as timing from './js/Timing.js'
 import * as trigger from './js/Trigger.js'
 import * as flags from './js/Flags.js'
 import * as axes from './js/Axes.js'
-import {getId} from './js/Utils.js'
+import {idFromCh} from './js/Utils.js'
 
 const Plotly = require('plotly.js-basic-dist');
 
@@ -42,13 +42,13 @@ var config = {
 
 let traces = [];
 
-for (let ch = 0; ch < 4; ch++) {
+for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
     traces.push(
         {
             x: [],
             y: [],
             line: {color: axes.colors[ch], width: 2},
-            yaxis: `y${ch + 2}`
+            yaxis: `y${idFromCh(ch) + 1}`
         })
 }
 
@@ -91,10 +91,10 @@ var layout = {
         linewidth: 1,
         mirror: true
     },
-    yaxis2: axes.channel_axis(1, 1),
-    yaxis3: axes.channel_axis(2, 1),
-    yaxis4: axes.channel_axis(3, 1),
-    yaxis5: axes.channel_axis(4, 1),
+    yaxis2: axes.channel_axis("Ch1"),
+    yaxis3: axes.channel_axis("Ch2"),
+    yaxis4: axes.channel_axis("Ch3"),
+    yaxis5: axes.channel_axis("Ch4"),
     shapes: []
 };
 
@@ -102,11 +102,13 @@ var layout = {
 function updatePlot() {
 
     // Add the trigger shapes
-    let trigger_status = nscope.getTriggerStatus(nScope);
-    let shapes = flags.drawShapes(trigger_status);
+    let triggerState = nscope.getTriggerStatus(nScope);
+    let chState = nscope.getChStatus(nScope);
+
+    let shapes = flags.drawShapes(triggerState, chState);
 
     // Update the axes
-    let chState = nscope.getChStatus(nScope);
+
     let y_axes = axes.update(chState);
 
     let layout_data = {
@@ -125,7 +127,6 @@ function updatePlot() {
 }
 
 Plotly.newPlot('scope-graph', traces, layout, config);
-getId('scope-graph').on('plotly_afterplot', flags.attachEventListeners)
 
 function monitorScope() {
 
@@ -156,6 +157,7 @@ monitorScope();
 pulseOutputs.initInput();
 analogOutputs.initInput();
 timing.initTiming();
+flags.initDragEvents();
 updatePlot();
 
 version_display.innerHTML = packageInfo.version;

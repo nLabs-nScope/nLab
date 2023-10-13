@@ -1,4 +1,19 @@
-export function drawShapes(trigger_status) {
+import {getId, isEmpty} from './Utils.js'
+import {colors, ranges} from './Axes.js'
+
+
+export function drawShapes(triggerState, chState) {
+
+    let draw_ch_flags = {}
+    if (isEmpty(chState)) {
+        for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
+            draw_ch_flags[ch] = false;
+        }
+    } else {
+        for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
+            draw_ch_flags[ch] = chState[ch].isOn;
+        }
+    }
 
     return [
         { // Shape 0 is the vertical trigger line
@@ -13,21 +28,21 @@ export function drawShapes(trigger_status) {
                 width: 3.0,
                 dash: 'dash'
             },
-            visible: trigger_status.isOn
+            visible: triggerState.isOn
         },
         { // Shape 1 is the horizontal trigger line
             type: 'line',
             layer: 'below',
             x0: 0,
-            y0: trigger_status.level,
+            y0: triggerState.level,
             x1: 12,
-            y1: trigger_status.level,
+            y1: triggerState.level,
             line: {
                 color: 'rgba(255,255,255,1)',
                 width: 3.0,
                 dash: 'dash'
             },
-            visible: trigger_status.isOn
+            visible: triggerState.isOn
         },
         { // Shape 2 is the triangle
             type: 'path',
@@ -45,38 +60,81 @@ export function drawShapes(trigger_status) {
             xsizemode: 'pixel',
             ysizemode: 'pixel',
             xanchor: 12,
-            yanchor: trigger_status.level,
+            yanchor: triggerState.level,
             fillcolor: 'rgba(255,255,255,1)',
             line: {
                 width: 0
             },
-            visible: trigger_status.isOn
+            visible: triggerState.isOn
+        },
+        { // Shape 3 is new
+            type: 'path',
+            label: {
+                text: "1",
+                font: {
+                    color: 'rgba(255,255,255,1)',
+                    size: 12,
+                },
+                textposition: 'middle left',
+                xanchor: 'left',
+                padding: 10,
+            },
+            path: 'M 0 0 L 10 7 L 26 7 L 26 -7 L 10 -7 Z',
+            xsizemode: 'pixel',
+            ysizemode: 'pixel',
+            xanchor: 12,
+            yanchor: 0,
+            yref: 'y2',
+            fillcolor: colors["Ch1"],
+            line: {
+                width: 0
+            },
+            visible: draw_ch_flags["Ch1"]
         },
     ]
 }
 
-let dragging_anything = false;
-export function attachEventListeners() {
-
-    let shape = document.querySelector('.shapelayer .shape-group[data-index="2"]');
+let current_drag = null;
+function attachEventListeners() {
+    let gd = getId('scope-graph')
+    let shape = document.querySelector('.shapelayer .shape-group[data-index="3"]');
     if (shape) {
-        shape.addEventListener('mousedown', () => {
-            console.log("got data index 2");
-            dragging_anything = true;
+        shape.addEventListener('mousedown', (event) => {
+            current_drag = {
+                "adjust": "Ch1",
+                "startX": event.pageX,
+                "startY": event.pageY,
+                "yaxis": gd._fullLayout.yaxis2,
+                "startZP": gd._fullLayout.yaxis2.r2p(0),
+            };
         });
     }
 }
 
+export function initDragEvents() {
+    let gd = getId('scope-graph')
+    gd.on('plotly_afterplot', attachEventListeners)
 
-window.addEventListener('mousemove', () => {
-    if(dragging_anything) {
-        console.log("MOVE!");
-    }
-});
+    window.addEventListener('mousemove', (event) => {
+        if(current_drag == null) {
+            return;
+        }
+        if(["Ch1", "Ch2", "Ch3", "Ch4"].includes(current_drag.adjust)) {
+            let delta = current_drag.startY - event.pageY;
+            let new_zero_pixel = current_drag.startZP - delta;
+            let new_center = current_drag.yaxis.p2r(new_zero_pixel);
+            let range = current_drag.yaxis.range;
+            ranges[current_drag.adjust] = [
+                range[0] - new_center,
+                range[1] - new_center
+            ]
+        }
 
-window.addEventListener('mouseup', () => {
-    if(dragging_anything) {
-        dragging_anything = false;
-        console.log("up!");
-    }
-});
+    });
+    window.addEventListener('mouseup', (event) => {
+        if(current_drag) {
+            current_drag = null;
+        }
+    });
+}
+
