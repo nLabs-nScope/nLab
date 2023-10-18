@@ -1,5 +1,5 @@
 import {getId, isEmpty} from './Utils.js';
-import {colors} from './Axes.js';
+import {colors, text_colors} from './Axes.js';
 
 
 let slider_free = false;
@@ -29,24 +29,12 @@ export function update(triggerState) {
             break;
     }
 
-    // source_display.innerHTML = triggerState.source;
-    switch (triggerState.source) {
-        case "Ch1":
-            source_display.style.backgroundColor = colors[0];
-            source_display.style.color = 'white';
-            break;
-        case "Ch2":
-            source_display.style.backgroundColor = colors[1];
-            source_display.style.color = 'black';
-            break;
-        case "Ch3":
-            source_display.style.backgroundColor = colors[2];
-            source_display.style.color = 'white';
-            break;
-        case "Ch4":
-            source_display.style.backgroundColor = colors[3];
-            source_display.style.color = 'black';
-            break;
+    if (triggerState.isOn) {
+        source_display.style.backgroundColor = colors[triggerState.source];
+        source_display.style.color = text_colors[triggerState.source];
+    } else {
+        source_display.style.backgroundColor = null;
+        source_display.style.color = null;
     }
 
     document.querySelector(`input[value=${triggerState.type}]`).checked = true;

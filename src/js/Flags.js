@@ -1,5 +1,5 @@
 import {getId, isEmpty, idFromCh} from './Utils.js'
-import {colors, ranges} from './Axes.js'
+import {colors, text_colors, ranges} from './Axes.js'
 
 
 function drawChannelFlag(ch, visible) {
@@ -8,7 +8,7 @@ function drawChannelFlag(ch, visible) {
         label: {
             text: `${idFromCh(ch)}`,
             font: {
-                color: 'rgba(255,255,255,1)',
+                color: text_colors[ch],
                 size: 12,
             },
             textposition: 'middle left',
@@ -47,6 +47,64 @@ function drawChannelZeroLine(ch, visible) {
     }
 }
 
+function drawTriggerShapes(triggerState) {
+    return [
+        {
+            type: 'line',
+            layer: 'below',
+            x0: 1,
+            y0: -5,
+            x1: 1,
+            y1: 5,
+            line: {
+                color: colors["Trigger"],
+                width: 2.0,
+                dash: 'dot'
+            },
+            visible: triggerState.isOn
+        },
+        { // Shape 1 is the horizontal trigger line
+            type: 'line',
+            layer: 'below',
+            x0: 0,
+            y0: triggerState.level,
+            x1: 12,
+            y1: triggerState.level,
+            yref: `y${idFromCh(triggerState.source) + 1}`,
+            line: {
+                color: colors["Trigger"],
+                width: 2.0,
+                dash: 'dot'
+            },
+            visible: triggerState.isOn
+        },
+        { // Shape 2 is the triangle
+            type: 'path',
+            label: {
+                text: "T",
+                font: {
+                    color: text_colors["Trigger"],
+                    size: 12,
+                },
+                textposition: 'middle left',
+                xanchor: 'left',
+                padding: 10,
+            },
+            path: 'M 0 0 L 10 7 L 26 7 L 26 -7 L 10 -7 Z',
+            xsizemode: 'pixel',
+            ysizemode: 'pixel',
+            xanchor: 12,
+            yanchor: triggerState.level,
+            yref: `y${idFromCh(triggerState.source) + 1}`,
+            fillcolor: colors["Trigger"],
+            line: {
+                width: 0
+            },
+            visible: triggerState.isOn
+        },
+    ]
+}
+
 export function drawShapes(triggerState, chState) {
 
     let shapes = []
@@ -67,59 +125,7 @@ export function drawShapes(triggerState, chState) {
         }
     }
 
-    return shapes.concat([
-        { // Shape 0 is the vertical trigger line
-            type: 'line',
-            layer: 'below',
-            x0: 1,
-            y0: -5,
-            x1: 1,
-            y1: 5,
-            line: {
-                color: 'rgba(255,255,255,1)',
-                width: 3.0,
-                dash: 'dash'
-            },
-            visible: triggerState.isOn
-        },
-        { // Shape 1 is the horizontal trigger line
-            type: 'line',
-            layer: 'below',
-            x0: 0,
-            y0: triggerState.level,
-            x1: 12,
-            y1: triggerState.level,
-            line: {
-                color: 'rgba(255,255,255,1)',
-                width: 3.0,
-                dash: 'dash'
-            },
-            visible: triggerState.isOn
-        },
-        { // Shape 2 is the triangle
-            type: 'path',
-            label: {
-                text: "T",
-                font: {
-                    color: 'rgba(0,0,0,1)',
-                    size: 12,
-                },
-                textposition: 'middle left',
-                xanchor: 'left',
-                padding: 10,
-            },
-            path: 'M 0 0 L 10 7 L 26 7 L 26 -7 L 10 -7 Z',
-            xsizemode: 'pixel',
-            ysizemode: 'pixel',
-            xanchor: 12,
-            yanchor: triggerState.level,
-            fillcolor: 'rgba(255,255,255,1)',
-            line: {
-                width: 0
-            },
-            visible: triggerState.isOn
-        },
-    ])
+    return shapes.concat(drawTriggerShapes(triggerState));
 }
 
 let current_drag = null;

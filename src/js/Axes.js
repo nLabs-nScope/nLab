@@ -4,8 +4,17 @@ export const colors = {
     "Ch1": 'rgb(233,102,86)',
     "Ch2": 'rgb(52,210,146)',
     "Ch3": 'rgb(58,176,226)',
-    "Ch4": 'rgb(246,216,97)'
+    "Ch4": 'rgb(246,216,97)',
+    "Trigger": 'rgb(255,255,255)',
 };
+
+export const text_colors = {
+    "Ch1": "white",
+    "Ch2": "black",
+    "Ch3": "white",
+    "Ch4": "black",
+    "Trigger": "black",
+}
 
 export var ranges = {
     "Ch1": [-5, 5],

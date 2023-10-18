@@ -81,9 +81,7 @@ var layout = {
     },
     yaxis: {
         showticklabels: false,
-        zeroline: true,
         zerolinecolor: '#FFFFFF',
-        zerolinewidth: 3,
         dtick: 1,
         fixedrange: true,
         range: [-5, 5],
