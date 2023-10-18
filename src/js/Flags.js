@@ -1,21 +1,73 @@
-import {getId, isEmpty} from './Utils.js'
+import {getId, isEmpty, idFromCh} from './Utils.js'
 import {colors, ranges} from './Axes.js'
 
 
+function drawChannelFlag(ch, visible) {
+    return {
+        type: 'path',
+        label: {
+            text: `${idFromCh(ch)}`,
+            font: {
+                color: 'rgba(255,255,255,1)',
+                size: 12,
+            },
+            textposition: 'middle left',
+            xanchor: 'left',
+            padding: 10,
+        },
+        path: 'M 0 0 L 10 7 L 26 7 L 26 -7 L 10 -7 Z',
+        xsizemode: 'pixel',
+        ysizemode: 'pixel',
+        xanchor: 12,
+        yanchor: 0,
+        yref: `y${idFromCh(ch) + 1}`,
+        fillcolor: colors[ch],
+        line: {
+            width: 0
+        },
+        visible: visible
+    }
+}
+
+function drawChannelZeroLine(ch, visible) {
+    return {
+        type: 'line',
+        // layer: 'below',
+        x0: 0,
+        y0: 0,
+        x1: 12,
+        y1: 0,
+        yref: `y${idFromCh(ch) + 1}`,
+        line: {
+            color: colors[ch],
+            width: 1.5,
+            dash: 'dot'
+        },
+        visible: visible
+    }
+}
+
 export function drawShapes(triggerState, chState) {
 
-    let draw_ch_flags = {}
+    let shapes = []
+
     if (isEmpty(chState)) {
         for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
-            draw_ch_flags[ch] = false;
+            shapes.push(drawChannelFlag(ch, false));
+        }
+        for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
+            shapes.push(drawChannelZeroLine(ch, false));
         }
     } else {
         for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
-            draw_ch_flags[ch] = chState[ch].isOn;
+            shapes.push(drawChannelFlag(ch, chState[ch].isOn));
+        }
+        for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
+            shapes.push(drawChannelZeroLine(ch, chState[ch].isOn));
         }
     }
 
-    return [
+    return shapes.concat([
         { // Shape 0 is the vertical trigger line
             type: 'line',
             layer: 'below',
@@ -67,49 +119,30 @@ export function drawShapes(triggerState, chState) {
             },
             visible: triggerState.isOn
         },
-        { // Shape 3 is new
-            type: 'path',
-            label: {
-                text: "1",
-                font: {
-                    color: 'rgba(255,255,255,1)',
-                    size: 12,
-                },
-                textposition: 'middle left',
-                xanchor: 'left',
-                padding: 10,
-            },
-            path: 'M 0 0 L 10 7 L 26 7 L 26 -7 L 10 -7 Z',
-            xsizemode: 'pixel',
-            ysizemode: 'pixel',
-            xanchor: 12,
-            yanchor: 0,
-            yref: 'y2',
-            fillcolor: colors["Ch1"],
-            line: {
-                width: 0
-            },
-            visible: draw_ch_flags["Ch1"]
-        },
-    ]
+    ])
 }
 
 let current_drag = null;
 
 function attachEventListeners() {
     let gd = getId('scope-graph')
-    let shape = document.querySelector('.shapelayer .shape-group[data-index="3"]');
-    shape.style.cursor = "grab";
-    if (shape) {
-        shape.addEventListener('mousedown', (event) => {
-            current_drag = {
-                "adjust": "Ch1",
-                "startX": event.pageX,
-                "startY": event.pageY,
-                "yaxis": gd._fullLayout.yaxis2,
-                "startZP": gd._fullLayout.yaxis2.r2p(0),
-            };
-        });
+
+    for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
+        let shapeIndex = idFromCh(ch) - 1
+        let axisIndex = `${idFromCh(ch) + 1}`
+        let shape = document.querySelector(`.shapelayer .shape-group[data-index="${shapeIndex}"]`);
+        if (shape) {
+            shape.style.cursor = "grab";
+            shape.addEventListener('mousedown', (event) => {
+                current_drag = {
+                    "adjust": ch,
+                    "startX": event.pageX,
+                    "startY": event.pageY,
+                    "yaxis": gd._fullLayout[`yaxis${axisIndex}`],
+                    "startZP": gd._fullLayout[`yaxis${axisIndex}`].r2p(0),
+                };
+            });
+        }
     }
 }
 

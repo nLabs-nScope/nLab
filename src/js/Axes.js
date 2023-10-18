@@ -21,7 +21,7 @@ export function channel_axis(ch) {
         range: ranges[ch],
         fixedrange: true,
         tickfont: {color: colors[ch]},
-        // showticklabels: false,
+        showticklabels: false,
         zeroline: false,
         showgrid: false,
         position: (idFromCh(ch)-1)/3.0,
