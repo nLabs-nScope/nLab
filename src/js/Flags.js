@@ -1,5 +1,6 @@
 import {getId, isEmpty, idFromCh} from './Utils.js'
 import {colors, text_colors, ranges} from './Axes.js'
+import {setAnalogInputRange} from "./AnalogInputs";
 
 
 function drawChannelFlag(ch, visible) {
@@ -182,6 +183,10 @@ export function initDragEvents() {
     });
     window.addEventListener('mouseup', (event) => {
         if (current_drag) {
+            if (["Ch1", "Ch2", "Ch3", "Ch4"].includes(current_drag.adjust)) {
+                setAnalogInputRange(current_drag.adjust);
+                nscope.restartTraces(nScope);
+            }
             current_drag = null;
             document.body.removeAttribute('style');
         }

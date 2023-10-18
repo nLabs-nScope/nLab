@@ -2,45 +2,47 @@ import {getId, isEmpty} from './Utils.js';
 import {ranges} from './Axes.js'
 import * as timing from './Timing.js'
 
+
+const gains = [1, 2, 4, 5, 10, 20];
 let sliders_free = {}
+
 for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
     sliders_free[`${ch}-scale`] = true;
+    getId(`${ch}-scale`).min = "0";
+    getId(`${ch}-scale`).max = `${gains.length-1}`
 }
 
-function gainToString(gain) {
+function gainString(ch) {
     let gainString = {};
-    let v_per_div = 1.0 / gain;
+    let v_per_div = (ranges[ch][1] - ranges[ch][0]) / 10.0;
 
-    if (v_per_div > 0.3) {
+    if (v_per_div >= 0.5) {
         gainString.number = v_per_div.toPrecision(1);
         gainString.unit = 'V / div';
-    } else if (v_per_div > 0.1) {
-        gainString.number = v_per_div.toPrecision(2);
-        gainString.unit = 'V / div';
+    } else if (v_per_div >= 0.1) {
+        let mv_per_div = v_per_div * 1000;
+        gainString.number = mv_per_div.toPrecision(3);
+        gainString.unit = 'mV / div';
     } else {
         let mv_per_div = v_per_div * 1000;
         gainString.number = mv_per_div.toPrecision(2);
         gainString.unit = 'mV / div';
     }
 
-
     return gainString
 }
 
 function valToGain(val) {
-    val = parseFloat(val);
-    let gain = Math.pow(10, val / 100.0 * Math.log10(20));
-
-    // return gain;
-    let gains = [1, 2, 4, 5, 10, 20];
-
-    return gains.reduce(function (prev, curr) {
-        return (Math.abs(curr - gain) < Math.abs(prev - gain) ? curr : prev);
-    });
+    console.log(val);
+    return gains[val];
 }
 
 function gainToVal(gain) {
-    return Math.log10(gain) * 100.0 / Math.log10(20);
+    return gains.indexOf(gain);
+}
+
+export function setAnalogInputRange(ch) {
+    nscope.setChRange(nScope, ch, ranges[ch][0]-0.2, ranges[ch][1]+0.2);
 }
 
 export function update(chState) {
@@ -64,7 +66,7 @@ export function update(chState) {
         }
 
         let label = getId(`${ch}-scale`).labels[0];
-        let scaleString = gainToString(chState[ch].gain);
+        let scaleString = gainString(ch);
         label.textContent = scaleString.number;
         label.nextElementSibling.textContent = scaleString.unit;
 
@@ -88,17 +90,17 @@ for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
         let label = this.labels[0];
         let gain = valToGain(this.value);
 
-        let scaleString = gainToString(gain);
-        label.textContent = scaleString.number;
-        label.nextElementSibling.textContent = scaleString.unit;
-
         let old_range = ranges[ch];
         let percentage = (-old_range[0]) / (old_range[1] - old_range[0]);
 
         ranges[ch][0] = -10.0 / gain * percentage;
-        ranges[ch][1] = ranges[ch][0] + 10.0 / gain
+        ranges[ch][1] = ranges[ch][0] + 10.0 / gain;
 
-        nscope.setChGain(nScope, ch, gain);
+        let scaleString = gainString(ch);
+        label.textContent = scaleString.number;
+        label.nextElementSibling.textContent = scaleString.unit;
+
+        setAnalogInputRange(ch);
         nscope.reTriggerIfNotTriggered(nScope);
     }
 

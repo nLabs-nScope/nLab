@@ -199,7 +199,7 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
 
     cx.export_function("getChStatus", analog_inputs::get_ch_status)?;
     cx.export_function("setChOn", analog_inputs::set_ch_on)?;
-    cx.export_function("setChGain", analog_inputs::set_ch_gain)?;
+    cx.export_function("setChRange", analog_inputs::set_ch_range)?;
     cx.export_function("getSamplingChannels", analog_inputs::get_sampling_channels)?;
 
     cx.export_function("getTriggerStatus", trigger::get_trigger_status)?;
