@@ -10,7 +10,10 @@ import * as analogOutputs from './js/AnalogOutputs.js'
 import * as analogInputs from './js/AnalogInputs.js'
 import * as runState from './js/RunState.js'
 import * as timing from './js/Timing.js'
-import * as trigger from './js/Trigger'
+import * as trigger from './js/Trigger.js'
+import * as flags from './js/Flags.js'
+import * as axes from './js/Axes.js'
+import {idFromCh} from './js/Utils.js'
 
 const Plotly = require('plotly.js-basic-dist');
 
@@ -37,6 +40,24 @@ var config = {
     displayModeBar: false
 }
 
+let traces = [];
+
+for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
+    traces.push(
+        {
+            x: [],
+            y: [],
+            line: {color: axes.colors[ch], width: 2},
+            yaxis: `y${idFromCh(ch) + 1}`
+        })
+}
+
+traces.push({
+    x: [],
+    y: [],
+    yaxis: "y1"
+})
+
 var layout = {
     margin: {
         l: 30,
@@ -60,9 +81,7 @@ var layout = {
     },
     yaxis: {
         showticklabels: false,
-        zeroline: true,
         zerolinecolor: '#FFFFFF',
-        zerolinewidth: 3,
         dtick: 1,
         fixedrange: true,
         range: [-5, 5],
@@ -70,98 +89,30 @@ var layout = {
         linewidth: 1,
         mirror: true
     },
-    shapes: [
-    { // Shape 0 is the vertical trigger line
-        type: 'line',
-        layer: 'below',
-        x0: 1,
-        y0: -5,
-        x1: 1,
-        y1: 5,
-        line: {
-            color: 'rgba(255,255,255,1)',
-            width: 3.0,
-            dash: 'dash'
-        },
-    },
-    { // Shape 1 is the vertical trigger line
-        type: 'line',
-        layer: 'below',
-        x0: 0,
-        y0: 0,
-        x1: 12,
-        y1: 0,
-        line: {
-            color: 'rgba(255,255,255,1)',
-            width: 3.0,
-            dash: 'dash'
-        },
-    },
-    { // Shape 2 is the triangle
-        type: 'path',
-        label: {
-            text: "T",
-            font: {
-                color: 'rgba(0,0,0,1)',
-                size: 14,
-            },
-            textposition: 'middle left',
-            xanchor: 'left',
-            padding: 8,
-        },
-        path: 'M 0 0 L 10 10 L 25 10 L 25 -10 L 10 -10 Z',
-        xsizemode: 'pixel',
-        ysizemode: 'pixel',
-        xanchor: 12,
-        yanchor: 0,
-        fillcolor: 'rgba(255,255,255,1)',
-        line: {
-            width: 0
-        }
-    },
-    ]
+    yaxis2: axes.channel_axis("Ch1"),
+    yaxis3: axes.channel_axis("Ch2"),
+    yaxis4: axes.channel_axis("Ch3"),
+    yaxis5: axes.channel_axis("Ch4"),
+    shapes: []
 };
 
-let traces = [];
-export const colors = [
-    'rgb(233,102,86)',
-    'rgb(52,210,146)',
-    'rgb(58,176,226)',
-    'rgb(246,216,97)'
-];
-for (let ch = 0; ch < 4; ch++) {
-    traces.push(
-        {
-            x: [],
-            y: [],
-            line: {color: colors[ch], width: 2}
-        })
-}
 
 function updatePlot() {
 
-    let layout_data = {};
-
     // Add the trigger shapes
-    let trigger_status = nscope.getTriggerStatus(nScope);
-    if (trigger_status.isOn) {
-        layout_data = {
-            'shapes[0].visible': true,
-            'shapes[1].visible': true,
-            'shapes[2].visible': true,
-        }
-    } else {
-        layout_data = {
-            'shapes[0].visible': false,
-            'shapes[1].visible': false,
-            'shapes[2].visible': false,
-        }
+    let triggerState = nscope.getTriggerStatus(nScope);
+    let chState = nscope.getChStatus(nScope);
+
+    let shapes = flags.drawShapes(triggerState, chState);
+
+    // Update the axes
+
+    let y_axes = axes.update(chState);
+
+    let layout_data = {
+        shapes: shapes,
+        ...y_axes,
     }
-
-    layout_data['shapes[1].y0'] = trigger_status.level;
-    layout_data['shapes[1].y1'] = trigger_status.level;
-    layout_data['shapes[2].yanchor'] = trigger_status.level;
-
 
     // Update the traces
     let trace_data = nscope.getTraces(nScope);
@@ -204,6 +155,7 @@ monitorScope();
 pulseOutputs.initInput();
 analogOutputs.initInput();
 timing.initTiming();
+flags.initDragEvents();
 updatePlot();
 
 version_display.innerHTML = packageInfo.version;

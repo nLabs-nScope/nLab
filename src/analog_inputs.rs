@@ -89,27 +89,28 @@ pub fn set_ch_on(mut cx: FunctionContext) -> JsResult<JsNull> {
     Ok(cx.null())
 }
 
-pub fn set_ch_gain(mut cx: FunctionContext) -> JsResult<JsNull> {
+pub fn set_ch_range(mut cx: FunctionContext) -> JsResult<JsNull> {
     let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
-    let gain = cx.argument::<JsNumber>(2)?.value(&mut cx);
+    let vmin = cx.argument::<JsNumber>(2)?.value(&mut cx);
+    let vmax = cx.argument::<JsNumber>(3)?.value(&mut cx);
     let mut nscope_handle = js_nscope_handle.borrow_mut();
 
     if let Some(nscope) = &mut nscope_handle.device {
         if nscope.is_connected() {
-            let (scope_channel, idx) = match channel.as_str() {
-                "Ch1" => (&mut nscope.ch1, 0),
-                "Ch2" => (&mut nscope.ch2, 1),
-                "Ch3" => (&mut nscope.ch3, 2),
-                "Ch4" => (&mut nscope.ch4, 3),
+            let scope_channel = match channel.as_str() {
+                "Ch1" => &mut nscope.ch1,
+                "Ch2" => &mut nscope.ch2,
+                "Ch3" => &mut nscope.ch3,
+                "Ch4" => &mut nscope.ch4,
                 _ => panic!("Invalid channel string"),
             };
 
-            let gain = gain.clamp(1.0, 20.0);
-            let vmin = -5.0 / gain;
-            let vmax = 5.0 / gain;
-            scope_channel.set_range(vmin, vmax);
-            nscope_handle.traces.channel_gains[idx] = gain;
+            let vmid = (vmin + vmax) / 2.0;
+            let range = (vmax - vmin).clamp(0.5, 10.0);
+            let lower_end = (vmid - range / 2.0).clamp(-5.0, 5.0 - range);
+            let upper_end = lower_end + range;
+            scope_channel.set_range(lower_end, upper_end);
         }
     }
 

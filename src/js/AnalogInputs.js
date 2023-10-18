@@ -1,45 +1,56 @@
-import { getId, isEmpty } from './Utils.js';
+import {getId, isEmpty} from './Utils.js';
+import {ranges} from './Axes.js'
 import * as timing from './Timing.js'
 
+
+const gains = [1, 2, 4, 5, 10, 20];
 let sliders_free = {}
+
 for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
     sliders_free[`${ch}-scale`] = true;
+    getId(`${ch}-scale`).min = "0";
+    getId(`${ch}-scale`).max = `${gains.length-1}`
 }
 
-function gainToString(gain) {
+function gainString(ch) {
     let gainString = {};
-    let v_per_div = 1.0 / gain;
+    let v_per_div = (ranges[ch][1] - ranges[ch][0]) / 10.0;
 
-    if (v_per_div > 0.3) {
+    if (v_per_div >= 0.5) {
         gainString.number = v_per_div.toPrecision(1);
         gainString.unit = 'V / div';
-    } else if (v_per_div > 0.1) {
-        gainString.number = v_per_div.toPrecision(2);
-        gainString.unit = 'V / div';
+    } else if (v_per_div >= 0.1) {
+        let mv_per_div = v_per_div * 1000;
+        gainString.number = mv_per_div.toPrecision(3);
+        gainString.unit = 'mV / div';
     } else {
         let mv_per_div = v_per_div * 1000;
         gainString.number = mv_per_div.toPrecision(2);
         gainString.unit = 'mV / div';
     }
 
-
     return gainString
 }
 
 function valToGain(val) {
-    val = parseFloat(val);
-    let gain = Math.pow(10, val  / 100.0 * Math.log10(20));
-
-    // return gain;
-    let gains = [1, 2, 4, 5, 10, 20];
-
-    return gains.reduce(function(prev, curr) {
-        return (Math.abs(curr - gain) < Math.abs(prev - gain) ? curr : prev);
-    });
+    return gains[val];
 }
 
 function gainToVal(gain) {
-    return Math.log10(gain) * 100.0 / Math.log10(20);
+    return gains.indexOf(gain);
+}
+
+export function setAnalogInputRange(ch) {
+
+
+    let triggerState = nscope.getTriggerStatus(nScope);
+    if(triggerState.level > ranges[ch][1]) {
+        nscope.setTriggerLevel(nScope, ranges[ch][1]);
+    }
+    if(triggerState.level < ranges[ch][0]) {
+        nscope.setTriggerLevel(nScope, ranges[ch][0]);
+    }
+    nscope.setChRange(nScope, ch, ranges[ch][0]-0.2, ranges[ch][1]+0.2);
 }
 
 export function update(chState) {
@@ -63,13 +74,13 @@ export function update(chState) {
         }
 
         let label = getId(`${ch}-scale`).labels[0];
-        let scaleString = gainToString(chState[ch].gain);
+        let scaleString = gainString(ch);
         label.textContent = scaleString.number;
         label.nextElementSibling.textContent = scaleString.unit;
 
         getId(`${ch}-status`).innerHTML = scaleString.number + ' ' + scaleString.unit;
 
-        if(sliders_free[`${ch}-scale`]) {
+        if (sliders_free[`${ch}-scale`]) {
             getId(`${ch}-scale`).value = gainToVal(chState[ch].gain);
         }
     }
@@ -86,10 +97,18 @@ for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
         sliders_free[`${ch}-scale`] = false;
         let label = this.labels[0];
         let gain = valToGain(this.value);
-        nscope.setChGain(nScope, ch, gain);
-        let scaleString = gainToString(gain);
+
+        let old_range = ranges[ch];
+        let percentage = (-old_range[0]) / (old_range[1] - old_range[0]);
+
+        ranges[ch][0] = -10.0 / gain * percentage;
+        ranges[ch][1] = ranges[ch][0] + 10.0 / gain;
+
+        let scaleString = gainString(ch);
         label.textContent = scaleString.number;
         label.nextElementSibling.textContent = scaleString.unit;
+
+        setAnalogInputRange(ch);
         nscope.reTriggerIfNotTriggered(nScope);
     }
 
@@ -100,5 +119,6 @@ for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
     getId(`${ch}-scale`).addEventListener('mouseup', function () {
         sliders_free[`${ch}-scale`] = true;
     });
+
 }
 
