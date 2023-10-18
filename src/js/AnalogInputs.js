@@ -33,7 +33,6 @@ function gainString(ch) {
 }
 
 function valToGain(val) {
-    console.log(val);
     return gains[val];
 }
 
@@ -42,6 +41,15 @@ function gainToVal(gain) {
 }
 
 export function setAnalogInputRange(ch) {
+
+
+    let triggerState = nscope.getTriggerStatus(nScope);
+    if(triggerState.level > ranges[ch][1]) {
+        nscope.setTriggerLevel(nScope, ranges[ch][1]);
+    }
+    if(triggerState.level < ranges[ch][0]) {
+        nscope.setTriggerLevel(nScope, ranges[ch][0]);
+    }
     nscope.setChRange(nScope, ch, ranges[ch][0]-0.2, ranges[ch][1]+0.2);
 }
 

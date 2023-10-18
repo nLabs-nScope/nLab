@@ -50,36 +50,7 @@ function drawChannelZeroLine(ch, visible) {
 
 function drawTriggerShapes(triggerState) {
     return [
-        {
-            type: 'line',
-            layer: 'below',
-            x0: 1,
-            y0: -5,
-            x1: 1,
-            y1: 5,
-            line: {
-                color: colors["Trigger"],
-                width: 2.0,
-                dash: 'dot'
-            },
-            visible: triggerState.isOn
-        },
-        { // Shape 1 is the horizontal trigger line
-            type: 'line',
-            layer: 'below',
-            x0: 0,
-            y0: triggerState.level,
-            x1: 12,
-            y1: triggerState.level,
-            yref: `y${idFromCh(triggerState.source) + 1}`,
-            line: {
-                color: colors["Trigger"],
-                width: 2.0,
-                dash: 'dot'
-            },
-            visible: triggerState.isOn
-        },
-        { // Shape 2 is the triangle
+        { // Flag shape
             type: 'path',
             label: {
                 text: "T",
@@ -100,6 +71,35 @@ function drawTriggerShapes(triggerState) {
             fillcolor: colors["Trigger"],
             line: {
                 width: 0
+            },
+            visible: triggerState.isOn
+        },
+        { // Horizontal Line
+            type: 'line',
+            layer: 'below',
+            x0: 0,
+            y0: triggerState.level,
+            x1: 12,
+            y1: triggerState.level,
+            yref: `y${idFromCh(triggerState.source) + 1}`,
+            line: {
+                color: colors["Trigger"],
+                width: 2.0,
+                dash: 'dot'
+            },
+            visible: triggerState.isOn
+        },
+        {
+            type: 'line',
+            layer: 'below',
+            x0: 1,
+            y0: -5,
+            x1: 1,
+            y1: 5,
+            line: {
+                color: colors["Trigger"],
+                width: 2.0,
+                dash: 'dot'
             },
             visible: triggerState.isOn
         },
@@ -134,6 +134,7 @@ let current_drag = null;
 function attachEventListeners() {
     let gd = getId('scope-graph')
 
+    // Add mousedown handlers for each channel flag
     for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
         let shapeIndex = idFromCh(ch) - 1
         let axisIndex = `${idFromCh(ch) + 1}`
@@ -151,6 +152,25 @@ function attachEventListeners() {
             });
         }
     }
+
+    // Add a mousedown handler for the trigger flag
+    let shapeIndex = 8; // Number of scope channels * 2
+    let triggerState = nscope.getTriggerStatus(nScope);
+    let axisIndex = `${idFromCh(triggerState.source) + 1}`
+    let shape = document.querySelector(`.shapelayer .shape-group[data-index="${shapeIndex}"]`);
+    if (shape) {
+        shape.style.cursor = "grab";
+        shape.addEventListener('mousedown', (event) => {
+            current_drag = {
+                "adjust": "Trigger",
+                "startX": event.pageX,
+                "startY": event.pageY,
+                "yaxis": gd._fullLayout[`yaxis${axisIndex}`],
+                "startZP": gd._fullLayout[`yaxis${axisIndex}`].r2p(triggerState.level),
+            };
+        });
+    }
+
 }
 
 export function initDragEvents() {
@@ -178,6 +198,12 @@ export function initDragEvents() {
                 range[0] - new_center,
                 range[1] - new_center
             ]
+        } else if (current_drag.adjust === "Trigger") {
+            let delta = event.pageY - current_drag.startY;
+            let new_trigger_pixel = current_drag.startZP + delta;
+            let new_trigger_level = current_drag.yaxis.p2r(new_trigger_pixel);
+            nscope.setTriggerLevel(nScope, new_trigger_level);
+            nscope.reTriggerIfNotTriggered(nScope);
         }
 
     });
