@@ -26,7 +26,7 @@
     "cargo-cp-artifact": "^0.1",
     "concurrently": "^7.1.0",
     "css-loader": "^6.7.1",
-    "electron": "^26.2.0",
+    "electron": "^26.2.4",
     "electron-reload": "^1.5.0",
     "ify-loader": "^1.1.0",
     "mini-css-extract-plugin": "^2.6.0",
