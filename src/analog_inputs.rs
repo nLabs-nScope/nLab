@@ -8,9 +8,7 @@ impl Objectify for AnalogInput {
         let obj = cx.empty_object();
 
         let is_on = cx.boolean(self.is_on());
-        let gain = cx.number(self.gain());
         obj.set(cx, "isOn", is_on)?;
-        obj.set(cx, "gain", gain)?;
 
         Ok(obj)
     }

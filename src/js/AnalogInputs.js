@@ -12,9 +12,13 @@ for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
     getId(`${ch}-scale`).max = `${gains.length-1}`
 }
 
+function chGain(ch) {
+    return 10.0 / (ranges[ch][1] - ranges[ch][0]);
+}
+
 function gainString(ch) {
     let gainString = {};
-    let v_per_div = (ranges[ch][1] - ranges[ch][0]) / 10.0;
+    let v_per_div = 1 / chGain(ch);
 
     if (v_per_div >= 0.5) {
         gainString.number = v_per_div.toPrecision(1);
@@ -37,6 +41,7 @@ function valToGain(val) {
 }
 
 function gainToVal(gain) {
+    gain = Math.round(gain);
     return gains.indexOf(gain);
 }
 
@@ -81,7 +86,7 @@ export function update(chState) {
         getId(`${ch}-status`).innerHTML = scaleString.number + ' ' + scaleString.unit;
 
         if (sliders_free[`${ch}-scale`]) {
-            getId(`${ch}-scale`).value = gainToVal(chState[ch].gain);
+            getId(`${ch}-scale`).value = gainToVal(chGain(ch));
         }
     }
 }

@@ -47,7 +47,7 @@ for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
         {
             x: [],
             y: [],
-            line: {color: axes.colors[ch], width: 2},
+            line: {color: axes.colors[ch], width: 1},
             yaxis: `y${idFromCh(ch) + 1}`
         })
 }
@@ -61,9 +61,9 @@ traces.push({
 var layout = {
     margin: {
         l: 30,
-        t: 1,
+        t: 10,
         r: 30,
-        b: 0
+        b: 1
     },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
@@ -73,19 +73,23 @@ var layout = {
         showticklabels: false,
         zeroline: false,
         dtick: 1,
+        showgrid: true,
         fixedrange: true,
         range: [0, 12],
-        linecolor: 'rgba(255,255,255,1)',
+        gridcolor: 'rgba(100,100,100,1)',
+        linecolor: 'rgba(100,100,100,1)',
         linewidth: 1,
         mirror: true
     },
     yaxis: {
         showticklabels: false,
-        zerolinecolor: '#FFFFFF',
+        zeroline: false,
+        showgrid: true,
         dtick: 1,
         fixedrange: true,
         range: [-5, 5],
-        linecolor: 'rgba(255,255,255,1)',
+        gridcolor: 'rgba(100,100,100,1)',
+        linecolor: 'rgba(100,100,100,1)',
         linewidth: 1,
         mirror: true
     },
