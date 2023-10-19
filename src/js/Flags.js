@@ -203,15 +203,24 @@ export function initDragEvents() {
             let new_trigger_pixel = current_drag.startZP + delta;
             let new_trigger_level = current_drag.yaxis.p2r(new_trigger_pixel);
             nscope.setTriggerLevel(nScope, new_trigger_level);
-            nscope.reTriggerIfNotTriggered(nScope);
         }
 
     });
     window.addEventListener('mouseup', (event) => {
         if (current_drag) {
+
+            if(Math.abs(event.pageY - current_drag.startY) < 2) {
+                current_drag = null;
+                document.body.removeAttribute('style');
+                return;
+            }
+
             if (["Ch1", "Ch2", "Ch3", "Ch4"].includes(current_drag.adjust)) {
                 setAnalogInputRange(current_drag.adjust);
                 nscope.restartTraces(nScope);
+            }
+            if(current_drag.adjust === "Trigger") {
+                nscope.reTriggerIfNotTriggered(nScope);
             }
             current_drag = null;
             document.body.removeAttribute('style');
