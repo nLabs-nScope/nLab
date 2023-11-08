@@ -54,7 +54,7 @@ getId('trigger-onoff').onclick = function () {
     let checked = this.classList.contains("active");
     nscope.setTriggerOn(nScope, checked);
     if(checked) {
-        nscope.reTriggerIfNotTriggered(nScope);
+        nscope.restartTraces(nScope);
     }
 }
 
@@ -62,7 +62,7 @@ for (let button of document.querySelectorAll('input[name=trigger-source]')) {
     button.onchange = function () {
         let source = this.value;
         nscope.setTriggerSource(nScope, source);
-        nscope.reTriggerIfNotTriggered(nScope);
+        nscope.restartTraces(nScope);
     }
 }
 
