@@ -4,7 +4,6 @@ for (let button of document.querySelectorAll("input[name=run-control]")) {
     button.onchange = function () {
         const action = this.id;
         nscope.setRunState(nScope, action);
-
     }
 }
 
