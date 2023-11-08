@@ -104,9 +104,10 @@ fn set_run_control(mut cx: FunctionContext) -> JsResult<JsNull> {
             Run
         }
         "single" => {
-            if nscope_handle.sweep_handle.is_none() {
-                nscope_handle.traces.clear();
+            if nscope_handle.sweep_handle.is_some() {
+                nscope_handle.stop_request();
             }
+            nscope_handle.traces.clear();
             Single
         }
         "stop" => {
