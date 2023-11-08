@@ -60,9 +60,9 @@ pub fn get_traces(mut cx: FunctionContext) -> JsResult<JsObject> {
         return Ok(cx.empty_object());
     }
 
-    if nscope_handle.request_handle.is_none() {
+    if nscope_handle.sweep_handle.is_none() {
         if nscope_handle.run_state != RunState::Stopped {
-            nscope_handle.request_handle = Some(nscope_handle.get_device().request(
+            nscope_handle.sweep_handle = Some(nscope_handle.get_device().request(
                 nscope_handle.sample_rate,
                 nscope_handle.traces.num_samples as u32,
                 Some(nscope_handle.trigger)
@@ -74,7 +74,7 @@ pub fn get_traces(mut cx: FunctionContext) -> JsResult<JsObject> {
         }
     }
 
-    if nscope_handle.request_handle.is_some() {
+    if nscope_handle.sweep_handle.is_some() {
         loop {
             match nscope_handle.receiver().try_recv() {
                 Ok(sample) => {
@@ -93,7 +93,7 @@ pub fn get_traces(mut cx: FunctionContext) -> JsResult<JsObject> {
                     if nscope_handle.run_state == RunState::Single {
                         nscope_handle.run_state = RunState::Stopped;
                     }
-                    nscope_handle.request_handle = None;
+                    nscope_handle.sweep_handle = None;
                     break;
                 }
             }
