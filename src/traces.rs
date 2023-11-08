@@ -89,9 +89,12 @@ pub fn get_traces(mut cx: FunctionContext) -> JsResult<JsObject> {
                 Err(TryRecvError::Empty) => { break; }
                 Err(TryRecvError::Disconnected) => {
 
-                    // If we've ended a stream and we're single, this should have stopped.
-                    if nscope_handle.run_state == RunState::Single {
-                        nscope_handle.run_state = RunState::Stopped;
+                    // Check to see if we've completed a single sweep
+                    if nscope_handle.traces.num_samples == nscope_handle.traces.current_head {
+                        // If we've ended a stream and we're single, this should have stopped.
+                        if nscope_handle.run_state == RunState::Single {
+                            nscope_handle.run_state = RunState::Stopped;
+                        }
                     }
                     nscope_handle.sweep_handle = None;
                     break;
