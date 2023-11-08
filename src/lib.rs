@@ -47,7 +47,7 @@ struct NscopeHandle {
     run_state: RunState,
     trigger: Trigger,
     sample_rate: f64,
-    request_handle: Option<nscope::RequestHandle>,
+    sweep_handle: Option<nscope::SweepHandle>,
     traces: NscopeTraces,
 }
 
@@ -63,13 +63,13 @@ impl NscopeHandle {
     }
 
     fn stop_request(&self) {
-        if let Some(rq) = self.request_handle.as_ref() {
+        if let Some(rq) = self.sweep_handle.as_ref() {
             rq.stop();
         }
     }
 
     fn receiver(&self) -> &Receiver<nscope::Sample> {
-        &self.request_handle.as_ref().unwrap().receiver
+        &self.sweep_handle.as_ref().unwrap().receiver
     }
 }
 
@@ -81,7 +81,7 @@ fn new_nscope(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
         run_state: Run,
         trigger: Trigger::default(),
         sample_rate: 400.0,
-        request_handle: None,
+        sweep_handle: None,
         traces: NscopeTraces {
             samples: vec![nscope::Sample::default(); 19200],
             num_samples: 4800,
@@ -98,13 +98,13 @@ fn set_run_control(mut cx: FunctionContext) -> JsResult<JsNull> {
 
     nscope_handle.run_state = match state.as_str() {
         "run" => {
-            if nscope_handle.request_handle.is_none() {
+            if nscope_handle.sweep_handle.is_none() {
                 nscope_handle.traces.clear();
             }
             Run
         }
         "single" => {
-            if nscope_handle.request_handle.is_none() {
+            if nscope_handle.sweep_handle.is_none() {
                 nscope_handle.traces.clear();
             }
             Single
@@ -140,7 +140,7 @@ fn set_timing_parameters(mut cx: FunctionContext) -> JsResult<JsNull> {
 
     nscope_handle.sample_rate = sample_rate;
     nscope_handle.traces.num_samples = num_samples as usize;
-    if nscope_handle.request_handle.is_some() {
+    if nscope_handle.sweep_handle.is_some() {
         nscope_handle.stop_request();
         nscope_handle.traces.clear();
     }
@@ -152,7 +152,7 @@ fn restart_traces(mut cx: FunctionContext) -> JsResult<JsNull> {
     let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
     let mut nscope_handle = js_nscope_handle.borrow_mut();
 
-    if nscope_handle.request_handle.is_some() {
+    if nscope_handle.sweep_handle.is_some() {
         nscope_handle.stop_request();
         nscope_handle.traces.clear();
     }
@@ -165,7 +165,7 @@ fn restrigger_if_not_triggered(mut cx: FunctionContext) -> JsResult<JsNull> {
     let nscope_handle = js_nscope_handle.borrow();
 
 
-    if nscope_handle.request_handle.is_some() && nscope_handle.traces.current_head == 0 {
+    if nscope_handle.sweep_handle.is_some() && nscope_handle.traces.current_head == 0 {
         nscope_handle.stop_request();
     }
 
