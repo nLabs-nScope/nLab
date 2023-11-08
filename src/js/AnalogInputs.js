@@ -3,7 +3,7 @@ import {ranges} from './Axes.js'
 import * as timing from './Timing.js'
 
 
-const gains = [1, 2, 4, 5, 10, 20];
+const gains = [0.2, 0.5, 1, 2, 4, 5, 10, 20];
 let sliders_free = {}
 
 for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
