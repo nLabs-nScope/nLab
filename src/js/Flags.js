@@ -55,8 +55,8 @@ function drawTriggerShapes(triggerState) {
             label: {
                 text: "T",
                 font: {
-                    color: text_colors["Trigger"],
-                    size: 12,
+                    color: text_colors[triggerState.source],
+                    size: 10,
                 },
                 textposition: 'middle left',
                 xanchor: 'right',
@@ -68,9 +68,10 @@ function drawTriggerShapes(triggerState) {
             xanchor: 0,
             yanchor: triggerState.level,
             yref: `y${idFromCh(triggerState.source) + 1}`,
-            fillcolor: colors["Trigger"],
+            fillcolor: colors[triggerState.source],
             line: {
-                width: 0
+                width: 2,
+                color: colors["Trigger"],
             },
             visible: triggerState.isOn
         },
@@ -84,7 +85,7 @@ function drawTriggerShapes(triggerState) {
             yref: `y${idFromCh(triggerState.source) + 1}`,
             line: {
                 color: colors["Trigger"],
-                width: 2.0,
+                width: 1.5,
                 dash: 'dot'
             },
             visible: triggerState.isOn
@@ -209,7 +210,7 @@ export function initDragEvents() {
     window.addEventListener('mouseup', (event) => {
         if (current_drag) {
 
-            if(Math.abs(event.pageY - current_drag.startY) < 2) {
+            if (Math.abs(event.pageY - current_drag.startY) < 2) {
                 current_drag = null;
                 document.body.removeAttribute('style');
                 return;
@@ -219,7 +220,7 @@ export function initDragEvents() {
                 setAnalogInputRange(current_drag.adjust);
                 nscope.restartTraces(nScope);
             }
-            if(current_drag.adjust === "Trigger") {
+            if (current_drag.adjust === "Trigger") {
                 nscope.reTriggerIfNotTriggered(nScope);
             }
             current_drag = null;
