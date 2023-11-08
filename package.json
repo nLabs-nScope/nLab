@@ -21,6 +21,7 @@
     "@electron-forge/plugin-auto-unpack-natives": "^6.4",
     "@electron/notarize": "^2.1.0",
     "@electron/osx-sign": "^1.0.4",
+    "appdmg": "^0.6.6",
     "autoprefixer": "^10.4.4",
     "bootstrap": "^5.1",
     "cargo-cp-artifact": "^0.1",
