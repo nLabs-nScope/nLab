@@ -13,7 +13,7 @@ import * as timing from './js/Timing.js'
 import * as trigger from './js/Trigger.js'
 import * as flags from './js/Flags.js'
 import * as axes from './js/Axes.js'
-import {idFromCh} from './js/Utils.js'
+import {getId, idFromCh} from './js/Utils.js'
 
 const Plotly = require('plotly.js-basic-dist');
 
@@ -161,5 +161,4 @@ timing.initTiming();
 flags.initDragEvents();
 updatePlot();
 
-version_display.innerHTML = packageInfo.version;
-//nscope.version();
+getId('version-display').innerHTML = `v${packageInfo.version}`;
