@@ -86,3 +86,8 @@ html, body {
     line-height: 0.9;
     font-size: x-small;
 }
+
+#version-display {
+    font-size: x-small;
+    font-weight: 300;
+}
