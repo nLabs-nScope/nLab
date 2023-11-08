@@ -77,7 +77,7 @@ function drawTriggerShapes(triggerState) {
         },
         { // Horizontal Line
             type: 'line',
-            layer: 'below',
+            layer: 'above',
             x0: 0,
             y0: triggerState.level,
             x1: 12,
@@ -85,22 +85,22 @@ function drawTriggerShapes(triggerState) {
             yref: `y${idFromCh(triggerState.source) + 1}`,
             line: {
                 color: colors["Trigger"],
-                width: 1.5,
-                dash: 'dot'
+                width: 1.0,
+                dash: 'dot',
             },
             visible: triggerState.isOn
         },
         {
             type: 'line',
-            layer: 'below',
+            layer: 'above',
             x0: 1,
             y0: -5,
             x1: 1,
             y1: 5,
             line: {
                 color: colors["Trigger"],
-                width: 2.0,
-                dash: 'dot'
+                width: 1.0,
+                dash: 'dot',
             },
             visible: triggerState.isOn
         },
