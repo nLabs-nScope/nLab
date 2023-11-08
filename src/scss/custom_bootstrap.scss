@@ -9,10 +9,10 @@
 $theme-colors: (
         primary: $blue,
         secondary: $gray-400,
-        success: $green,
-        info: $cyan,
-        warning: $yellow,
-        danger: $red,
+        info: rgb(58,176,226),
+        success: rgb(52,210,146),
+        warning: rgb(246,216,97),
+        danger: rgb(233,102,86),
         light: $gray-100,
         dark: $gray-900
 );

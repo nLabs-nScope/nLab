@@ -110,8 +110,7 @@ function updatePlot() {
     let shapes = flags.drawShapes(triggerState, chState);
 
     // Update the axes
-
-    let y_axes = axes.update(chState);
+    let y_axes = axes.update();
 
     let layout_data = {
         shapes: shapes,
