@@ -202,7 +202,19 @@ export function initDragEvents() {
         } else if (current_drag.adjust === "Trigger") {
             let delta = event.pageY - current_drag.startY;
             let new_trigger_pixel = current_drag.startZP + delta;
+            if (new_trigger_pixel < 10) {
+                new_trigger_pixel = 10;
+            } else if (new_trigger_pixel > current_drag.yaxis._length - 10) {
+                new_trigger_pixel = current_drag.yaxis._length - 10;
+            }
+
             let new_trigger_level = current_drag.yaxis.p2r(new_trigger_pixel);
+            if (new_trigger_level < -4.5) {
+                new_trigger_level = -4.5;
+            } else if (new_trigger_level > 4.5) {
+                new_trigger_level = 4.5;
+            }
+
             nscope.setTriggerLevel(nScope, new_trigger_level);
         }
 
