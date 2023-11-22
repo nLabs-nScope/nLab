@@ -30,6 +30,7 @@ export function update(powerState)
     switch(powerState.state)
     {
         case "PowerOff":
+        case "Startup":
         {
             hide('usb-status-bar');
             hide('usb-status');
