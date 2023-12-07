@@ -18,12 +18,12 @@ function dutyToString(duty) {
 
 function valToFreq(val) {
     val = parseFloat(val);
-    let freq = Math.pow(10, val / 100.0 * 4.3);
+    let freq = Math.pow(10, val / 100.0 * Math.log10(20000));
     return freq;
 }
 
 function freqToVal(freq) {
-    let val = Math.log10(freq) / 4.3 * 100.0;
+    let val = Math.log10(freq) / Math.log10(20000) * 100.0;
     return val;
 }
 
@@ -85,8 +85,13 @@ export function update(pxState) {
         dutyLabel.textContent = dutyString.number;
         dutyLabel.nextElementSibling.textContent = dutyString.unit;
 
-        getId(`${ch}-freq`).value = freqToVal(pxState[ch].frequency);
-        getId(`${ch}-duty`).value = dutyToVal(pxState[ch].duty);
+        if(sliders_free[`${ch}-freq`]) {
+            getId(`${ch}-freq`).value = freqToVal(pxState[ch].frequency);
+        }
+
+        if(sliders_free[`${ch}-duty`]) {
+            getId(`${ch}-duty`).value = dutyToVal(pxState[ch].duty);
+        }
     }
 
 }
