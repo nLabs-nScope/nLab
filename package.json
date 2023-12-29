@@ -30,7 +30,7 @@
     "electron-reload": "^1.5.0",
     "ify-loader": "^1.1.0",
     "mini-css-extract-plugin": "^2.6.0",
-    "node-sass": "^9.0.0",
+    "node-gyp": "^10.0.1",
     "plotly.js-basic-dist": "^2.24",
     "postcss-loader": "^6.2.1",
     "run-script-os": "^1.1.6",
