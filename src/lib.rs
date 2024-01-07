@@ -43,6 +43,7 @@ impl NscopeTraces {
 
 struct NscopeHandle {
     bench: nscope::LabBench,
+    dfu_link: Option<nscope::NscopeLink>,
     device: Option<nscope::Nscope>,
     run_state: RunState,
     trigger: Trigger,
@@ -77,6 +78,7 @@ impl NscopeHandle {
 fn new_nscope(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
     let nscope_handle = NscopeHandle {
         bench: nscope::LabBench::new().expect("Creating LabBench"),
+        dfu_link: None,
         device: None,
         run_state: Run,
         trigger: Trigger::default(),
@@ -89,6 +91,16 @@ fn new_nscope(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
         },
     };
     Ok(cx.boxed(RefCell::new(nscope_handle)))
+}
+
+fn update_firmware(mut cx: FunctionContext) -> JsResult<JsNull> {
+    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let nscope_handle = js_nscope_handle.borrow_mut();
+
+    if let Some(link) = &nscope_handle.dfu_link {
+        link.update().unwrap();
+    }
+    Ok(cx.null())
 }
 
 fn set_run_control(mut cx: FunctionContext) -> JsResult<JsNull> {
@@ -179,6 +191,7 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("newNscope", new_nscope)?;
     cx.export_function("monitorNscope", monitor::monitor_nscope)?;
     cx.export_function("isConnected", monitor::is_connected)?;
+    cx.export_function("updateFirmware", update_firmware)?;
     cx.export_function("setRunState", set_run_control)?;
     cx.export_function("getRunState", get_run_control)?;
     cx.export_function("setTimingParameters", set_timing_parameters)?;
