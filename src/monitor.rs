@@ -27,6 +27,7 @@ pub fn monitor_nscope(mut cx: FunctionContext) -> JsResult<JsObject> {
 
     // If we are in dfu mode already, check to see if we still are
     if let Some(dfu) = nscope_handle.dfu_link.take() {
+        nscope_handle.requested_dfu = false;
         nscope_handle.dfu_link = dfu.validate();
     }
 
@@ -42,6 +43,11 @@ pub fn monitor_nscope(mut cx: FunctionContext) -> JsResult<JsObject> {
             nscope_handle.device = Some(scope);
         } else if let Some(link) = nscope_handle.bench.get_first_in_dfu() {
             nscope_handle.dfu_link = Some(link);
+        } else if let Some(link) = nscope_handle.bench.get_first_needing_update() {
+            if link.request_dfu().is_ok() {
+                nscope_handle.requested_dfu = true;
+            }
+
         }
     }
 
@@ -56,7 +62,7 @@ pub fn monitor_nscope(mut cx: FunctionContext) -> JsResult<JsObject> {
 
         power_status.set(&mut cx, "state", state)?;
         power_status.set(&mut cx, "usage", usage)?;
-    } else if nscope_handle.dfu_link.is_some() {
+    } else if nscope_handle.dfu_link.is_some() || nscope_handle.requested_dfu {
         let state = cx.string("DFU");
         power_status.set(&mut cx, "state", state)?;
     }

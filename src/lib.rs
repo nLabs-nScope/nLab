@@ -44,6 +44,7 @@ impl NscopeTraces {
 struct NscopeHandle {
     bench: nscope::LabBench,
     dfu_link: Option<nscope::NscopeLink>,
+    requested_dfu: bool,
     device: Option<nscope::Nscope>,
     run_state: RunState,
     trigger: Trigger,
@@ -79,6 +80,7 @@ fn new_nscope(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
     let nscope_handle = NscopeHandle {
         bench: nscope::LabBench::new().expect("Creating LabBench"),
         dfu_link: None,
+        requested_dfu: false,
         device: None,
         run_state: Run,
         trigger: Trigger::default(),
