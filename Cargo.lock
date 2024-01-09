@@ -184,7 +184,7 @@ dependencies = [
 [[package]]
 name = "nscope"
 version = "1.0.0"
-source = "git+https://github.com/nLabs-nScope/nscope-rs?branch=david/discover_nscope2#0797fa4e1041c1bb737e47fda0c0dfc8917809de"
+source = "git+https://github.com/nLabs-nScope/nscope-rs?branch=david/discover_nscope2#eb311923f10447d0c60599ec8fd8981f23b675c6"
 dependencies = [
  "dfu-libusb",
  "git-version",
