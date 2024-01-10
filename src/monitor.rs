@@ -55,13 +55,13 @@ pub fn monitor_nscope(mut cx: FunctionContext) -> JsResult<JsObject> {
     let power_status = cx.empty_object();
 
     if let Some(scope) = &nscope_handle.device {
-        let status = scope.power_status().expect("Cannot retrieve power status");
+        if let Ok(status) = scope.power_status() {
+            let state = cx.string(format!("{:?}", status.state));
+            let usage = cx.number(status.usage);
 
-        let state = cx.string(format!("{:?}", status.state));
-        let usage = cx.number(status.usage);
-
-        power_status.set(&mut cx, "state", state)?;
-        power_status.set(&mut cx, "usage", usage)?;
+            power_status.set(&mut cx, "state", state)?;
+            power_status.set(&mut cx, "usage", usage)?;
+        }
     } else if nscope_handle.dfu_link.is_some() || nscope_handle.requested_dfu {
         let state = cx.string("DFU");
         power_status.set(&mut cx, "state", state)?;

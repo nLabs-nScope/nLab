@@ -93,7 +93,7 @@ export function update(powerState) {
             if (previous_state !== "DFU") {
                 setTimeout(() => {
                     nscope.updateFirmware(nScope);
-                }, 100);
+                }, 1000);
             }
             break;
         }
