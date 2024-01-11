@@ -9,3 +9,7 @@ export function isEmpty(obj) {
 export function idFromCh(chString) {
     return parseInt(chString.slice(-1));
 }
+
+export function clamp(x, lower, upper) {
+    return Math.min(Math.max(x, lower), upper);
+}

@@ -1,4 +1,4 @@
-import {getId} from './Utils.js'
+import {getId, clamp} from './Utils.js'
 
 import '../css/power_status.css'
 
@@ -50,7 +50,21 @@ export function update(powerState) {
             var percentage = powerState.usage * 100 / 2.5;
             update.percentage = (update.percentage || 0.0) * 0.8 + percentage * 0.2;
 
-            getId('nscope-power-usage').style.width = `${update.percentage}%`;
+            getId('nscope-power-usage').style.width = `${clamp(update.percentage, 0, 100)}%`;
+
+            if(update.percentage > 98) {
+                getId('usb-status-bar').classList.remove('btn-outline-success');
+                getId('usb-status').classList.remove('btn-success');
+                getId('usb-status-bar').classList.add('btn-outline-warning');
+                getId('usb-status').classList.add('btn-warning');
+            } else {
+                getId('usb-status-bar')
+                getId('usb-status-bar').classList.add('btn-outline-success');
+                getId('usb-status').classList.add('btn-success');
+                getId('usb-status-bar').classList.remove('btn-outline-warning');
+                getId('usb-status').classList.remove('btn-warning');
+            }
+
 
             getId('usb-status-bar').innerHTML = `${(update.percentage / 100 * 2.5).toFixed(2)} W`;
             getId('usb-status').innerHTML = `${(update.percentage / 100 * 2.5).toFixed(2)} W`;
