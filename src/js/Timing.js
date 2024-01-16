@@ -83,7 +83,10 @@ export function setTiming() {
 export function update() {
     if (nscope.isConnected(nScope)) {
         getId("horizontal-info").classList.remove("disabled");
-        getId("horizontal-slider").classList.remove("disabled");
+        if (nscope.version < 0x0200) {
+            // TODO: remove this when support for variable sample rates is introduced
+            getId("horizontal-slider").classList.remove("disabled");
+        }
     } else {
         getId("horizontal-info").classList.add("disabled");
         getId("horizontal-slider").classList.add("disabled");

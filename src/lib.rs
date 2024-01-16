@@ -14,8 +14,19 @@ mod analog_inputs;
 mod traces;
 mod trigger;
 
-fn version_string(mut cx: FunctionContext) -> JsResult<JsString> {
-    Ok(cx.string(format!("{}", nscope::version())))
+fn version(mut cx: FunctionContext) -> JsResult<JsNumber> {
+    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let nscope_handle = js_nscope_handle.borrow();
+
+    if let Some(nscope) = &nscope_handle.device {
+        if nscope.is_connected() {
+            if let Ok(version) = nscope.version() {
+                return Ok(cx.number(version));
+            }
+        }
+    }
+
+    Ok(cx.number(-1))
 }
 
 trait Objectify {
@@ -127,7 +138,7 @@ fn set_run_control(mut cx: FunctionContext) -> JsResult<JsNull> {
         "stop" => {
             nscope_handle.stop_request();
             Stopped
-        },
+        }
         _ => panic!("Invalid run control string"),
     };
 
@@ -189,7 +200,7 @@ fn restrigger_if_not_triggered(mut cx: FunctionContext) -> JsResult<JsNull> {
 
 #[neon::main]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
-    cx.export_function("version", version_string)?;
+    cx.export_function("version", version)?;
     cx.export_function("newNscope", new_nscope)?;
     cx.export_function("monitorNscope", monitor::monitor_nscope)?;
     cx.export_function("isConnected", monitor::is_connected)?;
