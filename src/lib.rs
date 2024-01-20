@@ -200,6 +200,8 @@ fn restrigger_if_not_triggered(mut cx: FunctionContext) -> JsResult<JsNull> {
 
 #[neon::main]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
+    let _ = env_logger::try_init();
+
     cx.export_function("version", version)?;
     cx.export_function("newNscope", new_nscope)?;
     cx.export_function("monitorNscope", monitor::monitor_nscope)?;
@@ -227,7 +229,7 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("getChStatus", analog_inputs::get_ch_status)?;
     cx.export_function("setChOn", analog_inputs::set_ch_on)?;
     cx.export_function("setChRange", analog_inputs::set_ch_range)?;
-    cx.export_function("getSamplingChannels", analog_inputs::get_sampling_channels)?;
+    cx.export_function("getSamplingMultiplex", analog_inputs::get_sampling_multiplex)?;
 
     cx.export_function("getTriggerStatus", trigger::get_trigger_status)?;
     cx.export_function("setTriggerOn", trigger::set_trigger_on)?;
