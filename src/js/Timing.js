@@ -62,6 +62,24 @@ let time_per_div = {
     "4": time_per_div_4,
 }
 
+let time_per_div_v2 = [
+    ["1 s/div", "19.2k pts\n1.6k Sa/s", 19200, 1600.0],
+    ["500 ms/div", "19.2k pts\n3.2k Sa/s", 19200, 3200.0],
+    ["200 ms/div", "19.2k pts\n8k Sa/s", 19200, 8000.0],
+    ["100 ms/div", "9600 pts\n8k Sa/s", 9600, 8000.0],
+    ["50 ms/div", "6000 pts\n10k Sa/s", 6000, 10000.0],
+    ["20 ms/div", "2400 pts\n10k Sa/s", 2400, 10000.0],
+    ["10 ms/div", "2400 pts\n20k Sa/s", 2400, 20000.0],
+    ["5 ms/div", "2400 pts\n40k Sa/s", 2400, 40000.0],
+    ["2 ms/div", "2400 pts\n100k Sa/s", 2400, 100000.0],
+    ["1 ms/div", "2400 pts\n200k Sa/s", 2400, 200000.0],
+    ["500 µs/div", "2400 pts\n400k Sa/s", 2400, 400000.0],
+    ["200 µs/div", "2400 pts\n1M Sa/s", 2400, 1000000.0],
+    ["100 µs/div", "2400 pts\n2M Sa/s", 2400, 2000000.0],
+    ["50 µs/div", "1200 pts\n4M Sa/s", 1200, 2000000.0],
+    ["20 µs/div", "480 pts\n4M Sa/s", 480, 2000000.0],
+]
+
 export function initTiming() {
     getId("horizontal-slider").value = 2;
     getId("horizontal-slider").dispatchEvent(new Event('input'));
@@ -71,10 +89,21 @@ export function setTiming() {
     let time_slider_idx = getId("horizontal-slider").value
     let sampling_multiplex = nscope.getSamplingMultiplex(nScope)
 
-    getId("time-per-div").textContent = time_per_div[sampling_multiplex][time_slider_idx][0]
-    getId("sample-rate").textContent = time_per_div[sampling_multiplex][time_slider_idx][1]
-    let num_samples = time_per_div[sampling_multiplex][time_slider_idx][2];
-    let sample_rate = time_per_div[sampling_multiplex][time_slider_idx][3];
+    let num_samples = 0;
+    let sample_rate = 0;
+
+    if (nscope.version(nScope) < 0x0200) {
+        getId("time-per-div").textContent = time_per_div[sampling_multiplex][time_slider_idx][0]
+        getId("sample-rate").textContent = time_per_div[sampling_multiplex][time_slider_idx][1]
+        num_samples = time_per_div[sampling_multiplex][time_slider_idx][2];
+        sample_rate = time_per_div[sampling_multiplex][time_slider_idx][3];
+    } else {
+        getId("time-per-div").textContent = time_per_div_v2[time_slider_idx][0]
+        getId("sample-rate").textContent = time_per_div_v2[time_slider_idx][1]
+        num_samples = time_per_div_v2[time_slider_idx][2];
+        sample_rate = time_per_div_v2[time_slider_idx][3];
+    }
+
     let seconds_per_div = num_samples / 12 / sample_rate;
     nscope.setTriggerDelay(nScope, seconds_per_div * 1_000_000);
     nscope.setTimingParameters(nScope, sample_rate, num_samples);
@@ -83,13 +112,18 @@ export function setTiming() {
 export function update() {
     if (nscope.isConnected(nScope)) {
         getId("horizontal-info").classList.remove("disabled");
-        if (nscope.version < 0x0200) {
-            // TODO: remove this when support for variable sample rates is introduced
-            getId("horizontal-slider").classList.remove("disabled");
-        }
+        getId("horizontal-slider").classList.remove("disabled");
     } else {
         getId("horizontal-info").classList.add("disabled");
         getId("horizontal-slider").classList.add("disabled");
+    }
+
+    if (nscope.version(nScope) >= 0x0200 && getId("horizontal-slider").max == time_per_div_1.length - 1) {
+        getId("horizontal-slider").max = time_per_div_v2.length - 1
+        console.log(`setting max to ${time_per_div_v2.length - 1}`)
+    } else if (nscope.version(nScope) < 0x0200 && getId("horizontal-slider").max == time_per_div_v2.length - 1) {
+        getId("horizontal-slider").max = time_per_div_1.length - 1
+        console.log(`setting max to ${time_per_div_1.length - 1}`)
     }
 }
 
