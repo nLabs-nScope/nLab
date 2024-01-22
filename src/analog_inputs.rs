@@ -35,7 +35,7 @@ pub fn get_ch_status(mut cx: FunctionContext) -> JsResult<JsObject> {
     Ok(ch_status)
 }
 
-pub fn get_sampling_channels(mut cx: FunctionContext) -> JsResult<JsNumber> {
+pub fn get_sampling_multiplex(mut cx: FunctionContext) -> JsResult<JsNumber> {
     let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
     let nscope_handle = js_nscope_handle.borrow();
 
@@ -43,6 +43,15 @@ pub fn get_sampling_channels(mut cx: FunctionContext) -> JsResult<JsNumber> {
 
     if let Some(nscope) = &nscope_handle.device {
         if nscope.is_connected() {
+
+            // Newer nScope do not need multiplexing
+            if let Ok(version) = nscope.version() {
+                if version > 0x00FF {
+                    return Ok(cx.number(1));
+                }
+            }
+
+
             for ch in 1..=4 {
                 if let Some(analog_input) = nscope.channel(ch) {
                     if analog_input.is_on() {

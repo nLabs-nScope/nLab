@@ -15,6 +15,7 @@ if (require('electron-squirrel-startup')) app.quit();
 const path = require('path')
 const config = require(path.join(__dirname, 'package.json'))
 const BrowserWindow = electron.BrowserWindow
+const Menu = electron.Menu
 
 const icon = electron.nativeImage.createFromPath(path.join(__dirname, 'app/assets/icons/icon_256x256.png'));
 
@@ -26,6 +27,7 @@ if (!app.isPackaged) {
 
 
 app.setName(config.productName)
+Menu.setApplicationMenu(null)
 
 if (process.platform === "darwin") {
     app.dock.setIcon(icon);

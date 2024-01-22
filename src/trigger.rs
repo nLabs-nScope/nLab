@@ -17,8 +17,8 @@ impl Objectify for Trigger {
         obj.set(cx, "level", level)?;
 
         let trigger_type = match self.trigger_type {
-            TriggerType::RisingEdge => {cx.string("RisingEdge")}
-            TriggerType::FallingEdge => {cx.string("FallingEdge")}
+            TriggerType::RisingEdge => { cx.string("RisingEdge") }
+            TriggerType::FallingEdge => { cx.string("FallingEdge") }
         };
         obj.set(cx, "type", trigger_type)?;
 
@@ -30,13 +30,26 @@ pub fn get_trigger_status(mut cx: FunctionContext) -> JsResult<JsObject> {
     let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
     let nscope_handle = js_nscope_handle.borrow();
 
+    let obj = nscope_handle.trigger.to_object(&mut cx)?;
+
+    let mut disable_ui = cx.boolean(true);
+
     if let Some(nscope) = &nscope_handle.device {
         if nscope.is_connected() {
-            return Ok(nscope_handle.trigger.to_object(&mut cx)?);
+            disable_ui = cx.boolean(false);
+
+            // TODO: remove this when support for variable sample rates is introduced
+            if let Ok(version) = nscope.version() {
+                if version > 0x00FF {
+                    disable_ui = cx.boolean(true);
+                }
+            }
         }
     }
 
-    Ok(cx.empty_object())
+    obj.set(&mut cx, "uiDisabled", disable_ui)?;
+
+    Ok(obj)
 }
 
 pub fn set_trigger_on(mut cx: FunctionContext) -> JsResult<JsNull> {

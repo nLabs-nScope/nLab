@@ -14,8 +14,19 @@ mod analog_inputs;
 mod traces;
 mod trigger;
 
-fn version_string(mut cx: FunctionContext) -> JsResult<JsString> {
-    Ok(cx.string(format!("{}", nscope::version())))
+fn version(mut cx: FunctionContext) -> JsResult<JsNumber> {
+    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let nscope_handle = js_nscope_handle.borrow();
+
+    if let Some(nscope) = &nscope_handle.device {
+        if nscope.is_connected() {
+            if let Ok(version) = nscope.version() {
+                return Ok(cx.number(version));
+            }
+        }
+    }
+
+    Ok(cx.number(-1))
 }
 
 trait Objectify {
@@ -43,6 +54,8 @@ impl NscopeTraces {
 
 struct NscopeHandle {
     bench: nscope::LabBench,
+    dfu_link: Option<nscope::NscopeLink>,
+    requested_dfu: bool,
     device: Option<nscope::Nscope>,
     run_state: RunState,
     trigger: Trigger,
@@ -77,6 +90,8 @@ impl NscopeHandle {
 fn new_nscope(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
     let nscope_handle = NscopeHandle {
         bench: nscope::LabBench::new().expect("Creating LabBench"),
+        dfu_link: None,
+        requested_dfu: false,
         device: None,
         run_state: Run,
         trigger: Trigger::default(),
@@ -89,6 +104,16 @@ fn new_nscope(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
         },
     };
     Ok(cx.boxed(RefCell::new(nscope_handle)))
+}
+
+fn update_firmware(mut cx: FunctionContext) -> JsResult<JsNull> {
+    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let nscope_handle = js_nscope_handle.borrow_mut();
+
+    if let Some(link) = &nscope_handle.dfu_link {
+        link.update().unwrap();
+    }
+    Ok(cx.null())
 }
 
 fn set_run_control(mut cx: FunctionContext) -> JsResult<JsNull> {
@@ -113,7 +138,7 @@ fn set_run_control(mut cx: FunctionContext) -> JsResult<JsNull> {
         "stop" => {
             nscope_handle.stop_request();
             Stopped
-        },
+        }
         _ => panic!("Invalid run control string"),
     };
 
@@ -175,10 +200,13 @@ fn restrigger_if_not_triggered(mut cx: FunctionContext) -> JsResult<JsNull> {
 
 #[neon::main]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
-    cx.export_function("version", version_string)?;
+    let _ = env_logger::try_init();
+
+    cx.export_function("version", version)?;
     cx.export_function("newNscope", new_nscope)?;
     cx.export_function("monitorNscope", monitor::monitor_nscope)?;
     cx.export_function("isConnected", monitor::is_connected)?;
+    cx.export_function("updateFirmware", update_firmware)?;
     cx.export_function("setRunState", set_run_control)?;
     cx.export_function("getRunState", get_run_control)?;
     cx.export_function("setTimingParameters", set_timing_parameters)?;
@@ -201,7 +229,7 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("getChStatus", analog_inputs::get_ch_status)?;
     cx.export_function("setChOn", analog_inputs::set_ch_on)?;
     cx.export_function("setChRange", analog_inputs::set_ch_range)?;
-    cx.export_function("getSamplingChannels", analog_inputs::get_sampling_channels)?;
+    cx.export_function("getSamplingMultiplex", analog_inputs::get_sampling_multiplex)?;
 
     cx.export_function("getTriggerStatus", trigger::get_trigger_status)?;
     cx.export_function("setTriggerOn", trigger::set_trigger_on)?;

@@ -22,12 +22,12 @@ function amplitudeToString(amplitude) {
 
 function valToFreq(val) {
     val = parseFloat(val);
-    let freq = Math.pow(10, val / 100.0 * 5.3 - 1);
+    let freq = Math.pow(10, val / 100.0 * (Math.log10(20000) + 1) - 1);
     return freq;
 }
 
 function freqToVal(freq) {
-    let val = (Math.log10(freq) + 1) / 4.3 * 100.0;
+    let val = (Math.log10(freq) + 1) / Math.log10(20000) * 100.0;
     return val;
 }
 
