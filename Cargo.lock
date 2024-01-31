@@ -257,6 +257,7 @@ name = "nscope-nodejs"
 version = "1.0.0"
 dependencies = [
  "env_logger",
+ "log",
  "neon",
  "nscope",
 ]
