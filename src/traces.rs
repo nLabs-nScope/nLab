@@ -116,7 +116,6 @@ pub fn get_traces(mut cx: FunctionContext) -> JsResult<JsObject> {
                     set_trace_y(&mut cx, trace_data, &sample, idx);
                     nscope_handle.traces.samples[idx] = sample;
 
-
                     if idx + trace_gap < nscope_handle.traces.samples.len() {
                         clear_trace_y(&mut cx, trace_data, idx + trace_gap);
                         nscope_handle.traces.samples[idx + trace_gap].clear();

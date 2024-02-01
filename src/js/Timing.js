@@ -63,9 +63,9 @@ let time_per_div = {
 }
 
 let time_per_div_v2 = [
-    ["1 s/div", "19.2k pts\n1.6k Sa/s", 19200, 1600.0],
-    ["500 ms/div", "19.2k pts\n3.2k Sa/s", 19200, 3200.0],
-    ["200 ms/div", "19.2k pts\n8k Sa/s", 19200, 8000.0],
+    ["1 s/div", "9600 pts\n800 Sa/s", 9600, 800.0],
+    ["500 ms/div", "9600 pts\n1.6k Sa/s", 9600, 1600.0],
+    ["200 ms/div", "9600 pts\n4k Sa/s", 9600, 4000.0],
     ["100 ms/div", "9600 pts\n8k Sa/s", 9600, 8000.0],
     ["50 ms/div", "6000 pts\n10k Sa/s", 6000, 10000.0],
     ["20 ms/div", "2400 pts\n10k Sa/s", 2400, 10000.0],
