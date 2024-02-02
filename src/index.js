@@ -101,6 +101,8 @@ var layout = {
 };
 
 
+
+let trace_data = {};
 function updatePlot() {
 
     // Add the trigger shapes
@@ -118,7 +120,7 @@ function updatePlot() {
     }
 
     // Update the traces
-    let trace_data = nscope.getTraces(nScope);
+    trace_data = nscope.getTraces(nScope, trace_data);
 
     Plotly.update('scope-graph', trace_data, layout_data);
 
