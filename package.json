@@ -23,7 +23,7 @@
     "@electron/osx-sign": "^1.0.4",
     "autoprefixer": "^10.4.4",
     "bootstrap": "^5.1",
-    "cargo-cp-artifact": "^0.1",
+    "cargo-cp-artifact": "^0.1.9",
     "concurrently": "^7.1.0",
     "css-loader": "^6.7.1",
     "electron": "^26.2.4",
