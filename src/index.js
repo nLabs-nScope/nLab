@@ -1,8 +1,13 @@
+import electron_log from 'electron-log/renderer';
+const log = electron_log.scope("renderer");
+log.info('nScope renderer process start');
 import './scss/custom_bootstrap.scss'
 import './css/nscope.css'
 import './css/plotly.css'
 import packageInfo from '../package.json'
 import bootstrap from 'bootstrap'
+
+log.info('completed importing styles')
 
 import * as powerStatus from './js/PowerStatus.js'
 import * as pulseOutputs from './js/PulseOutputs.js'
@@ -15,8 +20,10 @@ import * as flags from './js/Flags.js'
 import * as axes from './js/Axes.js'
 import {getId, idFromCh} from './js/Utils.js'
 
-const Plotly = require('plotly.js-basic-dist');
+log.info("completed importing internals");
 
+const Plotly = require('plotly.js-basic-dist');
+log.info("completed importing plotly");
 
 for (let dropdown of document.getElementsByClassName("dropdown-menu clickable")) {
     dropdown.onclick = function (evt) {
@@ -57,6 +64,7 @@ traces.push({
     y: [],
     yaxis: "y1"
 })
+log.info("completed creating traces");
 
 var layout = {
     margin: {
@@ -99,29 +107,36 @@ var layout = {
     yaxis5: axes.channel_axis("Ch4"),
     shapes: []
 };
+log.info("completed graph layout");
 
 
 
 let trace_data = {};
 function updatePlot() {
 
-    // Add the trigger shapes
+    log.debug("updating plot");
+
+    log.debug("adding channel flags");
     let triggerState = nscope.getTriggerStatus(nScope);
     let chState = nscope.getChStatus(nScope);
 
     let shapes = flags.drawShapes(triggerState, chState);
 
     // Update the axes
+    log.debug("updating y-axes");
     let y_axes = axes.update();
 
+    log.debug("creating new layout");
     let layout_data = {
         shapes: shapes,
         ...y_axes,
     }
 
     // Update the traces
+    log.debug("update the traces");
     trace_data = nscope.getTraces(nScope, trace_data);
 
+    log.debug("updating the graph");
     Plotly.update('scope-graph', trace_data, layout_data);
 
     window.requestAnimationFrame(updatePlot);
@@ -130,27 +145,35 @@ function updatePlot() {
 }
 
 Plotly.newPlot('scope-graph', traces, layout, config);
+log.info("completed graph creation");
 
 function monitorScope() {
 
+    log.debug("monitoring scope");
     let powerState = nscope.monitorNscope(nScope);
     powerStatus.update(powerState);
 
+    log.debug("getting channel status");
     let chState = nscope.getChStatus(nScope);
     analogInputs.update(chState);
 
+    log.debug("getting trigger status");
     let triggerState = nscope.getTriggerStatus(nScope);
     trigger.update(triggerState);
 
+    log.debug("getting px status");
     let pxState = nscope.getPxStatus(nScope);
     pulseOutputs.update(pxState);
 
+    log.debug("getting ax status");
     let axState = nscope.getAxStatus(nScope);
     analogOutputs.update(axState);
 
+    log.debug("getting run state");
     let currentRunState = nscope.getRunState(nScope);
     runState.update(currentRunState);
 
+    log.debug("updating timing status");
     timing.update();
 
     window.requestAnimationFrame(monitorScope);

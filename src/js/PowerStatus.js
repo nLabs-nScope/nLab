@@ -1,4 +1,7 @@
 import {getId, clamp} from './Utils.js'
+import electron_log from 'electron-log/renderer';
+
+const log = electron_log.scope("status");
 
 import '../css/power_status.css'
 
@@ -27,6 +30,9 @@ function message(msg_content) {
 let previous_state = 'Unknown';
 
 export function update(powerState) {
+    if (previous_state !== powerState.state) {
+        log.info(`nScope state transition ${previous_state} -> ${powerState.state}`)
+    }
     switch (powerState.state) {
         case "PowerOff":
         case "Startup": {
@@ -52,7 +58,7 @@ export function update(powerState) {
 
             getId('nscope-power-usage').style.width = `${clamp(update.percentage, 0, 100)}%`;
 
-            if(update.percentage > 98) {
+            if (update.percentage > 98) {
                 getId('usb-status-bar').classList.remove('btn-outline-success');
                 getId('usb-status').classList.remove('btn-success');
                 getId('usb-status-bar').classList.add('btn-outline-warning');

@@ -8,6 +8,12 @@ if(process.env.NSCOPE_SMOKE_TEST === '1') {
         app.exit(1)
     })
 }
+const electron_log = require('electron-log');
+electron_log.initialize();
+const log = electron_log.scope("main");
+
+log.info(`nScope main process start from: ${process.cwd()}`);
+
 require('update-electron-app')()
 const electron = require('electron')
 const app = electron.app
@@ -19,6 +25,7 @@ const Menu = electron.Menu
 
 const icon = electron.nativeImage.createFromPath(path.join(__dirname, 'app/assets/icons/icon_256x256.png'));
 
+log.info('completed importing requirements');
 if (!app.isPackaged) {
     require('electron-reload')(__dirname, {
         electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
@@ -33,7 +40,10 @@ if (process.platform === "darwin") {
     app.dock.setIcon(icon);
 }
 var mainWindow = null
+log.info('configured application branding');
+
 app.on('ready', function () {
+    log.info('creating application window ...');
     mainWindow = new BrowserWindow({
         width: 1000,
         height: 600,
@@ -51,17 +61,20 @@ app.on('ready', function () {
     })
 
 
+
     mainWindow.loadURL(`file://${__dirname}/nscope.html`)
+    log.info('completed window creation');
 
     mainWindow.once('ready-to-show', () => {
         mainWindow.setMenu(null)
         mainWindow.show()
+        log.info('completed main window ready-to-show');
     })
 
     // Open the DevTools.
-    // const isDebug = typeof process.argv.find(item => item === 'debug') !== 'undefined';
-    const isDebug = true;
+    const isDebug = typeof process.argv.find(item => item === 'debug') !== 'undefined';
     if (isDebug) {
+        log.info('debug mode detected, showing dev tools');
         mainWindow.openDevTools();
     }
     // Prevent zooming
@@ -76,8 +89,8 @@ app.on('ready', function () {
         // Prevent Command-R from unloading the window contents.
         e.returnValue = false
     }
-
     mainWindow.on('closed', function () {
+        log.info('application window closed, quitting');
         app.quit()
     })
 })
@@ -89,6 +102,7 @@ app.on('web-contents-created', (event, contents) => {
     contents.setWindowOpenHandler(() => {
         return { action: 'deny' }
     })
+    log.info('completed main window web-contents-created');
 })
 
 app.on('ready', (event, contents) => {
