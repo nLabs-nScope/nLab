@@ -59,7 +59,8 @@ app.on('ready', function () {
     })
 
     // Open the DevTools.
-    const isDebug = typeof process.argv.find(item => item === 'debug') !== 'undefined';
+    // const isDebug = typeof process.argv.find(item => item === 'debug') !== 'undefined';
+    const isDebug = true;
     if (isDebug) {
         mainWindow.openDevTools();
     }
