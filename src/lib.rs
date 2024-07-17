@@ -200,7 +200,8 @@ fn restrigger_if_not_triggered(mut cx: FunctionContext) -> JsResult<JsNull> {
 
 #[neon::main]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
-    let _ = env_logger::try_init();
+    let mut builder = env_logger::Builder::from_env("NSCOPE_LOG");
+    builder.init();
 
     cx.export_function("version", version)?;
     cx.export_function("newNscope", new_nscope)?;

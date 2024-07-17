@@ -9,6 +9,7 @@ crate-type = ["cdylib"]
 [dependencies]
 nscope = { git = "https://github.com/nLabs-nScope/nscope-rs", branch = "main" }
 env_logger = "0.10.1"
+log = "~0.4"
 
 [dependencies.neon]
 version = "0.10.1"

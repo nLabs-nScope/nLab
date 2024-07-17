@@ -151,6 +151,7 @@ function monitorScope() {
 
     log.debug("monitoring scope");
     let powerState = nscope.monitorNscope(nScope);
+    log.debug("monitoring scope");
     powerStatus.update(powerState);
 
     log.debug("getting channel status");
