@@ -5,7 +5,7 @@ if(process.env.NSCOPE_SMOKE_TEST === '1') {
         process.stdout.write(" Fail\n")
         process.stdout.write(e.message)
         process.stdout.write(e.stack)
-        app.exit(1)
+        process.exit(1)
     })
 }
 const electron_log = require('electron-log');
