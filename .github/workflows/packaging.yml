@@ -96,7 +96,7 @@ jobs:
           f=$(echo nScope-darwin-universal-*.zip); cp "$f" $(sed 's:universal:arm64:' <<< "$f")
       - name: Archive the updaters
         if: matrix.os == 'macos-latest'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: nScope Installers
           path: |
