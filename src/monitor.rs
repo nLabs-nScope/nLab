@@ -16,8 +16,11 @@ pub fn is_connected(mut cx: FunctionContext) -> JsResult<JsBoolean> {
 }
 
 pub fn monitor_nscope(mut cx: FunctionContext) -> JsResult<JsObject> {
+    trace!("monitoring nScope");
     let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    trace!("got a js nscope handle");
     let mut nscope_handle = js_nscope_handle.borrow_mut();
+    trace!("got a native nscope handle");
 
     // If we have a scope already, check to see if it's disconnected
     if let Some(scope) = &nscope_handle.device {
