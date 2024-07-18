@@ -9,8 +9,11 @@ if(process.env.NSCOPE_SMOKE_TEST === '1') {
     })
 }
 const electron_log = require('electron-log');
+const path = require('path')
 electron_log.initialize();
+electron_log.transports.console.level = false;
 const log = electron_log.scope("main");
+const log_directory = path.dirname(electron_log.transports.file.getFile().path);
 
 log.info(`nScope main process start from: ${process.cwd()}`);
 
@@ -18,13 +21,14 @@ require('update-electron-app')()
 const electron = require('electron')
 const app = electron.app
 if (require('electron-squirrel-startup')) app.quit();
-const path = require('path')
 const config = require(path.join(__dirname, 'package.json'))
 const BrowserWindow = electron.BrowserWindow
 const Menu = electron.Menu
 
 const icon = electron.nativeImage.createFromPath(path.join(__dirname, 'app/assets/icons/icon_256x256.png'));
 
+app.commandLine.appendSwitch('enable-logging');
+app.commandLine.appendSwitch('log-file', path.join(log_directory, 'js.log'));
 log.info('completed importing requirements');
 if (!app.isPackaged) {
     require('electron-reload')(__dirname, {

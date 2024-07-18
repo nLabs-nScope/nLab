@@ -1,4 +1,5 @@
 import electron_log from 'electron-log/renderer';
+electron_log.transports.console.level = false;
 const log = electron_log.scope("renderer");
 log.info('nScope renderer process start');
 import './scss/custom_bootstrap.scss'
