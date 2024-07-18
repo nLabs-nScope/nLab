@@ -2,12 +2,12 @@ import electron_log from 'electron-log/renderer';
 electron_log.transports.console.level = false;
 const log = electron_log.scope("renderer");
 log.info('nScope renderer process start');
+
 import './scss/custom_bootstrap.scss'
 import './css/nscope.css'
 import './css/plotly.css'
 import packageInfo from '../package.json'
 import bootstrap from 'bootstrap'
-
 log.info('completed importing styles')
 
 import * as powerStatus from './js/PowerStatus.js'
@@ -20,7 +20,6 @@ import * as trigger from './js/Trigger.js'
 import * as flags from './js/Flags.js'
 import * as axes from './js/Axes.js'
 import {getId, idFromCh} from './js/Utils.js'
-
 log.info("completed importing internals");
 
 const Plotly = require('plotly.js-basic-dist');

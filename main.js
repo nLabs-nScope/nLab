@@ -8,13 +8,14 @@ if(process.env.NSCOPE_SMOKE_TEST === '1') {
         process.exit(1)
     })
 }
-const electron_log = require('electron-log');
 const path = require('path')
-electron_log.initialize();
+
+const electron_log = require('electron-log');
 electron_log.transports.console.level = false;
+electron_log.initialize();
+
 const log = electron_log.scope("main");
 const log_directory = path.dirname(electron_log.transports.file.getFile().path);
-
 log.info(`nScope main process start from: ${process.cwd()}`);
 
 require('update-electron-app')()
