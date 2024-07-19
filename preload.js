@@ -1,5 +1,5 @@
-const electron_log = require('electron-log');
-electron_log.transports.console.level = false;
+window.electron_log = require('electron-log');
+window.electron_log.transports.console.level = false;
 const log = electron_log.scope("preload");
 log.info("starting preload");
 

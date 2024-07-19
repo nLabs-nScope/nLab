@@ -1,5 +1,5 @@
 'use strict'
-if(process.env.NSCOPE_SMOKE_TEST === '1') {
+if (process.env.NSCOPE_SMOKE_TEST === '1') {
     process.stdout.write("Running smoke test... ")
     process.on('uncaughtException', e => {
         process.stdout.write(" Fail\n")
@@ -8,20 +8,25 @@ if(process.env.NSCOPE_SMOKE_TEST === '1') {
         process.exit(1)
     })
 }
-const path = require('path')
-
 const electron_log = require('electron-log');
+const path = require('path');
 electron_log.transports.console.level = false;
-electron_log.initialize();
+if (process.env.NSCOPE_LOG === 'trace') {
+    electron_log.transports.file.level = 'debug';
+} else {
+    electron_log.transports.file.level = 'info';
+}
 
+electron_log.initialize();
 const log = electron_log.scope("main");
 const log_directory = path.dirname(electron_log.transports.file.getFile().path);
-log.info(`nScope main process start from: ${process.cwd()}`);
 
+log.info(`nScope main process start from: ${process.cwd()}`);
 require('update-electron-app')()
 const electron = require('electron')
 const app = electron.app
 if (require('electron-squirrel-startup')) app.quit();
+
 const config = require(path.join(__dirname, 'package.json'))
 const BrowserWindow = electron.BrowserWindow
 const Menu = electron.Menu
@@ -66,7 +71,6 @@ app.on('ready', function () {
     })
 
 
-
     mainWindow.loadURL(`file://${__dirname}/nscope.html`)
     log.info('completed window creation');
 
@@ -105,13 +109,13 @@ app.on('web-contents-created', (event, contents) => {
         event.preventDefault()
     })
     contents.setWindowOpenHandler(() => {
-        return { action: 'deny' }
+        return {action: 'deny'}
     })
     log.info('completed main window web-contents-created');
 })
 
 app.on('ready', (event, contents) => {
-    if(process.env.NSCOPE_SMOKE_TEST === '1'){
+    if (process.env.NSCOPE_SMOKE_TEST === '1') {
         mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
             process.stdout.write(" Fail\n")
             process.stdout.write(errorDescription)
