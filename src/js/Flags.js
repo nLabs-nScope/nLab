@@ -1,6 +1,6 @@
 import {getId, isEmpty, idFromCh} from './Utils.js'
 import {colors, text_colors, ranges} from './Axes.js'
-import {setAnalogInputRange} from "./AnalogInputs";
+import {setAnalogInputRange} from "./AnalogInputs.js";
 
 
 function drawChannelFlag(ch, visible) {

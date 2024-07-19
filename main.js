@@ -1,24 +1,41 @@
 'use strict'
-if(process.env.NSCOPE_SMOKE_TEST === '1') {
+if (process.env.NSCOPE_SMOKE_TEST === '1') {
     process.stdout.write("Running smoke test... ")
     process.on('uncaughtException', e => {
         process.stdout.write(" Fail\n")
         process.stdout.write(e.message)
         process.stdout.write(e.stack)
-        app.exit(1)
+        process.exit(1)
     })
 }
+const electron_log = require('electron-log');
+const path = require('path');
+electron_log.transports.console.level = false;
+if (process.env.NSCOPE_LOG === 'trace') {
+    electron_log.transports.file.level = 'debug';
+} else {
+    electron_log.transports.file.level = 'info';
+}
+
+electron_log.initialize();
+const log = electron_log.scope("main");
+const log_directory = path.dirname(electron_log.transports.file.getFile().path);
+
+log.info(`nScope main process start from: ${process.cwd()}`);
 require('update-electron-app')()
 const electron = require('electron')
 const app = electron.app
 if (require('electron-squirrel-startup')) app.quit();
-const path = require('path')
+
 const config = require(path.join(__dirname, 'package.json'))
 const BrowserWindow = electron.BrowserWindow
 const Menu = electron.Menu
 
 const icon = electron.nativeImage.createFromPath(path.join(__dirname, 'app/assets/icons/icon_256x256.png'));
 
+app.commandLine.appendSwitch('enable-logging');
+app.commandLine.appendSwitch('log-file', path.join(log_directory, 'js.log'));
+log.info('completed importing requirements');
 if (!app.isPackaged) {
     require('electron-reload')(__dirname, {
         electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
@@ -33,7 +50,10 @@ if (process.platform === "darwin") {
     app.dock.setIcon(icon);
 }
 var mainWindow = null
+log.info('configured application branding');
+
 app.on('ready', function () {
+    log.info('creating application window ...');
     mainWindow = new BrowserWindow({
         width: 1000,
         height: 600,
@@ -52,15 +72,18 @@ app.on('ready', function () {
 
 
     mainWindow.loadURL(`file://${__dirname}/nscope.html`)
+    log.info('completed window creation');
 
     mainWindow.once('ready-to-show', () => {
         mainWindow.setMenu(null)
         mainWindow.show()
+        log.info('completed main window ready-to-show');
     })
 
     // Open the DevTools.
     const isDebug = typeof process.argv.find(item => item === 'debug') !== 'undefined';
     if (isDebug) {
+        log.info('debug mode detected, showing dev tools');
         mainWindow.openDevTools();
     }
     // Prevent zooming
@@ -75,8 +98,8 @@ app.on('ready', function () {
         // Prevent Command-R from unloading the window contents.
         e.returnValue = false
     }
-
     mainWindow.on('closed', function () {
+        log.info('application window closed, quitting');
         app.quit()
     })
 })
@@ -86,12 +109,13 @@ app.on('web-contents-created', (event, contents) => {
         event.preventDefault()
     })
     contents.setWindowOpenHandler(() => {
-        return { action: 'deny' }
+        return {action: 'deny'}
     })
+    log.info('completed main window web-contents-created');
 })
 
 app.on('ready', (event, contents) => {
-    if(process.env.NSCOPE_SMOKE_TEST === '1'){
+    if (process.env.NSCOPE_SMOKE_TEST === '1') {
         mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
             process.stdout.write(" Fail\n")
             process.stdout.write(errorDescription)

@@ -13,18 +13,18 @@ impl NscopeTraces {
     }
 
     fn initialize_trace_object(&self, cx: &mut FunctionContext, trace_data: Handle<JsObject>) {
-        let x_data = JsArray::new(cx, nscope::Sample::num_channels());
-        let y_data = JsArray::new(cx, nscope::Sample::num_channels());
+        let x_data = JsArray::new(cx, nscope::Sample::num_channels() as usize);
+        let y_data = JsArray::new(cx, nscope::Sample::num_channels() as usize);
 
         for ch in 0u32..nscope::Sample::num_channels() + 1 {
-            let empty_array = JsArray::new(cx, self.num_samples as u32);
+            let empty_array = JsArray::new(cx, self.num_samples);
             x_data.set(cx, ch, empty_array).unwrap();
             for idx in 0usize..self.num_samples {
                 let x_array: Handle<JsArray> = x_data.get(cx, ch as u32).unwrap();
                 let t = cx.number(idx as f64 * 12.0 / self.num_samples as f64);
                 x_array.set(cx, idx as u32, t).unwrap();
             }
-            let empty_array = JsArray::new(cx, self.num_samples as u32);
+            let empty_array = JsArray::new(cx, self.num_samples);
             y_data.set(cx, ch, empty_array).unwrap();
         }
 

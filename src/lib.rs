@@ -1,5 +1,6 @@
 use std::cell::RefCell;
 use std::sync::mpsc::Receiver;
+use log::info;
 
 use neon::prelude::*;
 use nscope;
@@ -200,7 +201,9 @@ fn restrigger_if_not_triggered(mut cx: FunctionContext) -> JsResult<JsNull> {
 
 #[neon::main]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
-    let _ = env_logger::try_init();
+    let mut builder = env_logger::Builder::from_env("NSCOPE_LOG");
+    builder.init();
+    info!("initializing nScope js interface");
 
     cx.export_function("version", version)?;
     cx.export_function("newNscope", new_nscope)?;
@@ -238,5 +241,6 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("setTriggerLevel", trigger::set_trigger_level)?;
     cx.export_function("setTriggerType", trigger::set_trigger_type)?;
 
+    info!("completed exporting js interface");
     Ok(())
 }

@@ -22,14 +22,17 @@ jobs:
             target_architecture: x64
             executable_path: xvfb-run out/nScope-linux-x64/nScope
             artifact_path: out/make/deb/x64/nscope_*.deb
+            artifact_name: 'Linux Package (deb)'
           - os: macos-latest
             target_architecture: universal
             executable_path: out/nScope-darwin-universal/nScope.app/Contents/MacOS/nScope
             artifact_path: 'out/make/nScope Installer.dmg'
+            artifact_name: 'macOS Installer (dmg)'
           - os: windows-latest
             target_architecture: x64
             executable_path: out/nScope-win32-x64/nScope.exe
             artifact_path: 'out/make/squirrel.windows/x64/*'
+            artifact_name: 'Windows Installer (exe)'
     name: ${{ matrix.target_architecture }} on ${{ matrix.os }}
     steps:
       - name: Install Rust Toolchains
@@ -43,11 +46,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install libusb-1.0-0-dev libudev-dev
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
       - name: Install NPM Dependencies
         run: npm ci
       - name: Setup Digicert Keylocker
@@ -84,9 +87,9 @@ jobs:
         env:
           NSCOPE_SMOKE_TEST: 1
       - name: Archive the distributable
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: nScope Installers
+          name: ${{ matrix.artifact_name }}
           path: ${{ matrix.artifact_path }}
       - name: Create Update Zips for macOS
         if: matrix.os == 'macos-latest'
@@ -96,9 +99,9 @@ jobs:
           f=$(echo nScope-darwin-universal-*.zip); cp "$f" $(sed 's:universal:arm64:' <<< "$f")
       - name: Archive the updaters
         if: matrix.os == 'macos-latest'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: nScope Installers
+          name: macOS update packages (zip)
           path: |
             ./out/make/zip/darwin/universal/*x64*.zip
             ./out/make/zip/darwin/universal/*arm64*.zip
