@@ -214,7 +214,7 @@ dependencies = [
 [[package]]
 name = "nscope"
 version = "1.0.0"
-source = "git+https://github.com/nLabs-nScope/nscope-rs?branch=david/random_freezing#1a074207b26746dce4ee03afb6c1077174ee8540"
+source = "git+https://github.com/nLabs-nScope/nscope-rs?branch=david/random_freezing#ad3f8458824c91f5e4eeeaa38bcefb3531d6d4b4"
 dependencies = [
  "dfu-libusb",
  "git-version",
