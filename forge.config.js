@@ -23,7 +23,7 @@ module.exports = {
         loadingGif: 'src/assets/gif/installing.gif',
         iconUrl: 'https://www.nscope.org/user/pages/icons/nscope_icon.ico',
         setupIcon: 'src/assets/icons/nscope_icon.ico',
-        signWithParams: `/csp "DigiCert Software Trust Manager KSP" /kc key_465178755 /f ${process.env.CODE_SIGNING_CERT_FILE} /tr http://timestamp.digicert.com /td SHA256 /fd SHA256`
+        signWithParams: `/csp "DigiCert Software Trust Manager KSP" /kc key_847858243 /f ${process.env.CODE_SIGNING_CERT_FILE} /tr http://timestamp.digicert.com /td SHA256 /fd SHA256`
       },
     },
     {
