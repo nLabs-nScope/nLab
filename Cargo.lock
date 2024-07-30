@@ -214,7 +214,6 @@ dependencies = [
 [[package]]
 name = "nscope"
 version = "1.0.0"
-source = "git+https://github.com/nLabs-nScope/nscope-rs?branch=david/trigger_v2#377472be8ba6356b96305200159fa7c74cfbccc6"
 dependencies = [
  "dfu-libusb",
  "git-version",
