@@ -76,8 +76,8 @@ let time_per_div_v2 = [
     ["500 µs/div", "2400 pts\n400k Sa/s", 2400, 400000.0],
     ["200 µs/div", "2400 pts\n1M Sa/s", 2400, 1000000.0],
     ["100 µs/div", "2400 pts\n2M Sa/s", 2400, 2000000.0],
-    ["50 µs/div", "1200 pts\n4M Sa/s", 1200, 2000000.0],
-    ["20 µs/div", "480 pts\n4M Sa/s", 480, 2000000.0],
+    ["50 µs/div", "1200 pts\n2M Sa/s", 1200, 2000000.0],
+    ["20 µs/div", "480 pts\n2M Sa/s", 480, 2000000.0],
 ]
 
 export function initTiming() {
