@@ -9,6 +9,7 @@ if (process.env.NSCOPE_SMOKE_TEST === '1') {
     })
 }
 const electron_log = require('electron-log');
+const fs = require('fs');
 const path = require('path');
 electron_log.transports.console.level = false;
 if (process.env.NSCOPE_LOG === 'trace') {
@@ -23,6 +24,7 @@ const log_directory = path.dirname(electron_log.transports.file.getFile().path);
 
 log.info(`nScope main process start from: ${process.cwd()}`);
 require('update-electron-app')()
+
 const electron = require('electron')
 const app = electron.app
 if (require('electron-squirrel-startup')) app.quit();
@@ -93,6 +95,34 @@ app.on('ready', function () {
     //     webContents.setVisualZoomLevelLimits(1, 1);
     //     webContents.setLayoutZoomLevelLimits(0, 0);
     // });
+
+    // Listen for the screenshot request
+    electron.ipcMain.handle('save-data', async (channel, data) => {
+        const documentsPath = app.getPath('documents');
+
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+
+        const filenamePrefix = `${year}-${month}-${day}_${hours}-${minutes}-${seconds}.${milliseconds}`;
+
+        const imagePath = path.join(documentsPath, 'nScope Captures', `${filenamePrefix}.png`);
+
+        const image = await mainWindow.capturePage();
+        const buffer = image.toPNG();
+
+        log.info("Foo");
+        log.info(data);
+
+        fs.mkdirSync(path.dirname(imagePath), { recursive: true });
+        fs.writeFileSync(imagePath, buffer);
+        return imagePath;
+    });
 
     mainWindow.onbeforeunload = (e) => {
         // Prevent Command-R from unloading the window contents.

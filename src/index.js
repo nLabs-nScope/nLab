@@ -18,6 +18,8 @@ import * as trigger from './js/Trigger.js'
 import * as flags from './js/Flags.js'
 import * as axes from './js/Axes.js'
 import {getId, idFromCh} from './js/Utils.js'
+
+require('./js/Save.js');
 log.info("completed importing internals");
 
 const Plotly = require('plotly.js-basic-dist');

@@ -120,10 +120,8 @@ export function update() {
 
     if (nscope.version(nScope) >= 0x0200 && getId("horizontal-slider").max == time_per_div_1.length - 1) {
         getId("horizontal-slider").max = time_per_div_v2.length - 1
-        console.log(`setting max to ${time_per_div_v2.length - 1}`)
     } else if (nscope.version(nScope) < 0x0200 && getId("horizontal-slider").max == time_per_div_v2.length - 1) {
         getId("horizontal-slider").max = time_per_div_1.length - 1
-        console.log(`setting max to ${time_per_div_1.length - 1}`)
     }
 }
 
