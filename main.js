@@ -112,14 +112,17 @@ app.on('ready', function () {
         const filenamePrefix = `${year}-${month}-${day}_${hours}-${minutes}-${seconds}.${milliseconds}`;
 
         const imagePath = path.join(documentsPath, 'nScope Captures', `${filenamePrefix}.png`);
-
         const image = await mainWindow.capturePage();
         const buffer = image.toPNG();
 
-        log.info("Foo");
-        log.info(data);
+        const csvPath = path.join(documentsPath, 'nScope Captures', `${filenamePrefix}.csv`);
+        let csv_data = data[0].map((_, colIndex) => data.map(row => row[colIndex]));
+        let csv = csv_data.map(row => row.map(cell => {
+            return (cell && cell.toFixed) ? `${cell.toFixed(7)}` : `${cell}`
+        }).join(", ")).join("\n");
+        log.info(csv);
 
-        fs.mkdirSync(path.dirname(imagePath), { recursive: true });
+        fs.mkdirSync(path.dirname(imagePath), {recursive: true});
         fs.writeFileSync(imagePath, buffer);
         return imagePath;
     });

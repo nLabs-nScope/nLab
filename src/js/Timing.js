@@ -86,8 +86,8 @@ export function initTiming() {
 }
 
 export function setTiming() {
-    let time_slider_idx = getId("horizontal-slider").value
-    let sampling_multiplex = nscope.getSamplingMultiplex(nScope)
+    let time_slider_idx = getId("horizontal-slider").value;
+    let sampling_multiplex = nscope.getSamplingMultiplex(nScope);
 
     let num_samples = 0;
     let sample_rate = 0;
@@ -107,6 +107,17 @@ export function setTiming() {
     let seconds_per_div = num_samples / 12 / sample_rate;
     nscope.setTriggerDelay(nScope, seconds_per_div * 1_000_000);
     nscope.setTimingParameters(nScope, sample_rate, num_samples);
+}
+
+export function getSampleRate() {
+    let time_slider_idx = getId("horizontal-slider").value
+
+    if (nscope.version(nScope) < 0x0200) {
+        let sampling_multiplex = nscope.getSamplingMultiplex(nScope)
+        return time_per_div[sampling_multiplex][time_slider_idx][3];
+    } else {
+        return time_per_div_v2[time_slider_idx][3];
+    }
 }
 
 export function update() {

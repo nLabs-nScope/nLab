@@ -56,7 +56,7 @@ fn set_trace_y(cx: &mut FunctionContext, trace_data: Handle<JsObject>, sample: &
             let y = cx.number(data);
             y_array.set(cx, idx as u32, y).unwrap();
         } else {
-            let y = cx.empty_object();
+            let y = cx.null();
             y_array.set(cx, idx as u32, y).unwrap();
         }
     }
@@ -67,7 +67,7 @@ fn clear_trace_y(cx: &mut FunctionContext, trace_data: Handle<JsObject>, idx: us
 
     for ch in 0usize..nscope::Sample::num_channels() as usize {
         let y_array: Handle<JsArray> = y_data.get(cx, ch as u32).unwrap();
-        let y = cx.empty_object();
+        let y = cx.null();
         y_array.set(cx, idx as u32, y).unwrap();
     }
 }
