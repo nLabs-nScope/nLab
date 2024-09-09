@@ -99,6 +99,8 @@ app.on('ready', function () {
     // Listen for the screenshot request
     electron.ipcMain.handle('save-data', async (channel, data) => {
         const documentsPath = app.getPath('documents');
+        const dirName = path.join(documentsPath, 'nScope_Captures');
+        fs.mkdirSync(dirName, {recursive: true});
 
         const now = new Date();
         const year = now.getFullYear();
@@ -110,21 +112,24 @@ app.on('ready', function () {
         const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
 
         const filenamePrefix = `${year}-${month}-${day}_${hours}-${minutes}-${seconds}.${milliseconds}`;
+        const imagePath = path.join(dirName, `${filenamePrefix}.png`);
+        const csvPath = path.join(dirName, `${filenamePrefix}.csv`);
 
-        const imagePath = path.join(documentsPath, 'nScope Captures', `${filenamePrefix}.png`);
+
         const image = await mainWindow.capturePage();
         const buffer = image.toPNG();
-
-        const csvPath = path.join(documentsPath, 'nScope Captures', `${filenamePrefix}.csv`);
-        let csv_data = data[0].map((_, colIndex) => data.map(row => row[colIndex]));
-        let csv = csv_data.map(row => row.map(cell => {
-            return (cell && cell.toFixed) ? `${cell.toFixed(7)}` : `${cell}`
-        }).join(", ")).join("\n");
-        log.info(csv);
-
-        fs.mkdirSync(path.dirname(imagePath), {recursive: true});
         fs.writeFileSync(imagePath, buffer);
-        return imagePath;
+
+        if (data) {
+            let csv_data = data[0].map((_, colIndex) => data.map(row => row[colIndex]));
+            let csv = csv_data.map(row => row.map(cell => {
+                return (cell && cell.toFixed) ? `${cell.toFixed(7)}` : `${cell}`
+            }).join(",")).join("\n");
+
+            fs.writeFileSync(csvPath, csv);
+        };
+
+        return [imagePath, csvPath];
     });
 
     mainWindow.onbeforeunload = (e) => {

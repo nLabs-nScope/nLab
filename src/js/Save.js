@@ -30,6 +30,9 @@ function getTracesFromData(data) {
         return current.length > longest ? current.length : longest;
     }, []) - 1;
     let sample_rate = getSampleRate();
+    if (time_length <= 0) {
+        return null;
+    }
     log.info(`Logging ${time_length} samples at ${sample_rate} Hz`);
     let time = ['Time (s)', ...Array.from({length: time_length}, (_, i) => i / sample_rate)];
     return [time, ...channels];
@@ -39,6 +42,9 @@ getId('save-traces').onclick = async () => {
     log.info("Saving traces to file");
     let graph_data = getId('scope-graph').data;
     let csv_data = getTracesFromData(graph_data);
-    const filePath = await window.ipcRenderer.invoke('save-data', csv_data);
+    const [filePath, csvPath] = await window.ipcRenderer.invoke('save-data', csv_data);
     log.info('Screenshot saved to:', filePath);
+    if (csv_data) {
+        log.info('CSV saved to:', csvPath);
+    }
 }
