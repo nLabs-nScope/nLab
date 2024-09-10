@@ -119,17 +119,17 @@ app.on('ready', function () {
         const image = await mainWindow.capturePage();
         const buffer = image.toPNG();
         fs.writeFileSync(imagePath, buffer);
+        log.info('Screenshot saved to:', imagePath);
 
         if (data) {
             let csv_data = data[0].map((_, colIndex) => data.map(row => row[colIndex]));
             let csv = csv_data.map(row => row.map(cell => {
                 return (cell && cell.toFixed) ? `${cell.toFixed(7)}` : `${cell}`
             }).join(",")).join("\n");
-
             fs.writeFileSync(csvPath, csv);
-        };
-
-        return [imagePath, csvPath];
+            log.info('CSV saved to:', csvPath);
+        }
+        return path.join(dirName, filenamePrefix);
     });
 
     mainWindow.onbeforeunload = (e) => {

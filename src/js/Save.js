@@ -1,5 +1,6 @@
 import {getId} from "./Utils";
 import {getSampleRate} from "./Timing";
+import {clearTransientMessage, showTransientMessage} from "./Message";
 import electron_log from 'electron-log/renderer';
 
 const log = electron_log.scope("save-file");
@@ -42,9 +43,7 @@ getId('save-traces').onclick = async () => {
     log.info("Saving traces to file");
     let graph_data = getId('scope-graph').data;
     let csv_data = getTracesFromData(graph_data);
-    const [filePath, csvPath] = await window.ipcRenderer.invoke('save-data', csv_data);
-    log.info('Screenshot saved to:', filePath);
-    if (csv_data) {
-        log.info('CSV saved to:', csvPath);
-    }
+    clearTransientMessage();
+    const path = await window.ipcRenderer.invoke('save-data', csv_data);
+    showTransientMessage(`Saved to ${path}`);
 }
