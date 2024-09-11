@@ -17,7 +17,10 @@ import * as timing from './js/Timing.js'
 import * as trigger from './js/Trigger.js'
 import * as flags from './js/Flags.js'
 import * as axes from './js/Axes.js'
+import * as message from './js/Message.js'
 import {getId, idFromCh} from './js/Utils.js'
+
+require('./js/Save.js');
 log.info("completed importing internals");
 
 const Plotly = require('plotly.js-basic-dist');
@@ -174,6 +177,12 @@ function monitorScope() {
 
     log.debug("updating timing status");
     timing.update();
+
+    if (nscope.isConnected(nScope)) {
+        getId('save-traces').classList.remove("disabled");
+    } else {
+        getId('save-traces').classList.add("disabled");
+    }
 
     window.requestAnimationFrame(monitorScope);
 }

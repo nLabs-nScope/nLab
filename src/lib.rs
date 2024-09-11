@@ -99,7 +99,7 @@ fn new_nscope(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
         sample_rate: 400.0,
         sweep_handle: None,
         traces: NscopeTraces {
-            samples: vec![nscope::Sample::default(); 19200],
+            samples: vec![nscope::Sample::default(); 4800],
             num_samples: 4800,
             current_head: 0,
         },
@@ -202,7 +202,7 @@ fn restrigger_if_not_triggered(mut cx: FunctionContext) -> JsResult<JsNull> {
 #[neon::main]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
     let mut builder = env_logger::Builder::from_env("NSCOPE_LOG");
-    builder.init();
+    let _ = builder.try_init();
     info!("initializing nScope js interface");
 
     cx.export_function("version", version)?;

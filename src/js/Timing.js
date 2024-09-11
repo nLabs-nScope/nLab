@@ -86,8 +86,8 @@ export function initTiming() {
 }
 
 export function setTiming() {
-    let time_slider_idx = getId("horizontal-slider").value
-    let sampling_multiplex = nscope.getSamplingMultiplex(nScope)
+    let time_slider_idx = getId("horizontal-slider").value;
+    let sampling_multiplex = nscope.getSamplingMultiplex(nScope);
 
     let num_samples = 0;
     let sample_rate = 0;
@@ -109,6 +109,17 @@ export function setTiming() {
     nscope.setTimingParameters(nScope, sample_rate, num_samples);
 }
 
+export function getSampleRate() {
+    let time_slider_idx = getId("horizontal-slider").value
+
+    if (nscope.version(nScope) < 0x0200) {
+        let sampling_multiplex = nscope.getSamplingMultiplex(nScope)
+        return time_per_div[sampling_multiplex][time_slider_idx][3];
+    } else {
+        return time_per_div_v2[time_slider_idx][3];
+    }
+}
+
 export function update() {
     if (nscope.isConnected(nScope)) {
         getId("horizontal-info").classList.remove("disabled");
@@ -120,10 +131,8 @@ export function update() {
 
     if (nscope.version(nScope) >= 0x0200 && getId("horizontal-slider").max == time_per_div_1.length - 1) {
         getId("horizontal-slider").max = time_per_div_v2.length - 1
-        console.log(`setting max to ${time_per_div_v2.length - 1}`)
     } else if (nscope.version(nScope) < 0x0200 && getId("horizontal-slider").max == time_per_div_v2.length - 1) {
         getId("horizontal-slider").max = time_per_div_1.length - 1
-        console.log(`setting max to ${time_per_div_1.length - 1}`)
     }
 }
 

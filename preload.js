@@ -3,6 +3,9 @@ window.electron_log.transports.console.level = false;
 const log = electron_log.scope("preload");
 log.info("starting preload");
 
+const { ipcRenderer } = require('electron');
+window.ipcRenderer = ipcRenderer;
+
 window.nscope = require('./app/nscope.node');
 log.info("loaded native node module");
 

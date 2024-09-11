@@ -9,6 +9,7 @@ if (process.env.NSCOPE_SMOKE_TEST === '1') {
     })
 }
 const electron_log = require('electron-log');
+const fs = require('fs');
 const path = require('path');
 electron_log.transports.console.level = false;
 if (process.env.NSCOPE_LOG === 'trace') {
@@ -23,8 +24,10 @@ const log_directory = path.dirname(electron_log.transports.file.getFile().path);
 
 log.info(`nScope main process start from: ${process.cwd()}`);
 require('update-electron-app')()
+
 const electron = require('electron')
 const app = electron.app
+const globalShortcut = electron.globalShortcut
 if (require('electron-squirrel-startup')) app.quit();
 
 const config = require(path.join(__dirname, 'package.json'))
@@ -51,6 +54,12 @@ if (process.platform === "darwin") {
 }
 var mainWindow = null
 log.info('configured application branding');
+
+
+app.on('will-quit', () => {
+    // Unregister all shortcuts before quitting the app
+    globalShortcut.unregisterAll();
+});
 
 app.on('ready', function () {
     log.info('creating application window ...');
@@ -94,12 +103,53 @@ app.on('ready', function () {
     //     webContents.setLayoutZoomLevelLimits(0, 0);
     // });
 
+    // Listen for the screenshot request
+    electron.ipcMain.handle('save-data', async (channel, data) => {
+        const documentsPath = app.getPath('documents');
+        const dirName = path.join(documentsPath, 'nScope_captures');
+        fs.mkdirSync(dirName, {recursive: true});
+
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+
+        const filenamePrefix = `${year}-${month}-${day}_${hours}-${minutes}-${seconds}.${milliseconds}`;
+        const imagePath = path.join(dirName, `${filenamePrefix}.png`);
+        const csvPath = path.join(dirName, `${filenamePrefix}.csv`);
+
+
+        const image = await mainWindow.capturePage();
+        const buffer = image.toPNG();
+        fs.writeFileSync(imagePath, buffer);
+        log.info('Screenshot saved to:', imagePath);
+
+        if (data) {
+            let csv_data = data[0].map((_, colIndex) => data.map(row => row[colIndex]));
+            let csv = csv_data.map(row => row.map(cell => {
+                return (cell && cell.toFixed) ? `${cell.toFixed(7)}` : `${cell}`
+            }).join(",")).join("\n");
+            fs.writeFileSync(csvPath, csv);
+            log.info('CSV saved to:', csvPath);
+        }
+        return path.join(dirName, filenamePrefix);
+    });
+
+    globalShortcut.register('CommandOrControl+S', () => {
+        mainWindow.webContents.send('save-hotkey');
+    });
+
     mainWindow.onbeforeunload = (e) => {
         // Prevent Command-R from unloading the window contents.
         e.returnValue = false
     }
     mainWindow.on('closed', function () {
         log.info('application window closed, quitting');
+        globalShortcut.unregisterAll();
         app.quit()
     })
 })
