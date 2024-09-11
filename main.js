@@ -99,7 +99,7 @@ app.on('ready', function () {
     // Listen for the screenshot request
     electron.ipcMain.handle('save-data', async (channel, data) => {
         const documentsPath = app.getPath('documents');
-        const dirName = path.join(documentsPath, 'nScope_Captures');
+        const dirName = path.join(documentsPath, 'nScope_captures');
         fs.mkdirSync(dirName, {recursive: true});
 
         const now = new Date();

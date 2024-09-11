@@ -1,6 +1,6 @@
 import {getId} from './Utils.js';
 
-export function showTransientMessage(msg, timeout = 2) {
+export function showTransientMessage(msg, timeout = 3) {
 
     let msgDiv = getId('transient-message-display');
 
