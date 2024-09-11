@@ -39,7 +39,7 @@ function getTracesFromData(data) {
     return [time, ...channels];
 }
 
-getId('save-traces').onclick = async () => {
+async function save() {
     log.info("Saving traces to file");
     let graph_data = getId('scope-graph').data;
     let csv_data = getTracesFromData(graph_data);
@@ -47,3 +47,12 @@ getId('save-traces').onclick = async () => {
     const path = await window.ipcRenderer.invoke('save-data', csv_data);
     showTransientMessage(`Saved to ${path}`);
 }
+
+getId('save-traces').onclick = async () => {
+    save();
+}
+
+window.ipcRenderer.on('save-hotkey', () => {
+    save();
+});
+
