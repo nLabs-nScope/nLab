@@ -80,11 +80,12 @@ export function update(axState) {
         getId(`${ch}-status`).innerHTML = freqString.number + ' ' + freqString.unit + ' ' + amplitudeString.number + ' ' + amplitudeString.unit;
 
         let freqLabel = getId(`${ch}-freq`).labels[0];
+        if(!freqLabel.classList.contains("editing")) {
+            freqLabel.textContent = freqString.number;
+            freqLabel.nextElementSibling.textContent = freqString.unit;
+        }
+
         let amplitudeLabel = getId(`${ch}-amplitude`).labels[0];
-
-        freqLabel.textContent = freqString.number;
-        freqLabel.nextElementSibling.textContent = freqString.unit;
-
         amplitudeLabel.textContent = amplitudeString.number;
         amplitudeLabel.nextElementSibling.textContent = amplitudeString.unit;
 
@@ -105,6 +106,20 @@ export function update(axState) {
 export function initInput() {
     let axState = nscope.getAxStatus(nScope);
     update(axState);
+}
+
+function findNextITag(element) {
+    let nextElement = element.nextElementSibling; // Start with the next sibling
+
+    // Loop until you find an <i> tag or run out of siblings
+    while (nextElement) {
+        if (nextElement.tagName.toLowerCase() === 'i') {
+            return nextElement; // Found the first <i> tag
+        }
+        nextElement = nextElement.nextElementSibling; // Move to the next sibling
+    }
+
+    return null; // No <i> tag found
 }
 
 for (let ch of ["A1", "A2"]) {
@@ -153,6 +168,71 @@ for (let ch of ["A1", "A2"]) {
         button.onchange = function () {
             let wave = this.value;
             nscope.setAxPolarity(nScope, ch, wave);
+        }
+    }
+
+
+
+    let label = document.querySelector(`label[for=${ch}-freq]`)
+    let edit_button = findNextITag(label);
+
+    edit_button.onclick = function () {
+        if(this.classList.contains("editing")){
+            label.classList.remove("editing");
+            edit_button.classList.remove("editing");
+            label.setAttribute("contenteditable", false);
+            edit_button.classList.remove("fa-solid", "fa-check");
+            edit_button.classList.add("fa-regular", "fa-pen-to-square");
+        } else {
+            label.setAttribute("contenteditable", true);
+
+            const range = document.createRange();
+            const selection = window.getSelection();
+
+            range.selectNodeContents(label);
+            selection.removeAllRanges();
+            selection.addRange(range);
+            label.classList.add("editing");
+            edit_button.classList.add("editing");
+            edit_button.classList.remove("fa-regular", "fa-pen-to-square");
+            edit_button.classList.add("fa-solid", "fa-check");
+        }
+    }
+
+    label.onclick = function () {
+        label.setAttribute("contenteditable", true);
+
+        const range = document.createRange();
+        const selection = window.getSelection();
+
+        range.selectNodeContents(label);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        label.classList.add("editing");
+        edit_button.classList.add("editing");
+        edit_button.classList.remove("fa-regular", "fa-pen-to-square");
+        edit_button.classList.add("fa-solid", "fa-check");
+    }
+    label.onkeydown = function (event) {
+        const allowedKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '-'];
+
+        // Allow backspace, delete, etc.
+        if (event.key === 'Backspace' || event.key === 'Delete' || event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+            return;
+        }
+
+        // Prevent input if the key is not allowed
+        if (!allowedKeys.includes(event.key)) {
+            event.preventDefault();
+        }
+
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            label.classList.remove("editing");
+            edit_button.classList.remove("editing");
+            label.setAttribute("contenteditable", false);
+            edit_button.classList.remove("fa-solid", "fa-check");
+            edit_button.classList.add("fa-regular", "fa-pen-to-square");
         }
     }
 }

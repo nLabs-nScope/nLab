@@ -5,7 +5,8 @@ import './scss/custom_bootstrap.scss'
 import './css/nscope.css'
 import './css/plotly.css'
 import packageInfo from '../package.json'
-import bootstrap from 'bootstrap'
+import 'bootstrap'
+import '@fortawesome/fontawesome-free/css/all.min.css';
 log.info('completed importing styles')
 
 import * as powerStatus from './js/PowerStatus.js'
@@ -29,14 +30,6 @@ log.info("completed importing plotly");
 for (let dropdown of document.getElementsByClassName("dropdown-menu clickable")) {
     dropdown.onclick = function (evt) {
         evt.stopPropagation();
-    }
-}
-
-for (let label of document.getElementsByTagName("label")) {
-    label.onkeydown = function (evt) {
-        return false; // TODO, this function doesn't work
-        // console.log(evt.key);
-        // return evt.key != "Enter";
     }
 }
 
