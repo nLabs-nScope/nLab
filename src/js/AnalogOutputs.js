@@ -1,6 +1,5 @@
 import {getId, isEmpty} from './Utils.js';
 import * as precisionInput from './PrecisionInput'
-import {start_edit} from "./PrecisionInput";
 
 function valToAmplitude(val) {
     val = parseFloat(val);
@@ -82,22 +81,22 @@ export function update(axState) {
         getId(`${ch}-status`).innerHTML = freqString.number + ' ' + freqString.unit + ' ' + amplitudeString.number + ' ' + amplitudeString.unit;
 
         let freqLabel = getId(`${ch}-freq`).labels[0];
-        if(precisionInput.isNotEditable(freqLabel)) {
+        if (precisionInput.isNotEditable(freqLabel)) {
             freqLabel.textContent = freqString.number;
             freqLabel.nextElementSibling.textContent = freqString.unit;
         }
 
         let amplitudeLabel = getId(`${ch}-amplitude`).labels[0];
-        if(precisionInput.isNotEditable(amplitudeLabel)) {
+        if (precisionInput.isNotEditable(amplitudeLabel)) {
             amplitudeLabel.textContent = amplitudeString.number;
             amplitudeLabel.nextElementSibling.textContent = amplitudeString.unit;
         }
 
-        if(sliders_free[`${ch}-freq`]) {
+        if (sliders_free[`${ch}-freq`]) {
             getId(`${ch}-freq`).value = freqToVal(axState[ch].frequency);
         }
 
-        if(sliders_free[`${ch}-amplitude`]) {
+        if (sliders_free[`${ch}-amplitude`]) {
             getId(`${ch}-amplitude`).value = amplitudeToVal(axState[ch].amplitude);
         }
 

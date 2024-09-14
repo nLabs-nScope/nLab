@@ -1,15 +1,5 @@
 function button_from_label(element) {
-    let nextElement = element.nextElementSibling; // Start with the next sibling
-
-    // Loop until you find an <i> tag or run out of siblings
-    while (nextElement) {
-        if (nextElement.tagName.toLowerCase() === 'i') {
-            return nextElement; // Found the first <i> tag
-        }
-        nextElement = nextElement.nextElementSibling; // Move to the next sibling
-    }
-
-    return null; // No <i> tag found
+    return element.nextElementSibling.nextElementSibling;
 }
 
 function start_edit(label, button) {
