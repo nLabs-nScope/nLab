@@ -1,6 +1,7 @@
 import {getId, isEmpty, idFromCh} from './Utils.js'
 import {colors, text_colors, ranges} from './Axes.js'
 import {setAnalogInputRange} from "./AnalogInputs.js";
+import {adjustTriggerLevel} from './Trigger'
 
 
 function drawChannelFlag(ch, visible) {
@@ -215,7 +216,7 @@ export function initDragEvents() {
                 new_trigger_level = 4.5;
             }
 
-            nscope.setTriggerLevel(nScope, new_trigger_level);
+            adjustTriggerLevel(new_trigger_level);
         }
 
     });

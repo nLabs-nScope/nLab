@@ -247,10 +247,9 @@
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu clickable">
                                 <div class="mx-3 form-group">
-                                    <span class="px-1">Scale:</span><label for="Ch1-scale"
-                                                                          contenteditable="true">1</label><span class="px-1">V/div</span>
+                                    <span class="px-1">Scale:</span><label for="Ch1-scale">1</label><span class="px-1">V/div</span>
                                     <input type="range" class="form-range" id="Ch1-scale">
                                 </div>
                             </div>
@@ -266,10 +265,9 @@
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu clickable">
                                 <div class="mx-3 form-group">
-                                    <span class="px-1">Scale:</span><label for="Ch2-scale"
-                                                                                   contenteditable="true">1</label><span class="px-1">V/div</span>
+                                    <span class="px-1">Scale:</span><label for="Ch2-scale">1</label><span class="px-1">V/div</span>
                                     <input type="range" class="form-range" id="Ch2-scale">
                                 </div>
                             </div>
@@ -285,10 +283,9 @@
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu clickable">
                                 <div class="mx-3 form-group">
-                                    <span class="px-1">Scale:</span><label for="Ch3-scale"
-                                                                          contenteditable="true">1</label><span class="px-1">V/div</span>
+                                    <span class="px-1">Scale:</span><label for="Ch3-scale">1</label><span class="px-1">V/div</span>
                                     <input type="range" class="form-range" id="Ch3-scale">
                                 </div>
                             </div>
@@ -304,10 +301,9 @@
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu clickable">
                                 <div class="mx-3 form-group">
-                                    <span class="px-1">Scale:</span><label for="Ch4-scale"
-                                                                          contenteditable="true">1</label><span class="px-1">V/div</span>
+                                    <span class="px-1">Scale:</span><label for="Ch4-scale">1</label><span class="px-1">V/div</span>
                                     <input type="range" class="form-range" id="Ch4-scale">
                                 </div>
                             </div>
@@ -323,7 +319,12 @@
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu clickable">
+                                <div class="mx-3 form-group">
+                                    <span class="px-1">Trigger Level:</span><label for="trigger-level">5</label><span class="px-1">V</span>
+                                    <i class="fa-regular fa-pen-to-square label-edit-button"></i>
+                                    <input type="range" class="form-range" id="trigger-level">
+                                </div>
                                 <div class="btn-group my-1 mx-4" role="group">
                                     <input class="btn-check" type="radio" name="trigger-source" value="Ch1" id="trigger-source-Ch1" checked>
                                     <label class="btn btn-outline-secondary btn-xs shadow-none" for="trigger-source-Ch1">Ch1</label>
@@ -339,11 +340,6 @@
                                     <label class="btn btn-outline-secondary btn-xs shadow-none" for="trigger-type-rising-edge">Rising</label>
                                     <input class="btn-check" type="radio" name="trigger-type" value="FallingEdge" id="trigger-type-falling-edge">
                                     <label class="btn btn-outline-secondary btn-xs shadow-none" for="trigger-type-falling-edge">Falling</label>
-                                </div>
-                                <div class="mx-3 form-group">
-                                    <span class="px-1">Trigger Level:</span><label for="trigger-level"
-                                                                               contenteditable="true">5</label><span class="px-1">V</span>
-                                    <input type="range" class="form-range" id="trigger-level">
                                 </div>
                             </div>
                         </div>

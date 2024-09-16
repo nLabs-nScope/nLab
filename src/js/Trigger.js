@@ -1,6 +1,6 @@
 import {getId, isEmpty} from './Utils.js';
 import {colors, text_colors} from './Axes.js';
-
+import * as precisionInput from './PrecisionInput'
 
 let slider_free = false;
 
@@ -41,13 +41,24 @@ export function update(triggerState) {
 
     let label = getId('trigger-level').labels[0];
     let levelString = levelToString(triggerState.level);
-    label.textContent = levelString.number;
-    label.nextElementSibling.textContent = levelString.unit;
+
+    if (precisionInput.isNotEditable(label)) {
+        label.textContent = levelString.number;
+        label.nextElementSibling.textContent = levelString.unit;
+    }
 
     if(slider_free) {
         getId('trigger-level').value = levelToVal(triggerState.level);
     }
 
+}
+
+export function adjustTriggerLevel(level) {
+    let label = getId('trigger-level').labels[0];
+    nscope.setTriggerLevel(nScope, level);
+    let levelString = levelToString(level);
+    label.textContent = levelString.number;
+    label.nextElementSibling.textContent = levelString.unit;
 }
 
 getId('trigger-onoff').onclick = function () {
@@ -86,12 +97,8 @@ function levelToVal(level) {
 
 getId('trigger-level').oninput = getId('trigger-level').onchange = function () {
     slider_free = false;
-    let label = this.labels[0];
     let level = valToLevel(this.value);
-    nscope.setTriggerLevel(nScope, level);
-    let levelString = levelToString(level);
-    label.textContent = levelString.number;
-    label.nextElementSibling.textContent = levelString.unit;
+    adjustTriggerLevel(level);
     nscope.reTriggerIfNotTriggered(nScope);
 }
 
@@ -106,3 +113,11 @@ for (let button of document.querySelectorAll('input[name=trigger-type]')) {
         nscope.reTriggerIfNotTriggered(nScope);
     }
 }
+
+let triggerLabel = getId('trigger-level').labels[0];
+precisionInput.setup(triggerLabel, (label)=> {
+    let value = parseFloat(label.innerHTML);
+    // TODO: handle this in the driver layer
+    value = Math.max(-5, Math.min(5, value));
+    nscope.setTriggerLevel(nScope, value);
+});
