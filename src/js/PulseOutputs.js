@@ -1,4 +1,5 @@
-import { getId, isEmpty } from './Utils.js';
+import {getId, isEmpty} from './Utils.js';
+import * as precisionInput from './PrecisionInput'
 
 function valToDuty(val) {
     val = parseFloat(val);
@@ -79,17 +80,21 @@ export function update(pxState) {
         let freqLabel = getId(`${ch}-freq`).labels[0];
         let dutyLabel = getId(`${ch}-duty`).labels[0];
 
-        freqLabel.textContent = freqString.number;
-        freqLabel.nextElementSibling.textContent = freqString.unit;
+        if (precisionInput.isNotEditable(freqLabel)) {
+            freqLabel.textContent = freqString.number;
+            freqLabel.nextElementSibling.textContent = freqString.unit;
+        }
 
-        dutyLabel.textContent = dutyString.number;
-        dutyLabel.nextElementSibling.textContent = dutyString.unit;
+        if (precisionInput.isNotEditable(dutyLabel)) {
+            dutyLabel.textContent = dutyString.number;
+            dutyLabel.nextElementSibling.textContent = dutyString.unit;
+        }
 
-        if(sliders_free[`${ch}-freq`]) {
+        if (sliders_free[`${ch}-freq`]) {
             getId(`${ch}-freq`).value = freqToVal(pxState[ch].frequency);
         }
 
-        if(sliders_free[`${ch}-duty`]) {
+        if (sliders_free[`${ch}-duty`]) {
             getId(`${ch}-duty`).value = dutyToVal(pxState[ch].duty);
         }
     }
@@ -134,6 +139,22 @@ for (let ch of ["P1", "P2"]) {
 
     getId(`${ch}-duty`).addEventListener('mouseup', function () {
         sliders_free[`${ch}-duty`] = true;
+    });
+
+    let freqLabel = getId(`${ch}-freq`).labels[0];
+    precisionInput.setup(freqLabel, (label)=> {
+        let frequency = parseFloat(label.innerHTML);
+        // TODO: handle this in the driver layer
+        frequency = Math.max(1, Math.min(20000, frequency));
+        nscope.setPxFrequency(nScope, ch, frequency);
+    });
+
+    let dutyLabel = getId(`${ch}-duty`).labels[0];
+    precisionInput.setup(dutyLabel, (label) => {
+        let duty = parseFloat(label.innerHTML);
+        // TODO: handle this in the driver layer
+        duty = Math.max(0, Math.min(100, duty));
+        nscope.setPxDuty(nScope, ch, duty);
     });
 
 }

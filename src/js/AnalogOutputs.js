@@ -164,7 +164,7 @@ for (let ch of ["A1", "A2"]) {
     precisionInput.setup(freqLabel, (label)=> {
         let frequency = parseFloat(label.innerHTML);
         // TODO: handle this in the driver layer
-        frequency = Math.max(0, Math.min(20000, frequency));
+        frequency = Math.max(0.1, Math.min(20000, frequency));
         nscope.setAxFrequency(nScope, ch, frequency);
     });
 
