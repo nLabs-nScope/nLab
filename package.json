@@ -49,11 +49,12 @@
     "build-app": "webpack --mode=production",
     "build": "npm run build-native && npm run build-app",
     "start": "electron-forge start",
-    "dev": "concurrently -k \"webpack --watch --mode=development\" \"npm run build-native && electron . debug\"",
+    "dev": "concurrently -k \"webpack --watch --mode=development\" \"npm run build && electron . debug\"",
     "package": "electron-forge package",
     "make": "electron-forge make"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.6.0",
     "electron-log": "^5.1.6",
     "electron-squirrel-startup": "^1.0.0",
     "update-electron-app": "^2.0.1"

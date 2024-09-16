@@ -1,4 +1,5 @@
 import {getId, isEmpty} from './Utils.js';
+import * as precisionInput from './PrecisionInput'
 
 function valToAmplitude(val) {
     val = parseFloat(val);
@@ -80,19 +81,22 @@ export function update(axState) {
         getId(`${ch}-status`).innerHTML = freqString.number + ' ' + freqString.unit + ' ' + amplitudeString.number + ' ' + amplitudeString.unit;
 
         let freqLabel = getId(`${ch}-freq`).labels[0];
+        if (precisionInput.isNotEditable(freqLabel)) {
+            freqLabel.textContent = freqString.number;
+            freqLabel.nextElementSibling.textContent = freqString.unit;
+        }
+
         let amplitudeLabel = getId(`${ch}-amplitude`).labels[0];
+        if (precisionInput.isNotEditable(amplitudeLabel)) {
+            amplitudeLabel.textContent = amplitudeString.number;
+            amplitudeLabel.nextElementSibling.textContent = amplitudeString.unit;
+        }
 
-        freqLabel.textContent = freqString.number;
-        freqLabel.nextElementSibling.textContent = freqString.unit;
-
-        amplitudeLabel.textContent = amplitudeString.number;
-        amplitudeLabel.nextElementSibling.textContent = amplitudeString.unit;
-
-        if(sliders_free[`${ch}-freq`]) {
+        if (sliders_free[`${ch}-freq`]) {
             getId(`${ch}-freq`).value = freqToVal(axState[ch].frequency);
         }
 
-        if(sliders_free[`${ch}-amplitude`]) {
+        if (sliders_free[`${ch}-amplitude`]) {
             getId(`${ch}-amplitude`).value = amplitudeToVal(axState[ch].amplitude);
         }
 
@@ -155,4 +159,21 @@ for (let ch of ["A1", "A2"]) {
             nscope.setAxPolarity(nScope, ch, wave);
         }
     }
+
+    let freqLabel = getId(`${ch}-freq`).labels[0];
+    precisionInput.setup(freqLabel, (label)=> {
+        let frequency = parseFloat(label.innerHTML);
+        // TODO: handle this in the driver layer
+        frequency = Math.max(0.1, Math.min(20000, frequency));
+        nscope.setAxFrequency(nScope, ch, frequency);
+    });
+
+    let amplitudeLabel = getId(`${ch}-amplitude`).labels[0];
+    precisionInput.setup(amplitudeLabel, (label) => {
+        let amplitude = parseFloat(label.innerHTML);
+        // TODO: handle this in the driver layer
+        amplitude = Math.max(0, Math.min(4.5, amplitude));
+        nscope.setAxAmplitude(nScope, ch, amplitude);
+    });
+
 }

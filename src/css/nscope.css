@@ -102,3 +102,19 @@ html, body {
     font-size: small;
     font-weight: 300;
 }
+
+label.editing {
+    border-bottom: white dashed 1px;
+    padding-bottom: 2px;
+}
+
+label {
+    border-bottom: transparent solid 1px;
+    padding-bottom: 2px;
+}
+
+.label-edit-button {
+    float: right;
+    padding-top: 2px;
+    cursor: pointer;
+}
