@@ -161,9 +161,19 @@ for (let ch of ["A1", "A2"]) {
     }
 
     let freqLabel = getId(`${ch}-freq`).labels[0];
-    precisionInput.setup(freqLabel);
+    precisionInput.setup(freqLabel, (label)=> {
+        let frequency = parseFloat(label.innerHTML);
+        // TODO: handle this in the driver layer
+        frequency = Math.max(0, Math.min(20000, frequency));
+        nscope.setAxFrequency(nScope, ch, frequency);
+    });
 
     let amplitudeLabel = getId(`${ch}-amplitude`).labels[0];
-    precisionInput.setup(amplitudeLabel);
+    precisionInput.setup(amplitudeLabel, (label) => {
+        let amplitude = parseFloat(label.innerHTML);
+        // TODO: handle this in the driver layer
+        amplitude = Math.max(0, Math.min(4.5, amplitude));
+        nscope.setAxAmplitude(nScope, ch, amplitude);
+    });
 
 }

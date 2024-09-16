@@ -23,9 +23,14 @@ function end_edit(label, button) {
     button.classList.add("fa-regular", "fa-pen-to-square");
 }
 
-export function setup(label) {
+export function setup(label, fn) {
 
     let button = button_from_label(label);
+
+    let exit_fn = (label, button) => {
+        fn(label);
+        end_edit(label, button);
+    }
 
     label.onclick = function () {
         start_edit(label, button);
@@ -43,13 +48,13 @@ export function setup(label) {
         }
         if (event.key === 'Enter') {
             event.preventDefault();
-            end_edit(label, button)
+            exit_fn(label, button)
         }
     }
 
     button.onclick = function () {
         if(this.classList.contains("editing")){
-            end_edit(label, button);
+            exit_fn(label, button);
         } else {
             start_edit(label, button);
         }

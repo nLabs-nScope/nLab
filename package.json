@@ -49,7 +49,7 @@
     "build-app": "webpack --mode=production",
     "build": "npm run build-native && npm run build-app",
     "start": "electron-forge start",
-    "dev": "concurrently -k \"webpack --watch --mode=development\" \"npm run build-native && electron . debug\"",
+    "dev": "concurrently -k \"webpack --watch --mode=development\" \"npm run build && electron . debug\"",
     "package": "electron-forge package",
     "make": "electron-forge make"
   },

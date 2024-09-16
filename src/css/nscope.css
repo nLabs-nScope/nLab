@@ -113,7 +113,8 @@ label {
     padding-bottom: 2px;
 }
 
-.label-edit {
+.label-edit-button {
     float: right;
     padding-top: 2px;
+    cursor: pointer;
 }
