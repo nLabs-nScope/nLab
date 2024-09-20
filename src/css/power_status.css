@@ -1,10 +1,10 @@
-#nscope-power-usage-bar {
+#nlab-power-usage-bar {
     pointer-events: none;   
     position: relative;
     display:inline-block;
 }
 
-#nscope-power-usage-bar > div:not(:first-child) {
+#nlab-power-usage-bar > div:not(:first-child) {
     position: absolute;
     top: 0;
     left: 0;
@@ -13,6 +13,6 @@
     overflow: hidden;
 }
 
-#nscope-power-usage-bar .btn {
+#nlab-power-usage-bar .btn {
     width:100px;
 }

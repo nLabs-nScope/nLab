@@ -19,7 +19,7 @@ module.exports = {
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        setupExe: 'nScope Installer.exe',
+        setupExe: 'nLab Installer.exe',
         loadingGif: 'src/assets/gif/installing.gif',
         iconUrl: 'https://www.nscope.org/user/pages/icons/nscope_icon.ico',
         setupIcon: 'src/assets/icons/nscope_icon.ico',
@@ -31,7 +31,7 @@ module.exports = {
       config: {
         format: 'ULFO',
         icon: 'src/assets/icons/nscope_icon.icns',
-        name: 'nScope Installer',
+        name: 'nLab Installer',
       }
     },
     {

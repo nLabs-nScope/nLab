@@ -55,7 +55,7 @@ export function update(triggerState) {
 
 export function adjustTriggerLevel(level) {
     let label = getId('trigger-level').labels[0];
-    nscope.setTriggerLevel(nScope, level);
+    nlab.setTriggerLevel(nLab, level);
     let levelString = levelToString(level);
     label.textContent = levelString.number;
     label.nextElementSibling.textContent = levelString.unit;
@@ -63,15 +63,15 @@ export function adjustTriggerLevel(level) {
 
 getId('trigger-onoff').onclick = function () {
     let checked = this.classList.contains("active");
-    nscope.setTriggerOn(nScope, checked);
-    nscope.restartTraces(nScope);
+    nlab.setTriggerOn(nLab, checked);
+    nlab.restartTraces(nLab);
 }
 
 for (let button of document.querySelectorAll('input[name=trigger-source]')) {
     button.onchange = function () {
         let source = this.value;
-        nscope.setTriggerSource(nScope, source);
-        nscope.restartTraces(nScope);
+        nlab.setTriggerSource(nLab, source);
+        nlab.restartTraces(nLab);
     }
 }
 
@@ -99,7 +99,7 @@ getId('trigger-level').oninput = getId('trigger-level').onchange = function () {
     slider_free = false;
     let level = valToLevel(this.value);
     adjustTriggerLevel(level);
-    nscope.reTriggerIfNotTriggered(nScope);
+    nlab.reTriggerIfNotTriggered(nLab);
 }
 
 
@@ -109,8 +109,8 @@ getId('trigger-level').addEventListener('mouseup', function () {
 
 for (let button of document.querySelectorAll('input[name=trigger-type]')) {
     button.onchange = function () {
-        nscope.setTriggerType(nScope, this.value);
-        nscope.reTriggerIfNotTriggered(nScope);
+        nlab.setTriggerType(nLab, this.value);
+        nlab.reTriggerIfNotTriggered(nLab);
     }
 }
 
@@ -119,5 +119,5 @@ precisionInput.setup(triggerLabel, (label)=> {
     let value = parseFloat(label.innerHTML);
     // TODO: handle this in the driver layer
     value = Math.max(-5, Math.min(5, value));
-    nscope.setTriggerLevel(nScope, value);
+    nlab.setTriggerLevel(nLab, value);
 });

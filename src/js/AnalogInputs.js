@@ -48,14 +48,14 @@ function gainToVal(gain) {
 export function setAnalogInputRange(ch) {
 
 
-    let triggerState = nscope.getTriggerStatus(nScope);
+    let triggerState = nlab.getTriggerStatus(nLab);
     if(triggerState.level > ranges[ch][1]) {
-        nscope.setTriggerLevel(nScope, ranges[ch][1]);
+        nlab.setTriggerLevel(nLab, ranges[ch][1]);
     }
     if(triggerState.level < ranges[ch][0]) {
-        nscope.setTriggerLevel(nScope, ranges[ch][0]);
+        nlab.setTriggerLevel(nLab, ranges[ch][0]);
     }
-    nscope.setChRange(nScope, ch, ranges[ch][0]-0.2, ranges[ch][1]+0.2);
+    nlab.setChRange(nLab, ch, ranges[ch][0]-0.2, ranges[ch][1]+0.2);
 }
 
 export function update(chState) {
@@ -94,7 +94,7 @@ export function update(chState) {
 for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
     getId(`${ch}-onoff`).onclick = function () {
         let checked = this.classList.contains("active");
-        nscope.setChOn(nScope, ch, checked);
+        nlab.setChOn(nLab, ch, checked);
         timing.setTiming();
     }
 
@@ -114,11 +114,11 @@ for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
         label.nextElementSibling.textContent = scaleString.unit;
 
         setAnalogInputRange(ch);
-        nscope.reTriggerIfNotTriggered(nScope);
+        nlab.reTriggerIfNotTriggered(nLab);
     }
 
     getId(`${ch}-scale`).onchange = function () {
-        nscope.restartTraces(nScope);
+        nlab.restartTraces(nLab);
     }
 
     getId(`${ch}-scale`).addEventListener('mouseup', function () {

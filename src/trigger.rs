@@ -27,15 +27,15 @@ impl Objectify for Trigger {
 }
 
 pub fn get_trigger_status(mut cx: FunctionContext) -> JsResult<JsObject> {
-    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
-    let nscope_handle = js_nscope_handle.borrow();
+    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let nlab_handle = js_nlab_handle.borrow();
 
-    let obj = nscope_handle.trigger.to_object(&mut cx)?;
+    let obj = nlab_handle.trigger.to_object(&mut cx)?;
 
     let mut disable_ui = cx.boolean(true);
 
-    if let Some(nscope) = &nscope_handle.device {
-        if nscope.is_connected() {
+    if let Some(nlab) = &nlab_handle.device {
+        if nlab.is_connected() {
             disable_ui = cx.boolean(false);
         }
     }
@@ -46,19 +46,19 @@ pub fn get_trigger_status(mut cx: FunctionContext) -> JsResult<JsObject> {
 }
 
 pub fn set_trigger_on(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
     let is_on = cx.argument::<JsBoolean>(1)?.value(&mut cx);
-    let mut nscope_handle = js_nscope_handle.borrow_mut();
-    nscope_handle.trigger.is_enabled = is_on;
+    let mut nlab_handle = js_nlab_handle.borrow_mut();
+    nlab_handle.trigger.is_enabled = is_on;
     Ok(cx.null())
 }
 
 pub fn set_trigger_source(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
     let source = cx.argument::<JsString>(1)?.value(&mut cx);
-    let mut nscope_handle = js_nscope_handle.borrow_mut();
+    let mut nlab_handle = js_nlab_handle.borrow_mut();
 
-    nscope_handle.trigger.source_channel = match source.as_str() {
+    nlab_handle.trigger.source_channel = match source.as_str() {
         "Ch1" => 0,
         "Ch2" => 1,
         "Ch3" => 2,
@@ -69,26 +69,26 @@ pub fn set_trigger_source(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 pub fn set_trigger_delay(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
     let delay = cx.argument::<JsNumber>(1)?.value(&mut cx);
-    let mut nscope_handle = js_nscope_handle.borrow_mut();
-    nscope_handle.trigger.trigger_delay_us = delay as u32;
+    let mut nlab_handle = js_nlab_handle.borrow_mut();
+    nlab_handle.trigger.trigger_delay_us = delay as u32;
     Ok(cx.null())
 }
 
 pub fn set_trigger_level(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
     let level = cx.argument::<JsNumber>(1)?.value(&mut cx);
-    let mut nscope_handle = js_nscope_handle.borrow_mut();
-    nscope_handle.trigger.trigger_level = level;
+    let mut nlab_handle = js_nlab_handle.borrow_mut();
+    nlab_handle.trigger.trigger_level = level;
     Ok(cx.null())
 }
 
 pub fn set_trigger_type(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
     let trigger_type = cx.argument::<JsString>(1)?.value(&mut cx);
-    let mut nscope_handle = js_nscope_handle.borrow_mut();
-    nscope_handle.trigger.trigger_type = match trigger_type.as_str() {
+    let mut nlab_handle = js_nlab_handle.borrow_mut();
+    nlab_handle.trigger.trigger_type = match trigger_type.as_str() {
         "RisingEdge" => TriggerType::RisingEdge,
         "FallingEdge" => TriggerType::FallingEdge,
         _ => panic!("Invalid trigger type string"),
