@@ -28,16 +28,16 @@ impl Objectify for AnalogOutput {
 }
 
 pub fn get_ax_status(mut cx: FunctionContext) -> JsResult<JsObject> {
-    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
-    let nscope_handle = js_nscope_handle.borrow();
+    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let nlab_handle = js_nlab_handle.borrow();
 
     let ax_status = cx.empty_object();
 
-    if let Some(nscope) = &nscope_handle.device {
-        if nscope.is_connected() {
+    if let Some(nlab) = &nlab_handle.device {
+        if nlab.is_connected() {
             for ch in 1..=2 {
                 let channel_name = format!("A{}", ch);
-                if let Some(analog_output) = nscope.analog_output(ch) {
+                if let Some(analog_output) = nlab.analog_output(ch) {
                     let channel_status = analog_output.to_object(&mut cx)?;
                     ax_status.set(&mut cx, channel_name.as_str(), channel_status)?;
                 }
@@ -49,16 +49,16 @@ pub fn get_ax_status(mut cx: FunctionContext) -> JsResult<JsObject> {
 }
 
 pub fn set_ax_on(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
     let turn_on = cx.argument::<JsBoolean>(2)?.value(&mut cx);
-    let nscope_handle = js_nscope_handle.borrow();
+    let nlab_handle = js_nlab_handle.borrow();
 
-    if let Some(nscope) = &nscope_handle.device {
-        if nscope.is_connected() {
+    if let Some(nlab) = &nlab_handle.device {
+        if nlab.is_connected() {
             let analog_output = match channel.as_str() {
-                "A1" => &nscope.a1,
-                "A2" => &nscope.a2,
+                "A1" => &nlab.a1,
+                "A2" => &nlab.a2,
                 _ => panic!("Invalid channel string"),
             };
             if turn_on {
@@ -73,16 +73,16 @@ pub fn set_ax_on(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 pub fn set_ax_frequency_hz(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
     let frequency = cx.argument::<JsNumber>(2)?.value(&mut cx);
-    let nscope_handle = js_nscope_handle.borrow();
+    let nlab_handle = js_nlab_handle.borrow();
 
-    if let Some(nscope) = &nscope_handle.device {
-        if nscope.is_connected() {
+    if let Some(nlab) = &nlab_handle.device {
+        if nlab.is_connected() {
             let analog_output = match channel.as_str() {
-                "A1" => &nscope.a1,
-                "A2" => &nscope.a2,
+                "A1" => &nlab.a1,
+                "A2" => &nlab.a2,
                 _ => panic!("Invalid channel string"),
             };
             analog_output.set_frequency(frequency);
@@ -93,16 +93,16 @@ pub fn set_ax_frequency_hz(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 pub fn set_ax_amplitude(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
     let amplitude = cx.argument::<JsNumber>(2)?.value(&mut cx);
-    let nscope_handle = js_nscope_handle.borrow();
+    let nlab_handle = js_nlab_handle.borrow();
 
-    if let Some(nscope) = &nscope_handle.device {
-        if nscope.is_connected() {
+    if let Some(nlab) = &nlab_handle.device {
+        if nlab.is_connected() {
             let analog_output = match channel.as_str() {
-                "A1" => &nscope.a1,
-                "A2" => &nscope.a2,
+                "A1" => &nlab.a1,
+                "A2" => &nlab.a2,
                 _ => panic!("Invalid channel string"),
             };
             analog_output.set_amplitude(amplitude);
@@ -113,16 +113,16 @@ pub fn set_ax_amplitude(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 pub fn set_ax_wave_type(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
     let wave_type = cx.argument::<JsString>(2)?.value(&mut cx);
-    let nscope_handle = js_nscope_handle.borrow();
+    let nlab_handle = js_nlab_handle.borrow();
 
-    if let Some(nscope) = &nscope_handle.device {
-        if nscope.is_connected() {
+    if let Some(nlab) = &nlab_handle.device {
+        if nlab.is_connected() {
             let analog_output = match channel.as_str() {
-                "A1" => &nscope.a1,
-                "A2" => &nscope.a2,
+                "A1" => &nlab.a1,
+                "A2" => &nlab.a2,
                 _ => panic!("Invalid channel string"),
             };
             if let Ok(wave_type) = AnalogWaveType::from_str(wave_type.as_str()) {
@@ -135,16 +135,16 @@ pub fn set_ax_wave_type(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 pub fn set_ax_polarity(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
     let polarity = cx.argument::<JsString>(2)?.value(&mut cx);
-    let nscope_handle = js_nscope_handle.borrow();
+    let nlab_handle = js_nlab_handle.borrow();
 
-    if let Some(nscope) = &nscope_handle.device {
-        if nscope.is_connected() {
+    if let Some(nlab) = &nlab_handle.device {
+        if nlab.is_connected() {
             let analog_output = match channel.as_str() {
-                "A1" => &nscope.a1,
-                "A2" => &nscope.a2,
+                "A1" => &nlab.a1,
+                "A2" => &nlab.a2,
                 _ => panic!("Invalid channel string"),
             };
             if let Ok(polarity) = AnalogSignalPolarity::from_str(polarity.as_str()) {

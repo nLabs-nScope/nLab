@@ -6,8 +6,8 @@ log.info("starting preload");
 const { ipcRenderer } = require('electron');
 window.ipcRenderer = ipcRenderer;
 
-window.nscope = require('./app/nscope.node');
+window.nlab = require('./app/nlab.node');
 log.info("loaded native node module");
 
-window.nScope = nscope.newNscope();
-log.info("created new nScope");
+window.nLab = nlab.newNscope();
+log.info("created new nLab");

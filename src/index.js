@@ -1,8 +1,8 @@
 const log = window.electron_log.scope("renderer");
-log.info('nScope renderer process start');
+log.info('nLab renderer process start');
 
 import './scss/custom_bootstrap.scss'
-import './css/nscope.css'
+import './css/nlab.css'
 import './css/plotly.css'
 import packageInfo from '../package.json'
 import 'bootstrap'
@@ -111,8 +111,8 @@ function updatePlot() {
     log.debug("updating plot");
 
     log.debug("adding channel flags");
-    let triggerState = nscope.getTriggerStatus(nScope);
-    let chState = nscope.getChStatus(nScope);
+    let triggerState = nlab.getTriggerStatus(nLab);
+    let chState = nlab.getChStatus(nLab);
 
     let shapes = flags.drawShapes(triggerState, chState);
 
@@ -128,7 +128,7 @@ function updatePlot() {
 
     // Update the traces
     log.debug("update the traces");
-    trace_data = nscope.getTraces(nScope, trace_data);
+    trace_data = nlab.getTraces(nLab, trace_data);
 
     log.debug("updating the graph");
     Plotly.update('scope-graph', trace_data, layout_data);
@@ -144,34 +144,34 @@ log.info("completed graph creation");
 function monitorScope() {
 
     log.debug("monitoring scope");
-    let powerState = nscope.monitorNscope(nScope);
+    let powerState = nlab.monitorNscope(nLab);
     log.debug("monitoring scope");
     powerStatus.update(powerState);
 
     log.debug("getting channel status");
-    let chState = nscope.getChStatus(nScope);
+    let chState = nlab.getChStatus(nLab);
     analogInputs.update(chState);
 
     log.debug("getting trigger status");
-    let triggerState = nscope.getTriggerStatus(nScope);
+    let triggerState = nlab.getTriggerStatus(nLab);
     trigger.update(triggerState);
 
     log.debug("getting px status");
-    let pxState = nscope.getPxStatus(nScope);
+    let pxState = nlab.getPxStatus(nLab);
     pulseOutputs.update(pxState);
 
     log.debug("getting ax status");
-    let axState = nscope.getAxStatus(nScope);
+    let axState = nlab.getAxStatus(nLab);
     analogOutputs.update(axState);
 
     log.debug("getting run state");
-    let currentRunState = nscope.getRunState(nScope);
+    let currentRunState = nlab.getRunState(nLab);
     runState.update(currentRunState);
 
     log.debug("updating timing status");
     timing.update();
 
-    if (nscope.isConnected(nScope)) {
+    if (nlab.isConnected(nLab)) {
         getId('save-traces').classList.remove("disabled");
     } else {
         getId('save-traces').classList.add("disabled");

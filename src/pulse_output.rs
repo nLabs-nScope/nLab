@@ -21,16 +21,16 @@ impl Objectify for PulseOutput {
 }
 
 pub fn get_px_status(mut cx: FunctionContext) -> JsResult<JsObject> {
-    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
-    let nscope_handle = js_nscope_handle.borrow();
+    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let nlab_handle = js_nlab_handle.borrow();
 
     let px_status = cx.empty_object();
 
-    if let Some(nscope) = &nscope_handle.device {
-        if nscope.is_connected() {
+    if let Some(nlab) = &nlab_handle.device {
+        if nlab.is_connected() {
             for ch in 1..=2 {
                 let channel_name = format!("P{}", ch);
-                if let Some(pulse_output) = nscope.pulse_output(ch) {
+                if let Some(pulse_output) = nlab.pulse_output(ch) {
                     let channel_status = pulse_output.to_object(&mut cx)?;
                     px_status.set(&mut cx, channel_name.as_str(), channel_status)?;
                 }
@@ -42,16 +42,16 @@ pub fn get_px_status(mut cx: FunctionContext) -> JsResult<JsObject> {
 }
 
 pub fn set_px_on(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
     let turn_on = cx.argument::<JsBoolean>(2)?.value(&mut cx);
-    let nscope_handle = js_nscope_handle.borrow();
+    let nlab_handle = js_nlab_handle.borrow();
 
-    if let Some(nscope) = &nscope_handle.device {
-        if nscope.is_connected() {
+    if let Some(nlab) = &nlab_handle.device {
+        if nlab.is_connected() {
             let pulse_output = match channel.as_str() {
-                "P1" => &nscope.p1,
-                "P2" => &nscope.p2,
+                "P1" => &nlab.p1,
+                "P2" => &nlab.p2,
                 _ => panic!("Invalid channel string")
             };
             if turn_on {
@@ -66,16 +66,16 @@ pub fn set_px_on(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 pub fn set_px_frequency_hz(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
     let frequency = cx.argument::<JsNumber>(2)?.value(&mut cx);
-    let nscope_handle = js_nscope_handle.borrow();
+    let nlab_handle = js_nlab_handle.borrow();
 
-    if let Some(nscope) = &nscope_handle.device {
-        if nscope.is_connected() {
+    if let Some(nlab) = &nlab_handle.device {
+        if nlab.is_connected() {
             let pulse_output = match channel.as_str() {
-                "P1" => &nscope.p1,
-                "P2" => &nscope.p2,
+                "P1" => &nlab.p1,
+                "P2" => &nlab.p2,
                 _ => panic!("Invalid channel string")
             };
             pulse_output.set_frequency(frequency);
@@ -86,16 +86,16 @@ pub fn set_px_frequency_hz(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 pub fn set_px_duty(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
     let duty = cx.argument::<JsNumber>(2)?.value(&mut cx) / 100.;
-    let nscope_handle = js_nscope_handle.borrow();
+    let nlab_handle = js_nlab_handle.borrow();
 
-    if let Some(nscope) = &nscope_handle.device {
-        if nscope.is_connected() {
+    if let Some(nlab) = &nlab_handle.device {
+        if nlab.is_connected() {
             let pulse_output = match channel.as_str() {
-                "P1" => &nscope.p1,
-                "P2" => &nscope.p2,
+                "P1" => &nlab.p1,
+                "P2" => &nlab.p2,
                 _ => panic!("Invalid channel string")
             };
             pulse_output.set_duty(duty);
