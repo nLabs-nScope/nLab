@@ -5,6 +5,10 @@ html, body {
     padding: 0;
 }
 
+#logo {
+    padding: 8px;
+}
+
 .sidebar > .btn-group-vertical {
     margin-top: 10px;
     width: 100%;
