@@ -157,7 +157,7 @@ function attachEventListeners() {
 
     // Add a mousedown handler for the trigger flag
     let shapeIndex = 8; // Number of scope channels * 2
-    let triggerState = nscope.getTriggerStatus(nScope);
+    let triggerState = nlab.getTriggerStatus(nLab);
     let axisIndex = `${idFromCh(triggerState.source) + 1}`
     let shape = document.querySelector(`.shapelayer .shape-group[data-index="${shapeIndex}"]`);
     if (shape) {
@@ -231,10 +231,10 @@ export function initDragEvents() {
 
             if (["Ch1", "Ch2", "Ch3", "Ch4"].includes(current_drag.adjust)) {
                 setAnalogInputRange(current_drag.adjust);
-                nscope.restartTraces(nScope);
+                nlab.restartTraces(nLab);
             }
             if (current_drag.adjust === "Trigger") {
-                nscope.reTriggerIfNotTriggered(nScope);
+                nlab.reTriggerIfNotTriggered(nLab);
             }
             current_drag = null;
             document.body.removeAttribute('style');

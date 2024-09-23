@@ -3,12 +3,12 @@ import {getId, isEmpty} from './Utils.js';
 for (let button of document.querySelectorAll("input[name=run-control]")) {
     button.onchange = function () {
         const action = this.id;
-        nscope.setRunState(nScope, action);
+        nlab.setRunState(nLab, action);
     }
 }
 
 export function update(runState) {
-    if (nscope.isConnected(nScope)) {
+    if (nlab.isConnected(nLab)) {
         getId('run-control').classList.remove("disabled");
 
         for (let button of document.querySelectorAll("input[name=run-control]")) {

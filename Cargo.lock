@@ -212,6 +212,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "nlab-nodejs"
+version = "1.0.0"
+dependencies = [
+ "env_logger",
+ "log",
+ "neon",
+ "nscope",
+]
+
+[[package]]
 name = "nscope"
 version = "1.0.0"
 source = "git+https://github.com/nLabs-nScope/nscope-rs?branch=main#c865c33edc4c0085d52b47134dfbb823ba427a5d"
@@ -222,16 +232,6 @@ dependencies = [
  "log",
  "regex",
  "rusb",
-]
-
-[[package]]
-name = "nscope-nodejs"
-version = "1.0.0"
-dependencies = [
- "env_logger",
- "log",
- "neon",
- "nscope",
 ]
 
 [[package]]

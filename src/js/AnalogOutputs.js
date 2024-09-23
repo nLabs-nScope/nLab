@@ -107,7 +107,7 @@ export function update(axState) {
 }
 
 export function initInput() {
-    let axState = nscope.getAxStatus(nScope);
+    let axState = nlab.getAxStatus(nLab);
     update(axState);
 }
 
@@ -115,14 +115,14 @@ for (let ch of ["A1", "A2"]) {
 
     getId(`${ch}-onoff`).onclick = function () {
         let checked = this.classList.contains("active");
-        nscope.setAxOn(nScope, ch, checked);
+        nlab.setAxOn(nLab, ch, checked);
     }
 
     getId(`${ch}-freq`).oninput = getId(`${ch}-freq`).onchange = function () {
         sliders_free[`${ch}-freq`] = false;
         let label = this.labels[0];
         let frequency = valToFreq(this.value);
-        nscope.setAxFrequency(nScope, ch, frequency)
+        nlab.setAxFrequency(nLab, ch, frequency)
         let freqString = freqToString(frequency);
         label.textContent = freqString.number;
         label.nextElementSibling.textContent = freqString.unit;
@@ -136,7 +136,7 @@ for (let ch of ["A1", "A2"]) {
         sliders_free[`${ch}-amplitude`] = false;
         let label = this.labels[0];
         let amplitude = valToAmplitude(this.value);
-        nscope.setAxAmplitude(nScope, ch, amplitude)
+        nlab.setAxAmplitude(nLab, ch, amplitude)
         let amplitudeString = amplitudeToString(amplitude);
         label.textContent = amplitudeString.number;
         label.nextElementSibling.textContent = amplitudeString.unit;
@@ -149,14 +149,14 @@ for (let ch of ["A1", "A2"]) {
     for (let button of document.querySelectorAll(`input[name=${ch}-waveType]`)) {
         button.onchange = function () {
             let wave = this.value;
-            nscope.setAxWaveType(nScope, ch, wave);
+            nlab.setAxWaveType(nLab, ch, wave);
         }
     }
 
     for (let button of document.querySelectorAll(`input[name=${ch}-polarity]`)) {
         button.onchange = function () {
             let wave = this.value;
-            nscope.setAxPolarity(nScope, ch, wave);
+            nlab.setAxPolarity(nLab, ch, wave);
         }
     }
 
@@ -165,7 +165,7 @@ for (let ch of ["A1", "A2"]) {
         let frequency = parseFloat(label.innerHTML);
         // TODO: handle this in the driver layer
         frequency = Math.max(0.1, Math.min(20000, frequency));
-        nscope.setAxFrequency(nScope, ch, frequency);
+        nlab.setAxFrequency(nLab, ch, frequency);
     });
 
     let amplitudeLabel = getId(`${ch}-amplitude`).labels[0];
@@ -173,7 +173,7 @@ for (let ch of ["A1", "A2"]) {
         let amplitude = parseFloat(label.innerHTML);
         // TODO: handle this in the driver layer
         amplitude = Math.max(0, Math.min(4.5, amplitude));
-        nscope.setAxAmplitude(nScope, ch, amplitude);
+        nlab.setAxAmplitude(nLab, ch, amplitude);
     });
 
 }
