@@ -1,8 +1,8 @@
 module.exports = {
   packagerConfig: {
     asar: true,
-    icon: 'src/assets/icons/nscope_icon',
-    appBundleId: 'org.nscope.nscopeapp',
+    icon: 'src/assets/icons/nLabApp_Icon',
+    appBundleId: 'com.getnlab.nlabapp',
     osxSign: {
       identity: "W74MCWRPFC",
       hardenedRuntime: true,
@@ -21,8 +21,8 @@ module.exports = {
       config: {
         setupExe: 'nLab Installer.exe',
         loadingGif: 'src/assets/gif/installing.gif',
-        iconUrl: 'https://www.nscope.org/user/pages/icons/nscope_icon.ico',
-        setupIcon: 'src/assets/icons/nscope_icon.ico',
+        iconUrl: 'https://www.nscope.org/user/pages/icons/nLabApp_Icon.ico',
+        setupIcon: 'src/assets/icons/nLabApp_Icon.ico',
         signWithParams: `/csp "DigiCert Software Trust Manager KSP" /kc key_847858243 /f ${process.env.CODE_SIGNING_CERT_FILE} /tr http://timestamp.digicert.com /td SHA256 /fd SHA256`
       },
     },
@@ -30,7 +30,7 @@ module.exports = {
       name: '@electron-forge/maker-dmg',
       config: {
         format: 'ULFO',
-        icon: 'src/assets/icons/nscope_icon.icns',
+        icon: 'src/assets/icons/nLabApp_Icon.icns',
         name: 'nLab Installer',
       }
     },
