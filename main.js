@@ -34,7 +34,7 @@ const config = require(path.join(__dirname, 'package.json'))
 const BrowserWindow = electron.BrowserWindow
 const Menu = electron.Menu
 
-const icon = electron.nativeImage.createFromPath(path.join(__dirname, 'app/assets/icons/icon_256x256.png'));
+const icon = electron.nativeImage.createFromPath(path.join(__dirname, 'app/assets/icons/nLabApp_Icon_512x512@2x.png'));
 
 app.commandLine.appendSwitch('enable-logging');
 app.commandLine.appendSwitch('log-file', path.join(log_directory, 'js.log'));

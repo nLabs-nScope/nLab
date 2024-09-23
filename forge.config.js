@@ -1,8 +1,8 @@
 module.exports = {
     packagerConfig: {
         asar: true,
-        icon: 'src/assets/icons/nscope_icon',
-        appBundleId: 'org.nscope.nscopeapp',
+        icon: 'src/assets/icons/nLabApp_Icon',
+        appBundleId: 'com.getnlab.nlabapp',
     },
     rebuildConfig: {},
     makers: [
@@ -12,14 +12,14 @@ module.exports = {
                 setupExe: 'nLab Installer.exe',
                 loadingGif: 'src/assets/gif/installing.gif',
                 iconUrl: 'https://www.nscope.org/user/pages/icons/nscope_icon.ico',
-                setupIcon: 'src/assets/icons/nscope_icon.ico',
+                setupIcon: 'src/assets/icons/nLabApp_Icon.ico',
             },
         },
         {
             name: '@electron-forge/maker-dmg',
             config: {
                 format: 'ULFO',
-                icon: 'src/assets/icons/nscope_icon.icns',
+                icon: 'src/assets/icons/nLabApp_Icon.icns',
                 name: 'nLab Installer',
             }
         },
