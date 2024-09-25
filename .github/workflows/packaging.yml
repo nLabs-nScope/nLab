@@ -77,9 +77,6 @@ jobs:
           echo "${{ secrets.DIGICERT_CLIENT_CERT_FILE }}" | base64 --decode > /d/digicert_sm_cert.p12
           echo "${{ secrets.WINDOWS_SIGNING_CERT }}" | base64 --decode > /d/signing_cert.crt
         shell: bash
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
       - name: Package
         run: npm run make -- --arch ${{ matrix.target_architecture }}
         env:
@@ -127,3 +124,6 @@ jobs:
           path: |
             ./out/make/zip/darwin/universal/*x64*.zip
             ./out/make/zip/darwin/universal/*arm64*.zip
+      - name: Setup tmate session
+        if: failure()
+        uses: mxschmitt/action-tmate@v3
