@@ -55,7 +55,7 @@ jobs:
         run: npm ci
       - name: Setup Digicert Keylocker
         if: matrix.os =='windows-latest'
-        uses: digicert/ssm-code-signing@v0.0.2
+        uses: digicert/ssm-code-signing@v1.0.0
       - name: Build nScope
         run: npm run build
       - name: Setup MacOS certs
