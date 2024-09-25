@@ -85,6 +85,7 @@ jobs:
       - name: Diagnostics
         if: failure()
         run: |
+          dir C:\Users\runneradmin\AppData\Local\SquirrelTemp\tempa\lib\net45\
           D:\a\nLab\nLab\node_modules\electron-winstaller\vendor\signtool.exe sign /csp "DigiCert Software Trust Manager KSP" /kc key_847858243 /f D:\\signing_cert.crt /tr http://timestamp.digicert.com /td SHA256 /fd SHA256 C:\Users\runneradmin\AppData\Local\SquirrelTemp\tempa\lib\net45\ffmpeg.dll
         env:
           SM_HOST: ${{ secrets.DIGICERT_HOST }}
