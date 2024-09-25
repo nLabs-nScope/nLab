@@ -6,7 +6,14 @@ on:
   pull_request:
     branches: [ "main" ]
   schedule:
-    - cron: "50 0 * * *"
+    - cron: "50 0 1,15 * *"
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        required: false
+        default: false
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -55,7 +62,7 @@ jobs:
         run: npm ci
       - name: Setup Digicert Keylocker
         if: matrix.os =='windows-latest'
-        uses: digicert/ssm-code-signing@v0.0.2
+        uses: digicert/ssm-code-signing@v1.0.0
       - name: Build nScope
         run: npm run build
       - name: Setup MacOS certs
@@ -105,3 +112,16 @@ jobs:
           path: |
             ./out/make/zip/darwin/universal/*x64*.zip
             ./out/make/zip/darwin/universal/*arm64*.zip
+      - name: Setup tmate session
+        if: failure()
+        uses: mxschmitt/action-tmate@v3
+        env:
+          DEBUG: "electron-packager,electron-windows-installer:main"
+          MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.MACOS_NOTARIZATION_APPLE_ID }}
+          MACOS_NOTARIZATION_PWD: ${{ secrets.MACOS_NOTARIZATION_PWD }}
+          MACOS_NOTARIZATION_TEAM_ID: ${{ secrets.MACOS_NOTARIZATION_TEAM_ID }}
+          SM_HOST: ${{ secrets.DIGICERT_HOST }}
+          SM_API_KEY: ${{ secrets.DIGICERT_API_KEY }}
+          SM_CLIENT_CERT_PASSWORD: ${{ secrets.DIGICERT_CLIENT_CERT_PASSWORD }}
+          SM_CLIENT_CERT_FILE: D:\\digicert_sm_cert.p12
+          CODE_SIGNING_CERT_FILE: D:\\signing_cert.crt
