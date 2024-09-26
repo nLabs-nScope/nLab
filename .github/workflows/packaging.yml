@@ -54,6 +54,9 @@ jobs:
           sudo apt-get install libusb-1.0-0-dev libudev-dev
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Setup CODESIGN environment variable
+        if: ${{ (github.ref == 'refs/heads/main') || (github.ref == 'refs/tags/*') }}
+        run: echo "NSCOPE_CODESIGN=1" >> $GITHUB_ENV
       - name: Set up node
         uses: actions/setup-node@v4
         with:
