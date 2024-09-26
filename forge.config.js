@@ -58,6 +58,5 @@ module.exports = {
 if (process.env.SKIP_CODESIGN) {
   delete module.exports.packagerConfig.osxNotarize
   delete module.exports.packagerConfig.osxSign
-  let maker_squirrel = module.exports.makers.find(maker => maker.name === '@electron-forge/maker-squirrel')
-  delete maker_squirrel.config.signWithParams
+  delete module.exports.makers[0].config.signWithParams
 }
