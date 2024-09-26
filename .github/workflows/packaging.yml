@@ -54,9 +54,9 @@ jobs:
           sudo apt-get install libusb-1.0-0-dev libudev-dev
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set SKIP_CODESIGN environment variable
-        if: ${{ (github.ref != 'refs/heads/main') && (github.ref != 'refs/tags/*') }}
-        run: echo "SKIP_CODESIGN=1" >> $GITHUB_ENV
+      - name: Setup CODESIGN environment variable
+        if: ${{ (github.ref == 'refs/heads/main') || (github.ref == 'refs/tags/*') }}
+        run: echo "NSCOPE_CODESIGN=1" >> $GITHUB_ENV
       - name: Set up node
         uses: actions/setup-node@v4
         with:
@@ -68,12 +68,12 @@ jobs:
         uses: digicert/ssm-code-signing@v1.0.0
       - name: Build nScope
         run: npm run build
-      - name: Setup MacOS certs
-        if: matrix.os == 'macos-latest'
-        run: ./.github/add-osx-cert.sh
-        env:
-          CERTIFICATE_OSX_APPLICATION: ${{ secrets.MACOS_CERTIFICATE }}
-          CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+#      - name: Setup MacOS certs
+#        if: matrix.os == 'macos-latest'
+#        run: ./.github/add-osx-cert.sh
+#        env:
+#          CERTIFICATE_OSX_APPLICATION: ${{ secrets.MACOS_CERTIFICATE }}
+#          CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
 #      - name: Setup Windows certs
 #        if: matrix.os =='windows-latest'
 #        run: |
