@@ -45,6 +45,8 @@ module.exports = {
 };
 
 if (process.env.NSCOPE_CODESIGN) {
+    console.log("Configuring Electron Forge to Codesign")
+
     module.exports.packagerConfig.osxNotarize = {
         tool: 'notarytool',
         appleId: process.env.MACOS_NOTARIZATION_APPLE_ID,

@@ -17,6 +17,9 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
     strategy:
       fail-fast: false
       matrix:
@@ -79,11 +82,10 @@ jobs:
         run: |
           echo "${{ secrets.DIGICERT_CLIENT_CERT_FILE }}" | base64 --decode > /d/digicert_sm_cert.p12
           echo "${{ secrets.WINDOWS_SIGNING_CERT }}" | base64 --decode > /d/signing_cert.crt
-        shell: bash
       - name: Package
         run: npm run make -- --arch ${{ matrix.target_architecture }}
         env:
-          DEBUG: "electron-packager,electron-windows-installer:main"
+          DEBUG: "electron-packager,electron-windows-installer*"
           MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.MACOS_NOTARIZATION_APPLE_ID }}
           MACOS_NOTARIZATION_PWD: ${{ secrets.MACOS_NOTARIZATION_PWD }}
           MACOS_NOTARIZATION_TEAM_ID: ${{ secrets.MACOS_NOTARIZATION_TEAM_ID }}
