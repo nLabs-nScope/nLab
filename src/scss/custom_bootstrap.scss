@@ -52,3 +52,21 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 .form-range::-webkit-slider-thumb, .form-range::-webkit-slider-runnable-track {
   background-color: $gray-400;
 }
+
+
+.accordion-button:not(.collapsed)::after {
+  //font-family: 'Font Awesome 5 Free';
+  //font-weight: 900;
+  //content: '\f096'; /* Font Awesome empty checkbox icon */
+  content: "Bar";
+  background-image: none;
+  display: inline-block;
+  margin-left: auto;
+  transform: none;
+}
+
+.accordion-button.collapsed::after {
+  content: "Foo";
+  background-image: none;
+  //content: '\f0c8'; /* Font Awesome checked checkbox icon */
+}
