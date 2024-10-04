@@ -55,18 +55,16 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 
 
 .accordion-button:not(.collapsed)::after {
-  //font-family: 'Font Awesome 5 Free';
-  //font-weight: 900;
-  //content: '\f096'; /* Font Awesome empty checkbox icon */
-  content: "Bar";
+  content: '  \f14a'; /* Font Awesome checked checkbox icon */
+  font-family: 'Font Awesome 5 Free';
   background-image: none;
-  display: inline-block;
-  margin-left: auto;
+  margin-left: 12px;
   transform: none;
 }
 
 .accordion-button.collapsed::after {
-  content: "Foo";
+  content: '  \f096'; /* Font Awesome empty checkbox icon */
+  font-family: 'Font Awesome 5 Free';
+  margin-left: 12px;
   background-image: none;
-  //content: '\f0c8'; /* Font Awesome checked checkbox icon */
 }
