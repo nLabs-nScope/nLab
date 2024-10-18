@@ -1,7 +1,7 @@
 use neon::prelude::*;
 use nlabapi::PulseOutput;
 
-use crate::{JsNscopeHandle, Objectify};
+use crate::{JsNlabHandle, Objectify};
 
 impl Objectify for PulseOutput {
     fn to_object<'a>(&self, cx: &mut FunctionContext<'a>) -> JsResult<'a, JsObject> {
@@ -21,7 +21,7 @@ impl Objectify for PulseOutput {
 }
 
 pub fn get_px_status(mut cx: FunctionContext) -> JsResult<JsObject> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let nlab_handle = js_nlab_handle.borrow();
 
     let px_status = cx.empty_object();
@@ -42,7 +42,7 @@ pub fn get_px_status(mut cx: FunctionContext) -> JsResult<JsObject> {
 }
 
 pub fn set_px_on(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
     let turn_on = cx.argument::<JsBoolean>(2)?.value(&mut cx);
     let nlab_handle = js_nlab_handle.borrow();
@@ -66,7 +66,7 @@ pub fn set_px_on(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 pub fn set_px_frequency_hz(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
     let frequency = cx.argument::<JsNumber>(2)?.value(&mut cx);
     let nlab_handle = js_nlab_handle.borrow();
@@ -86,7 +86,7 @@ pub fn set_px_frequency_hz(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 pub fn set_px_duty(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
     let duty = cx.argument::<JsNumber>(2)?.value(&mut cx) / 100.;
     let nlab_handle = js_nlab_handle.borrow();

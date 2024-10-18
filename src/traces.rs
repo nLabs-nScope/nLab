@@ -2,9 +2,9 @@ use std::sync::mpsc::TryRecvError;
 
 use neon::prelude::*;
 
-use crate::{JsNscopeHandle, NscopeTraces, RunState};
+use crate::{JsNlabHandle, NlabTraces, RunState};
 
-impl NscopeTraces {
+impl NlabTraces {
     pub(crate) fn clear(&mut self) {
         for s in &mut self.samples {
             s.clear()
@@ -74,7 +74,7 @@ fn clear_trace_y(cx: &mut FunctionContext, trace_data: Handle<JsObject>, idx: us
 
 
 pub fn get_traces(mut cx: FunctionContext) -> JsResult<JsObject> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let trace_data = cx.argument::<JsObject>(1)?;
     let mut nlab_handle = js_nlab_handle.borrow_mut();
 

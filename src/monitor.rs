@@ -1,9 +1,9 @@
 use neon::prelude::*;
-use crate::JsNscopeHandle;
+use crate::JsNlabHandle;
 use log::{info, trace};
 
 pub fn is_connected(mut cx: FunctionContext) -> JsResult<JsBoolean> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let nlab_handle = js_nlab_handle.borrow();
 
     if let Some(nlab) = &nlab_handle.device {
@@ -17,7 +17,7 @@ pub fn is_connected(mut cx: FunctionContext) -> JsResult<JsBoolean> {
 
 pub fn monitor_nlab(mut cx: FunctionContext) -> JsResult<JsObject> {
     trace!("monitoring nLab");
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     trace!("got a js nlab handle");
     let mut nlab_handle = js_nlab_handle.borrow_mut();
     trace!("got a native nlab handle");

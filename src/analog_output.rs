@@ -2,7 +2,7 @@ use std::str::FromStr;
 use neon::prelude::*;
 use nlabapi::{AnalogOutput, AnalogSignalPolarity, AnalogWaveType};
 
-use crate::{JsNscopeHandle, Objectify};
+use crate::{JsNlabHandle, Objectify};
 
 impl Objectify for AnalogOutput {
     fn to_object<'a>(&self, cx: &mut FunctionContext<'a>) -> JsResult<'a, JsObject> {
@@ -28,7 +28,7 @@ impl Objectify for AnalogOutput {
 }
 
 pub fn get_ax_status(mut cx: FunctionContext) -> JsResult<JsObject> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let nlab_handle = js_nlab_handle.borrow();
 
     let ax_status = cx.empty_object();
@@ -49,7 +49,7 @@ pub fn get_ax_status(mut cx: FunctionContext) -> JsResult<JsObject> {
 }
 
 pub fn set_ax_on(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
     let turn_on = cx.argument::<JsBoolean>(2)?.value(&mut cx);
     let nlab_handle = js_nlab_handle.borrow();
@@ -73,7 +73,7 @@ pub fn set_ax_on(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 pub fn set_ax_frequency_hz(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
     let frequency = cx.argument::<JsNumber>(2)?.value(&mut cx);
     let nlab_handle = js_nlab_handle.borrow();
@@ -93,7 +93,7 @@ pub fn set_ax_frequency_hz(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 pub fn set_ax_amplitude(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
     let amplitude = cx.argument::<JsNumber>(2)?.value(&mut cx);
     let nlab_handle = js_nlab_handle.borrow();
@@ -113,7 +113,7 @@ pub fn set_ax_amplitude(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 pub fn set_ax_wave_type(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
     let wave_type = cx.argument::<JsString>(2)?.value(&mut cx);
     let nlab_handle = js_nlab_handle.borrow();
@@ -135,7 +135,7 @@ pub fn set_ax_wave_type(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 pub fn set_ax_polarity(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
     let polarity = cx.argument::<JsString>(2)?.value(&mut cx);
     let nlab_handle = js_nlab_handle.borrow();

@@ -1,7 +1,7 @@
 use neon::prelude::*;
 use nlabapi::AnalogInput;
 
-use crate::{JsNscopeHandle, Objectify};
+use crate::{JsNlabHandle, Objectify};
 
 impl Objectify for AnalogInput {
     fn to_object<'a>(&self, cx: &mut FunctionContext<'a>) -> JsResult<'a, JsObject> {
@@ -15,7 +15,7 @@ impl Objectify for AnalogInput {
 }
 
 pub fn get_ch_status(mut cx: FunctionContext) -> JsResult<JsObject> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let nlab_handle = js_nlab_handle.borrow();
 
     let ch_status = cx.empty_object();
@@ -36,7 +36,7 @@ pub fn get_ch_status(mut cx: FunctionContext) -> JsResult<JsObject> {
 }
 
 pub fn get_sampling_multiplex(mut cx: FunctionContext) -> JsResult<JsNumber> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let nlab_handle = js_nlab_handle.borrow();
 
     let mut num_channels_on: usize = 0;
@@ -71,7 +71,7 @@ pub fn get_sampling_multiplex(mut cx: FunctionContext) -> JsResult<JsNumber> {
 }
 
 pub fn set_ch_on(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
     let turn_on = cx.argument::<JsBoolean>(2)?.value(&mut cx);
     let mut nlab_handle = js_nlab_handle.borrow_mut();
@@ -97,7 +97,7 @@ pub fn set_ch_on(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 pub fn set_ch_range(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let channel = cx.argument::<JsString>(1)?.value(&mut cx);
     let vmin = cx.argument::<JsNumber>(2)?.value(&mut cx);
     let vmax = cx.argument::<JsNumber>(3)?.value(&mut cx);

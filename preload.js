@@ -9,5 +9,5 @@ window.ipcRenderer = ipcRenderer;
 window.nlab = require('./app/nlab.node');
 log.info("loaded native node module");
 
-window.nLab = nlab.newNscope();
+window.nLab = nlab.newNlab();
 log.info("created new nLab");

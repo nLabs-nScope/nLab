@@ -144,7 +144,7 @@ log.info("completed graph creation");
 function monitorScope() {
 
     log.debug("monitoring scope");
-    let powerState = nlab.monitorNscope(nLab);
+    let powerState = nlab.monitorNlab(nLab);
     log.debug("monitoring scope");
     powerStatus.update(powerState);
 
