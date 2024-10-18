@@ -1,5 +1,5 @@
 use neon::prelude::*;
-use nscope::AnalogInput;
+use nlabapi::AnalogInput;
 
 use crate::{JsNscopeHandle, Objectify};
 

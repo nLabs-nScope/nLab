@@ -1,5 +1,5 @@
 use neon::prelude::*;
-use nscope::PulseOutput;
+use nlabapi::PulseOutput;
 
 use crate::{JsNscopeHandle, Objectify};
 

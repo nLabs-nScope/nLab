@@ -13,10 +13,10 @@ impl NscopeTraces {
     }
 
     fn initialize_trace_object(&self, cx: &mut FunctionContext, trace_data: Handle<JsObject>) {
-        let x_data = JsArray::new(cx, nscope::Sample::num_channels() as usize);
-        let y_data = JsArray::new(cx, nscope::Sample::num_channels() as usize);
+        let x_data = JsArray::new(cx, nlabapi::Sample::num_channels() as usize);
+        let y_data = JsArray::new(cx, nlabapi::Sample::num_channels() as usize);
 
-        for ch in 0u32..nscope::Sample::num_channels() + 1 {
+        for ch in 0u32..nlabapi::Sample::num_channels() + 1 {
             let empty_array = JsArray::new(cx, self.num_samples);
             x_data.set(cx, ch, empty_array).unwrap();
             for idx in 0usize..self.num_samples {
@@ -29,7 +29,7 @@ impl NscopeTraces {
         }
 
         for (idx, sample) in self.samples.iter().enumerate() {
-            for ch in 0usize..nscope::Sample::num_channels() as usize {
+            for ch in 0usize..nlabapi::Sample::num_channels() as usize {
                 let x_array: Handle<JsArray> = x_data.get(cx, ch as u32).unwrap();
                 let t = cx.number(idx as f64 * 12.0 / self.num_samples as f64);
                 x_array.set(cx, idx as u32, t).unwrap();
@@ -47,10 +47,10 @@ impl NscopeTraces {
     }
 }
 
-fn set_trace_y(cx: &mut FunctionContext, trace_data: Handle<JsObject>, sample: &nscope::Sample, idx: usize) {
+fn set_trace_y(cx: &mut FunctionContext, trace_data: Handle<JsObject>, sample: &nlabapi::Sample, idx: usize) {
     let y_data: Handle<JsArray> = trace_data.get(cx, "y").unwrap();
 
-    for ch in 0usize..nscope::Sample::num_channels() as usize {
+    for ch in 0usize..nlabapi::Sample::num_channels() as usize {
         let y_array: Handle<JsArray> = y_data.get(cx, ch as u32).unwrap();
         if let Some(data) = sample.data[ch] {
             let y = cx.number(data);
@@ -65,7 +65,7 @@ fn set_trace_y(cx: &mut FunctionContext, trace_data: Handle<JsObject>, sample: &
 fn clear_trace_y(cx: &mut FunctionContext, trace_data: Handle<JsObject>, idx: usize) {
     let y_data: Handle<JsArray> = trace_data.get(cx, "y").unwrap();
 
-    for ch in 0usize..nscope::Sample::num_channels() as usize {
+    for ch in 0usize..nlabapi::Sample::num_channels() as usize {
         let y_array: Handle<JsArray> = y_data.get(cx, ch as u32).unwrap();
         let y = cx.null();
         y_array.set(cx, idx as u32, y).unwrap();

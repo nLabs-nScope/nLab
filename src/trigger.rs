@@ -1,5 +1,5 @@
 use neon::prelude::*;
-use nscope::{Trigger, TriggerType};
+use nlabapi::{Trigger, TriggerType};
 
 use crate::{JsNscopeHandle, Objectify};
 

@@ -3,8 +3,8 @@ use std::sync::mpsc::Receiver;
 use log::info;
 
 use neon::prelude::*;
-use nscope;
-use nscope::Trigger;
+use nlabapi;
+use nlabapi::Trigger;
 
 use crate::RunState::{Run, Single, Stopped};
 
@@ -42,7 +42,7 @@ enum RunState {
 }
 
 struct NscopeTraces {
-    samples: Vec<nscope::Sample>,
+    samples: Vec<nlabapi::Sample>,
     num_samples: usize,
     current_head: usize,
 }
@@ -54,14 +54,14 @@ impl NscopeTraces {
 }
 
 struct NscopeHandle {
-    bench: nscope::LabBench,
-    dfu_link: Option<nscope::NscopeLink>,
+    bench: nlabapi::LabBench,
+    dfu_link: Option<nlabapi::NlabLink>,
     requested_dfu: bool,
-    device: Option<nscope::Nscope>,
+    device: Option<nlabapi::Nlab>,
     run_state: RunState,
     trigger: Trigger,
     sample_rate: f64,
-    sweep_handle: Option<nscope::SweepHandle>,
+    sweep_handle: Option<nlabapi::SweepHandle>,
     traces: NscopeTraces,
 }
 
@@ -72,7 +72,7 @@ impl Finalize for NscopeHandle {
 }
 
 impl NscopeHandle {
-    fn get_device(&self) -> &nscope::Nscope {
+    fn get_device(&self) -> &nlabapi::Nlab {
         self.device.as_ref().unwrap()
     }
 
@@ -82,7 +82,7 @@ impl NscopeHandle {
         }
     }
 
-    fn receiver(&self) -> &Receiver<nscope::Sample> {
+    fn receiver(&self) -> &Receiver<nlabapi::Sample> {
         &self.sweep_handle.as_ref().unwrap().receiver
     }
 }
@@ -90,7 +90,7 @@ impl NscopeHandle {
 // This thing creates an empty nlab handle for JS
 fn new_nlab(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
     let nlab_handle = NscopeHandle {
-        bench: nscope::LabBench::new().expect("Creating LabBench"),
+        bench: nlabapi::LabBench::new().expect("Creating LabBench"),
         dfu_link: None,
         requested_dfu: false,
         device: None,
@@ -99,7 +99,7 @@ fn new_nlab(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
         sample_rate: 400.0,
         sweep_handle: None,
         traces: NscopeTraces {
-            samples: vec![nscope::Sample::default(); 4800],
+            samples: vec![nlabapi::Sample::default(); 4800],
             num_samples: 4800,
             current_head: 0,
         },
