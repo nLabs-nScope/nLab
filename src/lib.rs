@@ -16,7 +16,7 @@ mod traces;
 mod trigger;
 
 fn version(mut cx: FunctionContext) -> JsResult<JsNumber> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let nlab_handle = js_nlab_handle.borrow();
 
     if let Some(nlab) = &nlab_handle.device {
@@ -41,19 +41,19 @@ enum RunState {
     Run,
 }
 
-struct NscopeTraces {
+struct NlabTraces {
     samples: Vec<nlabapi::Sample>,
     num_samples: usize,
     current_head: usize,
 }
 
-impl NscopeTraces {
+impl NlabTraces {
     fn trace_gap(&self) -> usize {
         self.num_samples / 120
     }
 }
 
-struct NscopeHandle {
+struct NlabHandle {
     bench: nlabapi::LabBench,
     dfu_link: Option<nlabapi::NlabLink>,
     requested_dfu: bool,
@@ -62,16 +62,16 @@ struct NscopeHandle {
     trigger: Trigger,
     sample_rate: f64,
     sweep_handle: Option<nlabapi::SweepHandle>,
-    traces: NscopeTraces,
+    traces: NlabTraces,
 }
 
-type JsNscopeHandle = JsBox<RefCell<NscopeHandle>>;
+type JsNlabHandle = JsBox<RefCell<NlabHandle>>;
 
-impl Finalize for NscopeHandle {
+impl Finalize for NlabHandle {
     // TODO, probably clean up nLab and lab bench?
 }
 
-impl NscopeHandle {
+impl NlabHandle {
     fn get_device(&self) -> &nlabapi::Nlab {
         self.device.as_ref().unwrap()
     }
@@ -88,8 +88,8 @@ impl NscopeHandle {
 }
 
 // This thing creates an empty nlab handle for JS
-fn new_nlab(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
-    let nlab_handle = NscopeHandle {
+fn new_nlab(mut cx: FunctionContext) -> JsResult<JsNlabHandle> {
+    let nlab_handle = NlabHandle {
         bench: nlabapi::LabBench::new().expect("Creating LabBench"),
         dfu_link: None,
         requested_dfu: false,
@@ -98,7 +98,7 @@ fn new_nlab(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
         trigger: Trigger::default(),
         sample_rate: 400.0,
         sweep_handle: None,
-        traces: NscopeTraces {
+        traces: NlabTraces {
             samples: vec![nlabapi::Sample::default(); 4800],
             num_samples: 4800,
             current_head: 0,
@@ -108,7 +108,7 @@ fn new_nlab(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
 }
 
 fn update_firmware(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let nlab_handle = js_nlab_handle.borrow_mut();
 
     if let Some(link) = &nlab_handle.dfu_link {
@@ -118,7 +118,7 @@ fn update_firmware(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 fn set_run_control(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let state = cx.argument::<JsString>(1)?.value(&mut cx);
     let mut nlab_handle = js_nlab_handle.borrow_mut();
 
@@ -147,7 +147,7 @@ fn set_run_control(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 fn get_run_control(mut cx: FunctionContext) -> JsResult<JsString> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let nlab_handle = js_nlab_handle.borrow_mut();
 
     let string = match nlab_handle.run_state {
@@ -160,7 +160,7 @@ fn get_run_control(mut cx: FunctionContext) -> JsResult<JsString> {
 }
 
 fn set_timing_parameters(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let sample_rate = cx.argument::<JsNumber>(1)?.value(&mut cx);
     let num_samples = cx.argument::<JsNumber>(2)?.value(&mut cx);
     let mut nlab_handle = js_nlab_handle.borrow_mut();
@@ -176,7 +176,7 @@ fn set_timing_parameters(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 fn restart_traces(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let mut nlab_handle = js_nlab_handle.borrow_mut();
 
     if nlab_handle.sweep_handle.is_some() {
@@ -188,7 +188,7 @@ fn restart_traces(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 fn restrigger_if_not_triggered(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let nlab_handle = js_nlab_handle.borrow();
 
 
@@ -206,8 +206,8 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
     info!("initializing nLab js interface");
 
     cx.export_function("version", version)?;
-    cx.export_function("newNscope", new_nlab)?;
-    cx.export_function("monitorNscope", monitor::monitor_nlab)?;
+    cx.export_function("newNlab", new_nlab)?;
+    cx.export_function("monitorNlab", monitor::monitor_nlab)?;
     cx.export_function("isConnected", monitor::is_connected)?;
     cx.export_function("updateFirmware", update_firmware)?;
     cx.export_function("setRunState", set_run_control)?;

@@ -1,7 +1,7 @@
 use neon::prelude::*;
 use nlabapi::{Trigger, TriggerType};
 
-use crate::{JsNscopeHandle, Objectify};
+use crate::{JsNlabHandle, Objectify};
 
 impl Objectify for Trigger {
     fn to_object<'a>(&self, cx: &mut FunctionContext<'a>) -> JsResult<'a, JsObject> {
@@ -27,7 +27,7 @@ impl Objectify for Trigger {
 }
 
 pub fn get_trigger_status(mut cx: FunctionContext) -> JsResult<JsObject> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let nlab_handle = js_nlab_handle.borrow();
 
     let obj = nlab_handle.trigger.to_object(&mut cx)?;
@@ -46,7 +46,7 @@ pub fn get_trigger_status(mut cx: FunctionContext) -> JsResult<JsObject> {
 }
 
 pub fn set_trigger_on(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let is_on = cx.argument::<JsBoolean>(1)?.value(&mut cx);
     let mut nlab_handle = js_nlab_handle.borrow_mut();
     nlab_handle.trigger.is_enabled = is_on;
@@ -54,7 +54,7 @@ pub fn set_trigger_on(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 pub fn set_trigger_source(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let source = cx.argument::<JsString>(1)?.value(&mut cx);
     let mut nlab_handle = js_nlab_handle.borrow_mut();
 
@@ -69,7 +69,7 @@ pub fn set_trigger_source(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 pub fn set_trigger_delay(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let delay = cx.argument::<JsNumber>(1)?.value(&mut cx);
     let mut nlab_handle = js_nlab_handle.borrow_mut();
     nlab_handle.trigger.trigger_delay_us = delay as u32;
@@ -77,7 +77,7 @@ pub fn set_trigger_delay(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 pub fn set_trigger_level(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let level = cx.argument::<JsNumber>(1)?.value(&mut cx);
     let mut nlab_handle = js_nlab_handle.borrow_mut();
     nlab_handle.trigger.trigger_level = level;
@@ -85,7 +85,7 @@ pub fn set_trigger_level(mut cx: FunctionContext) -> JsResult<JsNull> {
 }
 
 pub fn set_trigger_type(mut cx: FunctionContext) -> JsResult<JsNull> {
-    let js_nlab_handle = cx.argument::<JsNscopeHandle>(0)?;
+    let js_nlab_handle = cx.argument::<JsNlabHandle>(0)?;
     let trigger_type = cx.argument::<JsString>(1)?.value(&mut cx);
     let mut nlab_handle = js_nlab_handle.borrow_mut();
     nlab_handle.trigger.trigger_type = match trigger_type.as_str() {
