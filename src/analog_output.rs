@@ -1,6 +1,6 @@
 use std::str::FromStr;
 use neon::prelude::*;
-use nscope::{AnalogOutput, AnalogSignalPolarity, AnalogWaveType};
+use nlabapi::{AnalogOutput, AnalogSignalPolarity, AnalogWaveType};
 
 use crate::{JsNscopeHandle, Objectify};
 
