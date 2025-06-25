@@ -58,7 +58,6 @@ pub fn monitor_nscope(mut cx: FunctionContext) -> JsResult<JsObject> {
             if link.request_dfu().is_ok() {
                 nscope_handle.requested_dfu = true;
             }
-
         }
     }
 
@@ -74,9 +73,13 @@ pub fn monitor_nscope(mut cx: FunctionContext) -> JsResult<JsObject> {
             power_status.set(&mut cx, "state", state)?;
             power_status.set(&mut cx, "usage", usage)?;
         }
-    } else if nscope_handle.dfu_link.is_some() || nscope_handle.requested_dfu {
+    } else if nscope_handle.dfu_link.is_some() {
         trace!("Scope is currently in DFU");
         let state = cx.string("DFU");
+        power_status.set(&mut cx, "state", state)?;
+    } else if nscope_handle.requested_dfu {
+        trace!("Recently requested DFU");
+        let state = cx.string("DFUPending");
         power_status.set(&mut cx, "state", state)?;
     }
     Ok(power_status)

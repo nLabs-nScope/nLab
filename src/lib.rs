@@ -107,14 +107,18 @@ fn new_nscope(mut cx: FunctionContext) -> JsResult<JsNscopeHandle> {
     Ok(cx.boxed(RefCell::new(nscope_handle)))
 }
 
-fn update_firmware(mut cx: FunctionContext) -> JsResult<JsNull> {
+fn update_firmware(mut cx: FunctionContext) -> JsResult<JsBoolean> {
     let js_nscope_handle = cx.argument::<JsNscopeHandle>(0)?;
     let nscope_handle = js_nscope_handle.borrow_mut();
-
     if let Some(link) = &nscope_handle.dfu_link {
-        link.update().unwrap();
+        info!("Updating firmware WOOOOO!");
+        if link.update().is_ok() {
+            return Ok(cx.boolean(true));
+        } else {
+            return Ok(cx.boolean(false));
+        }
     }
-    Ok(cx.null())
+    Ok(cx.boolean(false))
 }
 
 fn set_run_control(mut cx: FunctionContext) -> JsResult<JsNull> {
