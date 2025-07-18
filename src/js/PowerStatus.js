@@ -27,108 +27,120 @@ function message(msg_content) {
     }
 }
 
-let previous_state = 'Unknown';
-
 export function update(powerState) {
-    if (previous_state !== powerState.state) {
-        log.info(`nScope state transition ${previous_state} -> ${powerState.state}`)
-    }
-    switch (powerState.state) {
-        case "PowerOff":
-        case "Startup": {
-            hide('usb-status-bar');
-            hide('usb-status');
-            hide('nscope-usb-power-fault');
-            hide('nscope-usb-disconnected');
-            show('nscope-usb-power-off');
-            message('nScope is asleep');
-            update.percentage = null;
-            break;
-        }
-        case "PowerOn": {
-            hide('nscope-usb-power-off');
-            hide('nscope-usb-power-fault');
-            hide('nscope-usb-disconnected');
+    if (update.state !== powerState.state) {
+        log.info(`nScope state transition ${update.state} -> ${powerState.state}`)
+        console.log(`nScope state transition ${update.state} -> ${powerState.state}`)
+        update.state = powerState.state;
 
-            message(null);
-            show('usb-status-bar');
-            show('usb-status');
-            var percentage = powerState.usage * 100 / 2.5;
-            update.percentage = (update.percentage || 0.0) * 0.8 + percentage * 0.2;
-
-            getId('nscope-power-usage').style.width = `${clamp(update.percentage, 0, 100)}%`;
-
-            if (update.percentage > 98) {
-                getId('usb-status-bar').classList.remove('btn-outline-success');
-                getId('usb-status').classList.remove('btn-success');
-                getId('usb-status-bar').classList.add('btn-outline-warning');
-                getId('usb-status').classList.add('btn-warning');
-            } else {
-                getId('usb-status-bar')
-                getId('usb-status-bar').classList.add('btn-outline-success');
-                getId('usb-status').classList.add('btn-success');
-                getId('usb-status-bar').classList.remove('btn-outline-warning');
-                getId('usb-status').classList.remove('btn-warning');
+        switch (update.state) {
+            case "PowerOff":
+            case "Startup": {
+                hide('usb-status-bar');
+                hide('usb-status');
+                hide('nscope-usb-power-fault');
+                hide('nscope-usb-disconnected');
+                show('nscope-usb-power-off');
+                message('nScope is asleep');
+                update.percentage = null;
+                break;
             }
+            case "PowerOn": {
+                hide('nscope-usb-power-off');
+                hide('nscope-usb-power-fault');
+                hide('nscope-usb-disconnected');
+
+                message(null);
+                show('usb-status-bar');
+                show('usb-status');
+                var percentage = powerState.usage * 100 / 2.5;
+                update.percentage = (update.percentage || 0.0) * 0.8 + percentage * 0.2;
+
+                getId('nscope-power-usage').style.width = `${clamp(update.percentage, 0, 100)}%`;
+
+                if (update.percentage > 98) {
+                    getId('usb-status-bar').classList.remove('btn-outline-success');
+                    getId('usb-status').classList.remove('btn-success');
+                    getId('usb-status-bar').classList.add('btn-outline-warning');
+                    getId('usb-status').classList.add('btn-warning');
+                } else {
+                    getId('usb-status-bar')
+                    getId('usb-status-bar').classList.add('btn-outline-success');
+                    getId('usb-status').classList.add('btn-success');
+                    getId('usb-status-bar').classList.remove('btn-outline-warning');
+                    getId('usb-status').classList.remove('btn-warning');
+                }
 
 
-            getId('usb-status-bar').innerHTML = `${(update.percentage / 100 * 2.5).toFixed(2)} W`;
-            getId('usb-status').innerHTML = `${(update.percentage / 100 * 2.5).toFixed(2)} W`;
+                getId('usb-status-bar').innerHTML = `${(update.percentage / 100 * 2.5).toFixed(2)} W`;
+                getId('usb-status').innerHTML = `${(update.percentage / 100 * 2.5).toFixed(2)} W`;
 
-            if (previous_state !== "PowerOn") {
-                nscope.restartTraces(nScope);
+                if (update.state !== "PowerOn") {
+                    nscope.restartTraces(nScope);
+                }
+                break;
             }
-            break;
-        }
-        case "Shorted": {
-            hide('usb-status-bar');
-            hide('usb-status');
-            hide('nscope-usb-power-off');
-            hide('nscope-usb-disconnected');
+            case "Shorted": {
+                hide('usb-status-bar');
+                hide('usb-status');
+                hide('nscope-usb-power-off');
+                hide('nscope-usb-disconnected');
 
-            show('nscope-usb-power-fault');
-            message('nScope detected a power fault');
-            update.percentage = null;
-            break;
-        }
-        case "Overcurrent": {
-            hide('usb-status-bar');
-            hide('usb-status');
-            hide('nscope-usb-power-off');
-            hide('nscope-usb-disconnected');
+                show('nscope-usb-power-fault');
+                message('nScope detected a power fault');
+                update.percentage = null;
+                break;
+            }
+            case "Overcurrent": {
+                hide('usb-status-bar');
+                hide('usb-status');
+                hide('nscope-usb-power-off');
+                hide('nscope-usb-disconnected');
 
-            show('nscope-usb-power-fault');
-            message('nScope detected an overcurrent event');
-            update.percentage = null;
-            break;
-        }
-        case "DFU": {
-            hide('usb-status-bar');
-            hide('usb-status');
-            hide('nscope-usb-power-fault');
-            hide('nscope-usb-disconnected');
-            show('nscope-usb-power-off');
-            message('nScope is updating firmware');
-            update.percentage = null;
-            if (previous_state !== "DFU") {
+                show('nscope-usb-power-fault');
+                message('nScope detected an overcurrent event');
+                update.percentage = null;
+                break;
+            }
+            case "DFU": {
+                hide('usb-status-bar');
+                hide('usb-status');
+                hide('nscope-usb-power-fault');
+                hide('nscope-usb-disconnected');
+                show('nscope-usb-power-off');
+                message('nScope is updating firmware<br>' +
+                    'Do not close the app or unplug the device');
+                update.percentage = null;
                 setTimeout(() => {
-                    nscope.updateFirmware(nScope);
+                    let success = nscope.updateFirmware(nScope);
+                    if (!success) {
+                        message('Firmware update failed<br>Please unplug and replug the device');
+                    }
                 }, 1000);
+                break;
             }
-            break;
-        }
-        default: {
-            hide('usb-status-bar');
-            hide('usb-status');
-            hide('nscope-usb-power-off');
-            hide('nscope-usb-power-fault');
+            case "DFUPending": {
+                hide('usb-status-bar');
+                hide('usb-status');
+                hide('nscope-usb-power-fault');
+                hide('nscope-usb-disconnected');
+                show('nscope-usb-power-off');
+                message('nScope is waiting for firmware update to start');
+                update.percentage = null;
+                break;
+            }
+            default: {
+                hide('usb-status-bar');
+                hide('usb-status');
+                hide('nscope-usb-power-off');
+                hide('nscope-usb-power-fault');
 
 
-            show('nscope-usb-disconnected');
-            message('Waiting to connect to nScope');
-            update.percentage = null;
-            break;
+                show('nscope-usb-disconnected');
+                message('Waiting to connect to nScope');
+                update.percentage = null;
+                break;
+            }
         }
     }
-    previous_state = powerState.state;
 }

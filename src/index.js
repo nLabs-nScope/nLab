@@ -180,11 +180,11 @@ function monitorScope() {
     window.requestAnimationFrame(monitorScope);
 }
 
-monitorScope();
+window.requestAnimationFrame(monitorScope);
 pulseOutputs.initInput();
 analogOutputs.initInput();
 timing.initTiming();
 flags.initDragEvents();
-updatePlot();
+window.requestAnimationFrame(updatePlot);
 
 getId('version-display').innerHTML = `v${packageInfo.version}`;
