@@ -2,7 +2,7 @@ module.exports = {
     packagerConfig: {
         asar: true,
         icon: 'src/assets/icons/nLabApp_Icon',
-        appBundleId: 'com.getnlab.nlabapp',
+        appBundleId: 'org.nscope.nscopeapp',
     },
     rebuildConfig: {},
     makers: [
