@@ -12,7 +12,7 @@ On Windows and macOS, the nLab app should automatically check for updates whenev
 
 ## Building from Source
 
-nLab can be built and run from source to enable users and developers to quickly iterate on nScope source code. To establish a development environment, follow the steps below.
+nLab can be built and run from source to enable users and developers to quickly iterate on nLab source code. To establish a development environment, follow the steps below.
 
 ### Prerequisites
 

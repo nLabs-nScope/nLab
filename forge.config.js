@@ -44,7 +44,7 @@ module.exports = {
     ],
 };
 
-if (process.env.NSCOPE_CODESIGN) {
+if (process.env.NLAB_CODESIGN) {
     console.log("Configuring Electron Forge to Codesign")
 
     module.exports.packagerConfig.osxNotarize = {
