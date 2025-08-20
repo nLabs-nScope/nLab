@@ -23,7 +23,7 @@ const log = electron_log.scope("main");
 const log_directory = path.dirname(electron_log.transports.file.getFile().path);
 
 log.info(`nScope main process start from: ${process.cwd()}`);
-require('update-electron-app')()
+require('update-electron-app')({allowPrerelease: true})
 
 const electron = require('electron')
 const app = electron.app
