@@ -1,5 +1,5 @@
 'use strict'
-if (process.env.NSCOPE_SMOKE_TEST === '1') {
+if (process.env.NLAB_SMOKE_TEST === '1') {
     process.stdout.write("Running smoke test... ")
     process.on('uncaughtException', e => {
         process.stdout.write(" Fail\n")
@@ -12,7 +12,7 @@ const electron_log = require('electron-log');
 const fs = require('fs');
 const path = require('path');
 electron_log.transports.console.level = false;
-if (process.env.NSCOPE_LOG === 'trace') {
+if (process.env.NLAB_LOG === 'trace') {
     electron_log.transports.file.level = 'debug';
 } else {
     electron_log.transports.file.level = 'info';
@@ -22,7 +22,7 @@ electron_log.initialize();
 const log = electron_log.scope("main");
 const log_directory = path.dirname(electron_log.transports.file.getFile().path);
 
-log.info(`nScope main process start from: ${process.cwd()}`);
+log.info(`nLab main process start from: ${process.cwd()}`);
 require('update-electron-app')()
 
 const electron = require('electron')
@@ -34,7 +34,7 @@ const config = require(path.join(__dirname, 'package.json'))
 const BrowserWindow = electron.BrowserWindow
 const Menu = electron.Menu
 
-const icon = electron.nativeImage.createFromPath(path.join(__dirname, 'app/assets/icons/icon_256x256.png'));
+const icon = electron.nativeImage.createFromPath(path.join(__dirname, 'app/assets/icons/nLabApp_Icon_512x512@2x.png'));
 
 app.commandLine.appendSwitch('enable-logging');
 app.commandLine.appendSwitch('log-file', path.join(log_directory, 'js.log'));
@@ -80,7 +80,7 @@ app.on('ready', function () {
     })
 
 
-    mainWindow.loadURL(`file://${__dirname}/nscope.html`)
+    mainWindow.loadURL(`file://${__dirname}/nlab.html`)
     log.info('completed window creation');
 
     mainWindow.once('ready-to-show', () => {
@@ -106,7 +106,7 @@ app.on('ready', function () {
     // Listen for the screenshot request
     electron.ipcMain.handle('save-data', async (channel, data) => {
         const documentsPath = app.getPath('documents');
-        const dirName = path.join(documentsPath, 'nScope_captures');
+        const dirName = path.join(documentsPath, 'nLab_captures');
         fs.mkdirSync(dirName, {recursive: true});
 
         const now = new Date();
@@ -165,7 +165,7 @@ app.on('web-contents-created', (event, contents) => {
 })
 
 app.on('ready', (event, contents) => {
-    if (process.env.NSCOPE_SMOKE_TEST === '1') {
+    if (process.env.NLAB_SMOKE_TEST === '1') {
         mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
             process.stdout.write(" Fail\n")
             process.stdout.write(errorDescription)

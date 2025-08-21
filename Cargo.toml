@@ -1,5 +1,5 @@
 [package]
-name = "nscope-nodejs"
+name = "nlab-nodejs"
 version = "1.0.0"
 edition = "2021"
 
@@ -7,7 +7,7 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-nscope = { git = "https://github.com/nLabs-nScope/nscope-rs", rev = "fb86308dc82822ec62913232bac2b1379e637c41" }
+nlabapi = "1.0.4"
 env_logger = "0.10.1"
 log = "~0.4"
 neon = "~1.0.0"

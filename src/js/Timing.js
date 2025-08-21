@@ -87,12 +87,12 @@ export function initTiming() {
 
 export function setTiming() {
     let time_slider_idx = getId("horizontal-slider").value;
-    let sampling_multiplex = nscope.getSamplingMultiplex(nScope);
+    let sampling_multiplex = nlab.getSamplingMultiplex(nLab);
 
     let num_samples = 0;
     let sample_rate = 0;
 
-    if (nscope.version(nScope) < 0x0200) {
+    if (nlab.version(nLab) < 0x0200) {
         getId("time-per-div").textContent = time_per_div[sampling_multiplex][time_slider_idx][0]
         getId("sample-rate").textContent = time_per_div[sampling_multiplex][time_slider_idx][1]
         num_samples = time_per_div[sampling_multiplex][time_slider_idx][2];
@@ -105,15 +105,15 @@ export function setTiming() {
     }
 
     let seconds_per_div = num_samples / 12 / sample_rate;
-    nscope.setTriggerDelay(nScope, seconds_per_div * 1_000_000);
-    nscope.setTimingParameters(nScope, sample_rate, num_samples);
+    nlab.setTriggerDelay(nLab, seconds_per_div * 1_000_000);
+    nlab.setTimingParameters(nLab, sample_rate, num_samples);
 }
 
 export function getSampleRate() {
     let time_slider_idx = getId("horizontal-slider").value
 
-    if (nscope.version(nScope) < 0x0200) {
-        let sampling_multiplex = nscope.getSamplingMultiplex(nScope)
+    if (nlab.version(nLab) < 0x0200) {
+        let sampling_multiplex = nlab.getSamplingMultiplex(nLab)
         return time_per_div[sampling_multiplex][time_slider_idx][3];
     } else {
         return time_per_div_v2[time_slider_idx][3];
@@ -121,7 +121,7 @@ export function getSampleRate() {
 }
 
 export function update() {
-    if (nscope.isConnected(nScope)) {
+    if (nlab.isConnected(nLab)) {
         getId("horizontal-info").classList.remove("disabled");
         getId("horizontal-slider").classList.remove("disabled");
     } else {
@@ -129,9 +129,9 @@ export function update() {
         getId("horizontal-slider").classList.add("disabled");
     }
 
-    if (nscope.version(nScope) >= 0x0200 && getId("horizontal-slider").max == time_per_div_1.length - 1) {
+    if (nlab.version(nLab) >= 0x0200 && getId("horizontal-slider").max == time_per_div_1.length - 1) {
         getId("horizontal-slider").max = time_per_div_v2.length - 1
-    } else if (nscope.version(nScope) < 0x0200 && getId("horizontal-slider").max == time_per_div_v2.length - 1) {
+    } else if (nlab.version(nLab) < 0x0200 && getId("horizontal-slider").max == time_per_div_v2.length - 1) {
         getId("horizontal-slider").max = time_per_div_1.length - 1
     }
 }

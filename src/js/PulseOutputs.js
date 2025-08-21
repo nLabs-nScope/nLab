@@ -102,7 +102,7 @@ export function update(pxState) {
 }
 
 export function initInput() {
-    let pxState = nscope.getPxStatus(nScope);
+    let pxState = nlab.getPxStatus(nLab);
     update(pxState);
 }
 
@@ -110,14 +110,14 @@ for (let ch of ["P1", "P2"]) {
 
     getId(`${ch}-onoff`).onclick = function () {
         let checked = this.classList.contains("active");
-        nscope.setPxOn(nScope, ch, checked);
+        nlab.setPxOn(nLab, ch, checked);
     }
 
     getId(`${ch}-freq`).onchange = getId(`${ch}-freq`).oninput = function () {
         sliders_free[`${ch}-freq`] = false;
         let label = this.labels[0];
         let frequency = valToFreq(this.value);
-        nscope.setPxFrequency(nScope, ch, frequency)
+        nlab.setPxFrequency(nLab, ch, frequency)
         let freqString = freqToString(frequency);
         label.textContent = freqString.number;
         label.nextElementSibling.textContent = freqString.unit;
@@ -131,7 +131,7 @@ for (let ch of ["P1", "P2"]) {
         sliders_free[`${ch}-duty`] = false;
         let label = this.labels[0];
         let duty = valToDuty(this.value);
-        nscope.setPxDuty(nScope, ch, duty)
+        nlab.setPxDuty(nLab, ch, duty)
         let dutyString = dutyToString(duty);
         label.textContent = dutyString.number;
         label.nextElementSibling.textContent = dutyString.unit;
@@ -146,7 +146,7 @@ for (let ch of ["P1", "P2"]) {
         let frequency = parseFloat(label.innerHTML);
         // TODO: handle this in the driver layer
         frequency = Math.max(1, Math.min(20000, frequency));
-        nscope.setPxFrequency(nScope, ch, frequency);
+        nlab.setPxFrequency(nLab, ch, frequency);
     });
 
     let dutyLabel = getId(`${ch}-duty`).labels[0];
@@ -154,7 +154,7 @@ for (let ch of ["P1", "P2"]) {
         let duty = parseFloat(label.innerHTML);
         // TODO: handle this in the driver layer
         duty = Math.max(0, Math.min(100, duty));
-        nscope.setPxDuty(nScope, ch, duty);
+        nlab.setPxDuty(nLab, ch, duty);
     });
 
 }

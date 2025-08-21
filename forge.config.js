@@ -1,7 +1,7 @@
 module.exports = {
     packagerConfig: {
         asar: true,
-        icon: 'src/assets/icons/nscope_icon',
+        icon: 'src/assets/icons/nLabApp_Icon',
         appBundleId: 'org.nscope.nscopeapp',
     },
     rebuildConfig: {},
@@ -9,18 +9,18 @@ module.exports = {
         {
             name: '@electron-forge/maker-squirrel',
             config: {
-                setupExe: 'nScope Installer.exe',
+                setupExe: 'nLab Installer.exe',
                 loadingGif: 'src/assets/gif/installing.gif',
                 iconUrl: 'https://www.nscope.org/user/pages/icons/nscope_icon.ico',
-                setupIcon: 'src/assets/icons/nscope_icon.ico',
+                setupIcon: 'src/assets/icons/nLabApp_Icon.ico',
             },
         },
         {
             name: '@electron-forge/maker-dmg',
             config: {
                 format: 'ULFO',
-                icon: 'src/assets/icons/nscope_icon.icns',
-                name: 'nScope Installer',
+                icon: 'src/assets/icons/nLabApp_Icon.icns',
+                name: 'nLab Installer',
             }
         },
         {
@@ -44,7 +44,7 @@ module.exports = {
     ],
 };
 
-if (process.env.NSCOPE_CODESIGN) {
+if (process.env.NLAB_CODESIGN) {
     console.log("Configuring Electron Forge to Codesign")
 
     module.exports.packagerConfig.osxNotarize = {
