@@ -1,14 +1,18 @@
-# nScope
+# nLab
 
-This version of nScope is based on the Electron framework. To use it, you must have the nScope hardware, updated to the latest version. Find more information about the hardware at https://www.nscope.org/
+This software is the graphical user interface (GUI) of nLab that runs on a computer running Windows, macOS, or Linux. It is based on the 
 
 ## Pre-built Binaries
 
-Binaries are not yet distributed, but are built as part of the Github Actions pipelines. A release process in will be established in the near future to enable end users to download nScope without needing to access github.
+Binaries are distributed as part of the release process. To download the latest versions of the software, visit the [releases page](https://github.com/nLabs-nScope/nLab/releases).
+
+### Automatic Updates
+
+On Windows and macOS, the nLab app should automatically check for updates whenever the computer is connected to the internet. If an update is found, the app will notify you and prompt you to restart the app to update.
 
 ## Building from Source
 
-nScope can be built and run from source to enable users and developers to quickly iterate on nScope source code. To establish a development environment, follow the steps below.
+nLab can be built and run from source to enable users and developers to quickly iterate on nLab source code. To establish a development environment, follow the steps below.
 
 ### Prerequisites
 
@@ -44,8 +48,8 @@ The above commands should print a version successfully.
 ### Clone and Install Development Dependencies
 
 ```shell
-$ git clone https://github.com/nLabs-nScope/nScope.git
-$ cd nScope
+$ git clone https://github.com/nLabs-nScope/nLab.git
+$ cd nLab
 $ npm install
 ```
 
