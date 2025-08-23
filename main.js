@@ -23,7 +23,6 @@ const log = electron_log.scope("main");
 const log_directory = path.dirname(electron_log.transports.file.getFile().path);
 
 log.info(`nScope main process start from: ${process.cwd()}`);
-require('update-electron-app')()
 
 const electron = require('electron')
 const app = electron.app
@@ -34,7 +33,9 @@ const config = require(path.join(__dirname, 'package.json'))
 const BrowserWindow = electron.BrowserWindow
 const Menu = electron.Menu
 
-const icon = electron.nativeImage.createFromPath(path.join(__dirname, 'app/assets/icons/icon_256x256.png'));
+const icon = electron.nativeImage.createFromPath(app.isPackaged
+    ? path.join(__dirname, 'app/assets/icons/icon_256x256.png')
+    : path.join(__dirname, 'src/assets/icons/icon_256x256.png'));
 
 app.commandLine.appendSwitch('enable-logging');
 app.commandLine.appendSwitch('log-file', path.join(log_directory, 'js.log'));
@@ -175,3 +176,65 @@ app.on('ready', (event, contents) => {
         app.quit()
     }
 })
+
+const https = require("https");
+const { exec } = require("child_process");
+
+async function checkForNlab() {
+    const version = app.getVersion();
+    const platform = process.platform; // 'darwin' | 'win32'
+    const url = `https://update.electronjs.org/nLabs-nScope/nLab/${platform}/${version}`;
+    const iconPath = app.isPackaged
+        ? path.join(__dirname, 'app/assets/icons/nLabLogo_white.png')
+        : path.join(__dirname, 'src/assets/icons/nLabLogo_white.png');
+    const icon = electron.nativeImage.createFromPath(iconPath);
+
+    https.get(url, (res) => {
+        if (res.statusCode === 204) {
+            console.log("No update available");
+        } else if (res.statusCode === 200) {
+            let data = "";
+            res.on("data", chunk => (data += chunk));
+            res.on("end", async () => {
+                try {
+                    const result = await electron.dialog.showMessageBox({
+                        icon: icon,
+                        title: "Update Available",
+                        message: `nScope is now nLab.\n Download the new nLab app?`,
+                        buttons: ["Download", "Ignore"],
+                        defaultId: 0,
+                        cancelId: 1
+                    })
+                    if (result.response === 0) {
+                        try {
+                            const opened = await electron.shell.openExternal("https://getnlab.com", { activate: true });
+                            if (!opened) throw new Error("shell.openExternal returned false");
+                        } catch (err) {
+                            console.warn("shell.openExternal failed, falling back to exec:", err);
+                            // fallback for macOS or Windows
+                            if (process.platform === "win32") {
+                                exec(`start "" "https://getnlab.com"`);
+                            } else if (process.platform === "darwin") {
+                                exec(`open "https://getnlab.com"`);
+                            } else {
+                                exec(`xdg-open "https://getnlab.com"`);
+                            }
+                        }
+                    }
+
+                } catch (e) {
+                    console.error("Failed to parse update info", e);
+                }
+            });
+        } else {
+            console.log(`Unexpected response ${res.statusCode}`);
+        }
+    }).on("error", (err) => {
+        console.error("Update check failed", err);
+    });
+}
+
+// Run check once app is ready
+app.whenReady().then(() => {
+    checkForNlab();
+});
