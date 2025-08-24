@@ -27,7 +27,6 @@ require('update-electron-app')()
 
 const electron = require('electron')
 const app = electron.app
-const globalShortcut = electron.globalShortcut
 if (require('electron-squirrel-startup')) app.quit();
 
 const config = require(path.join(__dirname, 'package.json'))
@@ -54,12 +53,6 @@ if (process.platform === "darwin") {
 }
 var mainWindow = null
 log.info('configured application branding');
-
-
-app.on('will-quit', () => {
-    // Unregister all shortcuts before quitting the app
-    globalShortcut.unregisterAll();
-});
 
 app.on('ready', function () {
     log.info('creating application window ...');
@@ -139,19 +132,25 @@ app.on('ready', function () {
         return path.join(dirName, filenamePrefix);
     });
 
-    globalShortcut.register('CommandOrControl+S', () => {
-        mainWindow.webContents.send('save-hotkey');
-    });
-
     mainWindow.onbeforeunload = (e) => {
         // Prevent Command-R from unloading the window contents.
         e.returnValue = false
     }
     mainWindow.on('closed', function () {
         log.info('application window closed, quitting');
-        globalShortcut.unregisterAll();
         app.quit()
     })
+
+    mainWindow.webContents.on('before-input-event', (event, input) => {
+        const isS = input.key && input.key.toLowerCase() === 's';
+        const macSave = process.platform === 'darwin' && input.meta && isS;
+        const otherSave = process.platform !== 'darwin' && input.control && isS;
+
+        if (macSave || otherSave) {
+            event.preventDefault();
+            mainWindow.webContents.send('save-hotkey');
+        }
+    });
 })
 
 app.on('web-contents-created', (event, contents) => {
