@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "release/*" ]
   schedule:
     - cron: "50 0 1,15 * *"
   workflow_dispatch:
@@ -60,7 +60,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup CODESIGN environment variable
-        if: ${{ (github.ref == 'refs/heads/main') || (github.ref == 'refs/tags/*') }}
+        if: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/') }}
         run: echo "NLAB_CODESIGN=1" >> $GITHUB_ENV
       - name: Set up node
         uses: actions/setup-node@v4
