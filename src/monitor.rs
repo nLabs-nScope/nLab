@@ -63,6 +63,9 @@ pub fn monitor_nscope(mut cx: FunctionContext) -> JsResult<JsObject> {
 
     // Finally, let's retrieve the power status from the scope if we can
     let power_status = cx.empty_object();
+    let null =  cx.null();
+    power_status.set(&mut cx, "state", null)?;
+    power_status.set(&mut cx, "usage", null)?;
 
     if let Some(scope) = &nscope_handle.device {
         trace!("Getting power status from connected scope");
