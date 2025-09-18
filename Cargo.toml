@@ -7,7 +7,7 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-nlabapi = "1.0.4"
+nlabapi = "1.0.5"
 env_logger = "0.10.1"
 log = "~0.4"
 neon = "~1.0.0"
