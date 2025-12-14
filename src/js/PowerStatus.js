@@ -28,7 +28,7 @@ function message(msg_content) {
 }
 
 export function update(powerState) {
-    if (update.state !== powerState.state) {
+    if (update.state == "PowerOn" || (update.state !== powerState.state)) {
         log.info(`nLab state transition ${update.state} -> ${powerState.state}`)
         console.log(`nLab state transition ${update.state} -> ${powerState.state}`)
         update.state = powerState.state;
@@ -53,7 +53,7 @@ export function update(powerState) {
                 message(null);
                 show('usb-status-bar');
                 show('usb-status');
-                var percentage = powerState.usage * 100 / 2.5;
+                var percentage = Math.max(0, powerState.usage * 100 / 2.5);
                 update.percentage = (update.percentage || 0.0) * 0.8 + percentage * 0.2;
 
                 getId('nlab-power-usage').style.width = `${clamp(update.percentage, 0, 100)}%`;
