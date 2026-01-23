@@ -6,6 +6,11 @@
 
 /* -------begin customization-------- */
 
+$ch1-color: rgb(52,210,146);
+$ch2-color: rgb(246,216,97);
+$ch3-color: rgb(58,176,226);
+$ch4-color: rgb(233,102,86);
+
 $theme-colors: (
         primary: $blue,
         secondary: $gray-400,
@@ -51,4 +56,17 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 
 .form-range::-webkit-slider-thumb, .form-range::-webkit-slider-runnable-track {
   background-color: $gray-400;
+}
+
+#Ch1-onoff.active {
+    background-color: $ch1-color;
+}
+#Ch2-onoff.active {
+    background-color: $ch2-color;
+}
+#Ch3-onoff.active {
+    background-color: $ch3-color;
+}
+#Ch4-onoff.active {
+    background-color: $ch4-color;
 }
