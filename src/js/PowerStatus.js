@@ -29,8 +29,10 @@ function message(msg_content) {
 
 export function update(powerState) {
     if (update.state == "PowerOn" || (update.state !== powerState.state)) {
-        log.info(`nLab state transition ${update.state} -> ${powerState.state}`)
-        console.log(`nLab state transition ${update.state} -> ${powerState.state}`)
+        if (update.state !== powerState.state) {
+            log.info(`nLab state transition ${update.state} -> ${powerState.state}`)
+            console.log(`nLab state transition ${update.state} -> ${powerState.state}`)
+        }
         update.state = powerState.state;
 
         switch (update.state) {
