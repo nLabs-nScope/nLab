@@ -23,13 +23,11 @@ function amplitudeToString(amplitude) {
 
 function valToFreq(val) {
     val = parseFloat(val);
-    let freq = Math.pow(10, val / 100.0 * (Math.log10(20000) + 1) - 1);
-    return freq;
+    return 0.1 * Math.pow(20000 / 0.1, val / 100);
 }
 
 function freqToVal(freq) {
-    let val = (Math.log10(freq) + 1) / Math.log10(20000) * 100.0;
-    return val;
+    return 100 * Math.log(freq / 0.1) / Math.log(20000 / 0.1);
 }
 
 function freqToString(freq) {
@@ -118,8 +116,7 @@ for (let ch of ["A1", "A2"]) {
         nlab.setAxOn(nLab, ch, checked);
     }
 
-    getId(`${ch}-freq`).oninput = getId(`${ch}-freq`).onchange = function () {
-        sliders_free[`${ch}-freq`] = false;
+    getId(`${ch}-freq`).oninput = function () {
         let label = this.labels[0];
         let frequency = valToFreq(this.value);
         nlab.setAxFrequency(nLab, ch, frequency)
@@ -128,12 +125,14 @@ for (let ch of ["A1", "A2"]) {
         label.nextElementSibling.textContent = freqString.unit;
     }
 
+    getId(`${ch}-freq`).addEventListener('mousedown', function () {
+        sliders_free[`${ch}-freq`] = false;
+    });
     getId(`${ch}-freq`).addEventListener('mouseup', function () {
         sliders_free[`${ch}-freq`] = true;
     });
 
-    getId(`${ch}-amplitude`).oninput = getId(`${ch}-amplitude`).onchange = function () {
-        sliders_free[`${ch}-amplitude`] = false;
+    getId(`${ch}-amplitude`).oninput = function () {
         let label = this.labels[0];
         let amplitude = valToAmplitude(this.value);
         nlab.setAxAmplitude(nLab, ch, amplitude)
@@ -142,6 +141,9 @@ for (let ch of ["A1", "A2"]) {
         label.nextElementSibling.textContent = amplitudeString.unit;
     }
 
+   getId(`${ch}-amplitude`).addEventListener('mousedown', function () {
+        sliders_free[`${ch}-amplitude`] = false;
+    });
     getId(`${ch}-amplitude`).addEventListener('mouseup', function () {
         sliders_free[`${ch}-amplitude`] = true;
     });
