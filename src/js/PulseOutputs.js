@@ -19,13 +19,11 @@ function dutyToString(duty) {
 
 function valToFreq(val) {
     val = parseFloat(val);
-    let freq = Math.pow(10, val / 100.0 * Math.log10(20000));
-    return freq;
+    return Math.pow(20000 / 1, val / 100);
 }
 
 function freqToVal(freq) {
-    let val = Math.log10(freq) / Math.log10(20000) * 100.0;
-    return val;
+    return 100 * Math.log(freq) / Math.log(20000);
 }
 
 function freqToString(freq) {
@@ -113,8 +111,7 @@ for (let ch of ["P1", "P2"]) {
         nlab.setPxOn(nLab, ch, checked);
     }
 
-    getId(`${ch}-freq`).onchange = getId(`${ch}-freq`).oninput = function () {
-        sliders_free[`${ch}-freq`] = false;
+    getId(`${ch}-freq`).oninput = function () {
         let label = this.labels[0];
         let frequency = valToFreq(this.value);
         nlab.setPxFrequency(nLab, ch, frequency)
@@ -123,12 +120,14 @@ for (let ch of ["P1", "P2"]) {
         label.nextElementSibling.textContent = freqString.unit;
     }
 
+    getId(`${ch}-freq`).addEventListener('mousedown', function () {
+        sliders_free[`${ch}-freq`] = false;
+    });
     getId(`${ch}-freq`).addEventListener('mouseup', function () {
         sliders_free[`${ch}-freq`] = true;
     });
 
-    getId(`${ch}-duty`).onchange = getId(`${ch}-duty`).oninput = function () {
-        sliders_free[`${ch}-duty`] = false;
+    getId(`${ch}-duty`).oninput = function () {
         let label = this.labels[0];
         let duty = valToDuty(this.value);
         nlab.setPxDuty(nLab, ch, duty)
@@ -137,6 +136,9 @@ for (let ch of ["P1", "P2"]) {
         label.nextElementSibling.textContent = dutyString.unit;
     }
 
+    getId(`${ch}-duty`).addEventListener('mousedown', function () {
+        sliders_free[`${ch}-duty`] = false;
+    });
     getId(`${ch}-duty`).addEventListener('mouseup', function () {
         sliders_free[`${ch}-duty`] = true;
     });
