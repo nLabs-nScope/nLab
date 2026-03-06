@@ -5,6 +5,7 @@ module.exports = {
         asar: true,
         icon: 'src/assets/icons/nLabApp_Icon',
         appBundleId: 'org.nscope.nscopeapp',
+        extraResource: ['packaging/99-nlab.rules'],
     },
     rebuildConfig: {},
     makers: [
@@ -29,12 +30,6 @@ module.exports = {
             name: '@electron-forge/maker-deb',
             config: {
                 options: {
-                files: [
-                    [
-                    path.resolve(__dirname, "packaging/99-nlab.rules"),
-                    "/etc/udev/rules.d/99-nlab.rules"
-                    ]
-                ],
                 scripts: {
                     postinst: "packaging/postinstall.sh"
                 }
