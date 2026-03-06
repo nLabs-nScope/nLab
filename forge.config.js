@@ -21,15 +21,39 @@ module.exports = {
                 format: 'ULFO',
                 icon: 'src/assets/icons/nLabApp_Icon.icns',
                 name: 'nLab Installer',
-            }
+            },
         },
         {
             name: '@electron-forge/maker-deb',
-            config: {},
+            config: {
+                options: {
+                files: [
+                    [
+                    "packaging/99-nlab.rules",
+                    "/etc/udev/rules.d/99-nlab.rules"
+                    ]
+                ],
+                scripts: {
+                    postinst: "packaging/postinstall.sh"
+                }
+                }
+            },
         },
         {
             name: '@electron-forge/maker-rpm',
-            config: {},
+            config: {
+                options: {
+                files: [
+                    [
+                    "packaging/99-nlab.rules",
+                    "/etc/udev/rules.d/99-nlab.rules"
+                    ]
+                ],
+                scripts: {
+                    post_install: "packaging/postinstall.sh"
+                }
+                }
+            }
         },
         {
             name: '@electron-forge/maker-zip',
