@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
     packagerConfig: {
         asar: true,
@@ -29,7 +31,7 @@ module.exports = {
                 options: {
                 files: [
                     [
-                    "packaging/99-nlab.rules",
+                    path.resolve(__dirname, "packaging/99-nlab.rules"),
                     "/etc/udev/rules.d/99-nlab.rules"
                     ]
                 ],
