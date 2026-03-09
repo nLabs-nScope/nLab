@@ -30,9 +30,10 @@ module.exports = {
             name: '@electron-forge/maker-deb',
             config: {
                 options: {
-                scripts: {
-                    postinst: "packaging/postinstall.sh"
-                }
+                    icon: 'src/assets/icons/nLabApp_Icon_512x512@2x.png',
+                    scripts: {
+                        postinst: "packaging/postinstall.sh"
+                    }
                 }
             },
         },
@@ -40,15 +41,10 @@ module.exports = {
             name: '@electron-forge/maker-rpm',
             config: {
                 options: {
-                files: [
-                    [
-                    "packaging/99-nlab.rules",
-                    "/etc/udev/rules.d/99-nlab.rules"
-                    ]
-                ],
-                scripts: {
-                    post_install: "packaging/postinstall.sh"
-                }
+                    icon: 'src/assets/icons/nLabApp_Icon_512x512@2x.png',
+                    scripts: {
+                        post_install: "packaging/postinstall.sh"
+                    }
                 }
             }
         },
