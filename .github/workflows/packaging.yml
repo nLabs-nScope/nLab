@@ -16,42 +16,45 @@ on:
         default: false
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.runs_on }}
     defaults:
       run:
         shell: bash
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
-          - windows-latest
+        target_os:
+          - linux
+          - macos
+          - windows
         include:
-          - os: ubuntu-latest
+          - target_os: linux
+            runs_on: ubuntu-22.04
             target_architecture: x64
             executable_path: xvfb-run out/nLab-linux-x64/nLab
             artifact_path: out/make/deb/x64/nlab_*.deb
             artifact_name: 'Linux Package (deb)'
-          - os: macos-latest
+          - target_os: macos
+            runs_on: macos-latest
             target_architecture: universal
             executable_path: out/nLab-darwin-universal/nLab.app/Contents/MacOS/nLab
             artifact_path: 'out/make/nLab Installer.dmg'
             artifact_name: 'macOS Installer (dmg)'
-          - os: windows-latest
+          - target_os: windows
+            runs_on: windows-latest
             target_architecture: x64
             executable_path: out/nLab-win32-x64/nLab.exe
             artifact_path: 'out/make/squirrel.windows/x64/*'
             artifact_name: 'Windows Installer (exe)'
-    name: ${{ matrix.target_architecture }} on ${{ matrix.os }}
+    name: ${{ matrix.target_architecture }} on ${{ matrix.target_os }}
     steps:
       - name: Install Rust Toolchains
-        if: matrix.os == 'macos-latest'
+        if: matrix.target_os == 'macos'
         run: |
           rustup target add x86_64-apple-darwin
           rustup target add aarch64-apple-darwin
       - name: Install libusb
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.target_os == 'linux'
         run: |
           sudo apt-get update
           sudo apt-get install libusb-1.0-0-dev libudev-dev
@@ -69,18 +72,18 @@ jobs:
       - name: Install NPM Dependencies
         run: npm ci
       - name: Setup Digicert Keylocker
-        if: matrix.os =='windows-latest'
+        if: matrix.target_os =='windows'
         uses: digicert/ssm-code-signing@v1.0.0
       - name: Build nLab
         run: npm run build
       - name: Setup MacOS certs
-        if: matrix.os == 'macos-latest'
+        if: matrix.target_os == 'macos'
         run: ./.github/add-osx-cert.sh
         env:
           CERTIFICATE_OSX_APPLICATION: ${{ secrets.MACOS_CERTIFICATE }}
           CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
       - name: Setup Windows certs
-        if: matrix.os =='windows-latest'
+        if: matrix.target_os =='windows'
         run: |
           echo "${{ secrets.DIGICERT_CLIENT_CERT_FILE }}" | base64 --decode > /d/digicert_sm_cert.p12
           echo "${{ secrets.WINDOWS_SIGNING_CERT }}" | base64 --decode > /d/signing_cert.crt
@@ -106,13 +109,13 @@ jobs:
           name: ${{ matrix.artifact_name }}
           path: ${{ matrix.artifact_path }}
       - name: Create Update Zips for macOS
-        if: matrix.os == 'macos-latest'
+        if: matrix.target_os == 'macos'
         working-directory: ./out/make/zip/darwin/universal
         run: |
           f=$(echo nLab-darwin-universal-*.zip); cp "$f" $(sed 's:universal:x64:' <<< "$f")
           f=$(echo nLab-darwin-universal-*.zip); cp "$f" $(sed 's:universal:arm64:' <<< "$f")
       - name: Archive the updaters
-        if: matrix.os == 'macos-latest'
+        if: matrix.target_os == 'macos'
         uses: actions/upload-artifact@v4
         with:
           name: macOS update packages (zip)

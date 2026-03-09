@@ -23,7 +23,9 @@ const log = electron_log.scope("main");
 const log_directory = path.dirname(electron_log.transports.file.getFile().path);
 
 log.info(`nLab main process start from: ${process.cwd()}`);
-require('update-electron-app')()
+if (process.platform !== 'linux') {
+    require('update-electron-app')()
+}
 
 const electron = require('electron')
 const app = electron.app

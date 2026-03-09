@@ -1,8 +1,11 @@
+const path = require('path');
+
 module.exports = {
     packagerConfig: {
         asar: true,
         icon: 'src/assets/icons/nLabApp_Icon',
         appBundleId: 'org.nscope.nscopeapp',
+        extraResource: ['packaging/99-nlab.rules'],
     },
     rebuildConfig: {},
     makers: [
@@ -21,15 +24,29 @@ module.exports = {
                 format: 'ULFO',
                 icon: 'src/assets/icons/nLabApp_Icon.icns',
                 name: 'nLab Installer',
-            }
+            },
         },
         {
             name: '@electron-forge/maker-deb',
-            config: {},
+            config: {
+                options: {
+                    icon: 'src/assets/icons/nLabApp_Icon_512x512@2x.png',
+                    scripts: {
+                        postinst: "packaging/postinstall.sh"
+                    }
+                }
+            },
         },
         {
             name: '@electron-forge/maker-rpm',
-            config: {},
+            config: {
+                options: {
+                    icon: 'src/assets/icons/nLabApp_Icon_512x512@2x.png',
+                    scripts: {
+                        post_install: "packaging/postinstall.sh"
+                    }
+                }
+            }
         },
         {
             name: '@electron-forge/maker-zip',
