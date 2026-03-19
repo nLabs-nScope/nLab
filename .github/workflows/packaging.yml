@@ -25,6 +25,7 @@ jobs:
       matrix:
         target_os:
           - linux
+          - linux-arm64
           - macos
           - windows
         include:
@@ -34,6 +35,12 @@ jobs:
             executable_path: xvfb-run out/nLab-linux-x64/nLab
             artifact_path: out/make/deb/x64/nlab_*.deb
             artifact_name: 'Linux Package (deb)'
+          - target_os: linux-arm64
+            runs_on: ubuntu-22.04-arm
+            target_architecture: arm64
+            executable_path: xvfb-run out/nLab-linux-arm64/nLab
+            artifact_path: out/make/deb/arm64/nlab_*.deb
+            artifact_name: 'Linux Package arm64 (deb)'
           - target_os: macos
             runs_on: macos-latest
             target_architecture: universal
@@ -54,7 +61,7 @@ jobs:
           rustup target add x86_64-apple-darwin
           rustup target add aarch64-apple-darwin
       - name: Install libusb
-        if: matrix.target_os == 'linux'
+        if: startsWith(matrix.target_os, 'linux')
         run: |
           sudo apt-get update
           sudo apt-get install libusb-1.0-0-dev libudev-dev
