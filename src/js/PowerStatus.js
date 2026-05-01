@@ -19,11 +19,11 @@ function message(msg_content) {
     let msg = getId('scope-message');
     if (msg_content == null) {
         hide('scope-message');
-        show('scope-graph');
+        show('scope-graph-wrapper');
     } else {
         msg.innerHTML = msg_content
         show('scope-message');
-        hide('scope-graph');
+        hide('scope-graph-wrapper');
     }
 }
 

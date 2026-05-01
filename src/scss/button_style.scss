@@ -57,7 +57,7 @@ $btn-active-border-tint-amount:   10%;
   color: $color;
   border-color: $color;
 
-  &:hover {
+  &:hover, .btn-check:hover + &, .btn-check:focus + & {
     color: $color-hover;
     background-color: $background-hover;
     border-color: $active-border;

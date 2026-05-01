@@ -10,7 +10,6 @@ html, body {
 }
 
 .sidebar > .btn-group-vertical {
-    margin-top: 10px;
     width: 100%;
 }
 
@@ -66,7 +65,7 @@ html, body {
 .dropdown-menu {
     font-size: 12px;
     line-height: 1.5;
-    min-width: 12rem;
+    min-width:  200px;
 }
 
 .dropdown-item {
@@ -77,15 +76,15 @@ html, body {
     visibility: hidden;
 }
 
-#horizontal-info {
+#horizontal-info, #horizontal-info-extra {
     width: 140px;
 }
 
-#time-per-div {
+#time-per-div, #time-per-div-extra {
     width: 80px;
 }
 
-#sample-rate {
+#sample-rate, #sample-rate-extra {
     width: 60px;
     line-height: 0.9;
     font-size: x-small;

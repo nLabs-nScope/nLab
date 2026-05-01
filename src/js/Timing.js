@@ -80,6 +80,12 @@ let time_per_div_v2 = [
     ["20 µs/div", "480 pts\n2M Sa/s", 480, 2000000.0],
 ]
 
+let extra_label_formatter = null;
+export function setExtraLabelFormatter(formatter) {
+    extra_label_formatter = formatter;
+    setTiming();
+}
+
 export function initTiming() {
     getId("horizontal-slider").value = 2;
     getId("horizontal-slider").dispatchEvent(new Event('input'));
@@ -93,13 +99,21 @@ export function setTiming() {
     let sample_rate = 0;
 
     if (nlab.version(nLab) < 0x0200) {
-        getId("time-per-div").textContent = time_per_div[sampling_multiplex][time_slider_idx][0]
-        getId("sample-rate").textContent = time_per_div[sampling_multiplex][time_slider_idx][1]
+        getId("time-per-div").textContent = time_per_div[sampling_multiplex][time_slider_idx][0];
+        getId("sample-rate").textContent = time_per_div[sampling_multiplex][time_slider_idx][1];
+        let extra_tpd1 = getId("time-per-div-extra");
+        if (extra_tpd1) extra_tpd1.textContent = extra_label_formatter ? extra_label_formatter(time_per_div[sampling_multiplex][time_slider_idx][0]) : time_per_div[sampling_multiplex][time_slider_idx][0];
+        let extra_sr1 = getId("sample-rate-extra");
+        if (extra_sr1) extra_sr1.textContent = time_per_div[sampling_multiplex][time_slider_idx][1];
         num_samples = time_per_div[sampling_multiplex][time_slider_idx][2];
         sample_rate = time_per_div[sampling_multiplex][time_slider_idx][3];
     } else {
-        getId("time-per-div").textContent = time_per_div_v2[time_slider_idx][0]
-        getId("sample-rate").textContent = time_per_div_v2[time_slider_idx][1]
+        getId("time-per-div").textContent = time_per_div_v2[time_slider_idx][0];
+        getId("sample-rate").textContent = time_per_div_v2[time_slider_idx][1];
+        let extra_tpd2 = getId("time-per-div-extra");
+        if (extra_tpd2) extra_tpd2.textContent = extra_label_formatter ? extra_label_formatter(time_per_div_v2[time_slider_idx][0]) : time_per_div_v2[time_slider_idx][0];
+        let extra_sr2 = getId("sample-rate-extra");
+        if (extra_sr2) extra_sr2.textContent = time_per_div_v2[time_slider_idx][1];
         num_samples = time_per_div_v2[time_slider_idx][2];
         sample_rate = time_per_div_v2[time_slider_idx][3];
     }
@@ -124,9 +138,11 @@ export function update() {
     if (nlab.isConnected(nLab)) {
         getId("horizontal-info").classList.remove("disabled");
         getId("horizontal-slider").classList.remove("disabled");
+        if (getId("horizontal-info-extra")) getId("horizontal-info-extra").classList.remove("disabled");
     } else {
         getId("horizontal-info").classList.add("disabled");
         getId("horizontal-slider").classList.add("disabled");
+        if (getId("horizontal-info-extra")) getId("horizontal-info-extra").classList.add("disabled");
     }
 
     if (nlab.version(nLab) >= 0x0200 && getId("horizontal-slider").max == time_per_div_1.length - 1) {
