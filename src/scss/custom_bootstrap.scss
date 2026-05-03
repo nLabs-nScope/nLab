@@ -6,23 +6,43 @@
 
 /* -------begin customization-------- */
 
-$ch1-color: rgb(52,210,146);
-$ch2-color: rgb(246,216,97);
-$ch3-color: rgb(58,176,226);
-$ch4-color: rgb(233,102,86);
+$ch1-color: #27C840;
+$ch2-color: #FF7E28;
+$ch3-color: #00AEEF;
+$ch4-color: #B978FF;
+
+$ch1-text: black;
+$ch2-text: black;
+$ch3-text: black;
+$ch4-text: black;
 
 $theme-colors: (
-        primary: $blue,
-        secondary: $gray-400,
-        info: rgb(58,176,226),
-        success: rgb(52,210,146),
-        warning: rgb(246,216,97),
-        danger: rgb(233,102,86),
-        light: $gray-100,
-        dark: $gray-900
+  primary: #00AEEF,
+  secondary: $gray-400,
+  info: #00AEEF,
+  success: #27C840,
+  warning: #FFC928,
+  danger: #FF7E28,
+  light: $gray-100,
+  dark: $gray-900
 );
 
-$custom-colors: (dark-1l: $gray-800);
+:root {
+  --ch1-color: #{$ch1-color};
+  --ch2-color: #{$ch2-color};
+  --ch3-color: #{$ch3-color};
+  --ch4-color: #{$ch4-color};
+  --ch1-text: #{$ch1-text};
+  --ch2-text: #{$ch2-text};
+  --ch3-text: #{$ch3-text};
+  --ch4-text: #{$ch4-text};
+  --trigger-color: #FFFFFF;
+  --trigger-text: black;
+}
+
+$custom-colors: (
+  dark-1l: $gray-800
+);
 
 
 .bg-dark-1l {
@@ -54,21 +74,25 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
   box-shadow: 0px 0px 6px $gray-900;
 }
 
-.form-range::-webkit-slider-thumb, .form-range::-webkit-slider-runnable-track {
+.form-range::-webkit-slider-thumb,
+.form-range::-webkit-slider-runnable-track {
   background-color: $gray-400;
 }
 
 #Ch1-onoff.active {
-    background-color: $ch1-color;
+  background-color: $ch1-color;
 }
+
 #Ch2-onoff.active {
-    background-color: $ch2-color;
+  background-color: $ch2-color;
 }
+
 #Ch3-onoff.active {
-    background-color: $ch3-color;
+  background-color: $ch3-color;
 }
+
 #Ch4-onoff.active {
-    background-color: $ch4-color;
+  background-color: $ch4-color;
 }
 
 
@@ -92,11 +116,12 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 .accordion-button:focus {
   box-shadow: none !important;
   outline: none !important;
-  border-color: rgba(0,0,0,0) !important;
+  border-color: rgba(0, 0, 0, 0) !important;
 }
 
 .accordion-button:not(.collapsed)::after {
-  content: '  \f14a'; /* Checked checkbox icon */
+  content: '  \f14a';
+  /* Checked checkbox icon */
   font-family: 'Font Awesome 5 Free';
   background-image: none;
   margin-left: 12px;
@@ -107,7 +132,8 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 }
 
 .accordion-button.collapsed::after {
-  content: '  \f096'; /* Empty checkbox icon */
+  content: '  \f096';
+  /* Empty checkbox icon */
   font-family: 'Font Awesome 5 Free';
   margin-left: 12px;
   background-image: none;
@@ -123,6 +149,17 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
   justify-content: space-between;
 }
 
-.accordion-button.collapsed + div.btn-group {
+.accordion-button.collapsed+div.btn-group {
   visibility: hidden;
+}
+
+
+/* Force dropstart and dropend arrows to point down */
+.dropend .dropdown-toggle::after,
+.dropstart .dropdown-toggle::before {
+  border-top: 0.3em solid !important;
+  border-right: 0.3em solid transparent !important;
+  border-bottom: 0 !important;
+  border-left: 0.3em solid transparent !important;
+  vertical-align: 0.3em !important;
 }

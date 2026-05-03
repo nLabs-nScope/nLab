@@ -13,7 +13,7 @@
 <body>
 
     <main role="main" class="container-fluid h-100 d-flex flex-column">
-        <div class="row bg-dark text-white py-1 align-items-center text-nowrap  ">
+        <div class="row bg-dark text-white py-2 align-items-center text-nowrap  ">
             <div class="sidebar"></div>
             <div class="col flex-grow-1 d-flex justify-content-between px-1">
                 <div class="d-flex align-items-center gap-1">
@@ -193,7 +193,8 @@
                             <div class="btn btn-xs btn-success" id="usb-status" style="width: 100px;"></div>
                         </div>
                         <div id="nlab-usb-power-off" class="btn btn-xs btn-outline-secondary hidden">Power Off</div>
-                        <div id="nlab-usb-disconnected" class="btn btn-xs btn-outline-danger">Disconnected</div>
+                        <div id="nlab-usb-disconnected" class="btn btn-xs btn-outline-light disabled">No Connection
+                        </div>
                         <div id="nlab-usb-power-fault" class="btn btn-xs btn-outline-warning hidden">Power Fault</div>
                     </div>
                 </div>
@@ -209,7 +210,7 @@
                     <div class="btn-group btn-group-xs">
                         <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary" id="A1-onoff">A1
                         </button>
-                        <div class="btn-group btn-group-xs dropright">
+                        <div class="btn-group btn-group-xs dropend">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
@@ -256,7 +257,7 @@
                     <div class="btn-group btn-group-xs">
                         <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary" id="A2-onoff">A2
                         </button>
-                        <div class="btn-group btn-group-xs dropright">
+                        <div class="btn-group btn-group-xs dropend">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
@@ -303,7 +304,7 @@
                     <div class="btn-group btn-group-xs">
                         <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary" id="P1-onoff">P1
                         </button>
-                        <div class="btn-group btn-group-xs dropright">
+                        <div class="btn-group btn-group-xs dropend">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
@@ -330,7 +331,7 @@
                     <div class="btn-group btn-group-xs">
                         <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary" id="P2-onoff">P2
                         </button>
-                        <div class="btn-group btn-group-xs dropright">
+                        <div class="btn-group btn-group-xs dropend">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
@@ -409,7 +410,7 @@
             <div class="col bg-dark sidebar d-flex flex-column gap-2">
                 <div class="btn-group-vertical btn-group-xs" id="Ch1-controls">
                     <div class="btn-group btn-group-xs">
-                        <div class="btn-group btn-group-xs dropleft">
+                        <div class="btn-group btn-group-xs dropstart">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
@@ -429,7 +430,7 @@
                 </div>
                 <div class="btn-group-vertical btn-group-xs" id="Ch2-controls">
                     <div class="btn-group btn-group-xs">
-                        <div class="btn-group btn-group-xs dropleft">
+                        <div class="btn-group btn-group-xs dropstart">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
@@ -449,7 +450,7 @@
                 </div>
                 <div class="btn-group-vertical btn-group-xs" id="Ch3-controls">
                     <div class="btn-group btn-group-xs">
-                        <div class="btn-group btn-group-xs dropleft">
+                        <div class="btn-group btn-group-xs dropstart">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
@@ -469,7 +470,7 @@
                 </div>
                 <div class="btn-group-vertical btn-group-xs" id="Ch4-controls">
                     <div class="btn-group btn-group-xs">
-                        <div class="btn-group btn-group-xs dropleft">
+                        <div class="btn-group btn-group-xs dropstart">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
@@ -489,7 +490,7 @@
                 </div>
                 <div class="btn-group-vertical btn-group-xs" id="trigger-controls">
                     <div class="btn-group btn-group-xs">
-                        <div class="btn-group btn-group-xs dropleft">
+                        <div class="btn-group btn-group-xs dropstart">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>

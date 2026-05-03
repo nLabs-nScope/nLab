@@ -1,7 +1,7 @@
-import {getId, isEmpty, idFromCh} from './Utils.js'
-import {colors, text_colors, ranges} from './Axes.js'
-import {setAnalogInputRange} from "./AnalogInputs.js";
-import {adjustTriggerLevel} from './Trigger'
+import { getId, isEmpty, idFromCh } from './Utils.js'
+import { colors, text_colors, ranges } from './Axes.js'
+import { setAnalogInputRange } from "./AnalogInputs.js";
+import { adjustTriggerLevel } from './Trigger'
 
 
 function drawChannelFlag(ch, visible) {
@@ -43,7 +43,7 @@ function drawChannelZeroLine(ch, visible) {
         line: {
             color: colors[ch],
             width: 1.5,
-            dash: 'dot'
+            dash: '3px,6px'
         },
         visible: visible
     }
