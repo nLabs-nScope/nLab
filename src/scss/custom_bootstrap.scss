@@ -70,3 +70,59 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 #Ch4-onoff.active {
     background-color: $ch4-color;
 }
+
+
+// Customized accordion buttons
+.accordion-item {
+  background: none;
+  color: $gray-400;
+}
+
+.accordion-button,
+.accordion-button:not(.collapsed) {
+  background: none;
+  color: $gray-400;
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.accordion-button:focus {
+  box-shadow: none !important;
+  outline: none !important;
+  border-color: rgba(0,0,0,0) !important;
+}
+
+.accordion-button:not(.collapsed)::after {
+  content: '  \f14a'; /* Checked checkbox icon */
+  font-family: 'Font Awesome 5 Free';
+  background-image: none;
+  margin-left: 12px;
+  transform: none;
+  font-size: 22px;
+  font-weight: lighter;
+  line-height: 1;
+}
+
+.accordion-button.collapsed::after {
+  content: '  \f096'; /* Empty checkbox icon */
+  font-family: 'Font Awesome 5 Free';
+  margin-left: 12px;
+  background-image: none;
+  font-size: 22px;
+  font-weight: lighter;
+  line-height: 1;
+}
+
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.accordion-button.collapsed + div.btn-group {
+  visibility: hidden;
+}

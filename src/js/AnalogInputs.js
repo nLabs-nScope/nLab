@@ -1,6 +1,7 @@
 import {getId, isEmpty} from './Utils.js';
 import {ranges} from './Axes.js'
 import * as timing from './Timing.js'
+import {getXYChannels} from './XYGraph.js'
 
 
 const gains = [0.2, 0.5, 1, 2, 4, 5, 10, 20];
@@ -94,6 +95,10 @@ export function update(chState) {
 for (let ch of ["Ch1", "Ch2", "Ch3", "Ch4"]) {
     getId(`${ch}-onoff`).onclick = function () {
         let checked = this.classList.contains("active");
+        if (!checked && getXYChannels().includes(ch)) {
+            this.classList.add("active");
+            return;
+        }
         nlab.setChOn(nLab, ch, checked);
         timing.setTiming();
     }

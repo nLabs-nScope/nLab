@@ -102,7 +102,7 @@ app.on('ready', function () {
     electron.ipcMain.handle('save-data', async (channel, data) => {
         const documentsPath = app.getPath('documents');
         const dirName = path.join(documentsPath, 'nLab_captures');
-        fs.mkdirSync(dirName, {recursive: true});
+        fs.mkdirSync(dirName, { recursive: true });
 
         const now = new Date();
         const year = now.getFullYear();
@@ -160,7 +160,7 @@ app.on('web-contents-created', (event, contents) => {
         event.preventDefault()
     })
     contents.setWindowOpenHandler(() => {
-        return {action: 'deny'}
+        return { action: 'deny' }
     })
     log.info('completed main window web-contents-created');
 })

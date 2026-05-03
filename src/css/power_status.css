@@ -1,18 +1,26 @@
 #nlab-power-usage-bar {
     pointer-events: none;   
-    position: relative;
-    display:inline-block;
+    display: grid;
+    align-items: stretch;
 }
 
-#nlab-power-usage-bar > div:not(:first-child) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
+#nlab-power-usage-bar > * {
+    grid-area: 1 / 1;
+}
+
+#nlab-power-usage {
+    justify-self: start;
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+}
+
+#usb-status {
+    width: 100px !important;
+    min-width: 100px !important;
+    vertical-align: top;
 }
 
 #nlab-power-usage-bar .btn {
-    width:100px;
+    width: 100px;
 }

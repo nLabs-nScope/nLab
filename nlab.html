@@ -14,233 +14,399 @@
 
     <main role="main" class="container-fluid h-100 d-flex flex-column">
         <div class="row bg-dark text-white py-1 align-items-center text-nowrap  ">
-            <div class="col-4">
-                <img src="src/assets/svg/nLabLogo_White.svg" width="120px" id="logo">
+            <div class="sidebar"></div>
+            <div class="col flex-grow-1 d-flex justify-content-between px-1">
+                <div class="d-flex align-items-center gap-1">
+                    <div class="btn-group px-1" role="group">
+                        <button id="save-traces" class="btn btn-xs btn-outline-secondary">Save Traces</button>
+                    </div>
+                    <div class="btn-group btn-group-xs px-1">
+                        <button type="button" id="extra-graphs-button" class="btn dropdown-toggle btn-outline-secondary"
+                            data-bs-toggle="dropdown">Graphs:
+                        </button>
+                        <div class="dropdown-menu clickable" id="extra-graphs">
+                            <div class="accordion accordion-flush">
+                                <div class="accordion-item border-0">
+                                    <h2 class="accordion-header px-2 py-1">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                            aria-expanded="false" aria-controls="collapseOne" id="xy-graph-view-on">
+                                            X/Y View
+                                        </button>
+                                        <div class="btn-group" id="xy-graph-view" role="group">
+                                            <input class="btn-check" type="radio" name="xy-graph-view"
+                                                id="xy-graph-view-vertical" checked>
+                                            <label
+                                                class="btn btn-outline-secondary btn-xs shadow-none d-inline-flex align-items-center justify-content-center"
+                                                for="xy-graph-view-vertical">
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                                    stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                                    stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                                                    <!-- Outer container with rounded corners -->
+                                                    <rect x="2" y="2" width="12" height="12" rx="2" />
+                                                    <!-- Vertical divider -->
+                                                    <line x1="8" y1="2" x2="8" y2="14" />
+                                                </svg>
+                                            </label>
+                                            <input class="btn-check" type="radio" name="xy-graph-view"
+                                                id="xy-graph-view-horizontal">
+                                            <label
+                                                class="btn btn-outline-secondary btn-xs shadow-none d-inline-flex align-items-center justify-content-center"
+                                                for="xy-graph-view-horizontal">
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                                    stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                                    stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                                                    <!-- Outer container with rounded corners -->
+                                                    <rect x="2" y="2" width="12" height="12" rx="2" />
+                                                    <!-- Horizontal divider -->
+                                                    <line x1="2" y1="8" x2="14" y2="8" />
+                                                </svg>
+                                            </label>
+                                            <input class="btn-check" type="radio" name="xy-graph-view"
+                                                id="xy-graph-view-full">
+                                            <label
+                                                class="btn btn-outline-secondary btn-xs shadow-none d-inline-flex align-items-center justify-content-center"
+                                                for="xy-graph-view-full">
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <!-- Outer window frame -->
+                                                    <rect x="2" y="2" width="12" height="12" rx="2"
+                                                        stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+
+                                                    <!-- Arrows group with thinner strokes -->
+                                                    <g stroke="currentColor" stroke-width="0.75" fill="none"
+                                                        stroke-linecap="round" stroke-linejoin="round">
+                                                        <path d="M7.33 7.33 L4.67 4.67 M4.67 6.67 V4.67 H6.67" />
+
+                                                        <!-- Top-right arrow -->
+                                                        <path d="M8.67 7.33 L11.33 4.67 M9.33 4.67 H11.33 V6.67" />
+
+                                                        <!-- Bottom-left arrow -->
+                                                        <path d="M7.33 8.67 L4.67 11.33 M4.67 9.33 V11.33 H6.67" />
+
+                                                        <!-- Bottom-right arrow -->
+                                                        <path d="M8.67 8.67 L11.33 11.33 M9.33 11.33 H11.33 V9.33" />
+                                                    </g>
+                                                </svg>
+                                            </label>
+                                        </div>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse"
+                                        aria-labelledby="headingOne">
+                                        <div class="accordion-body p-2 pt-1">
+                                            <div class="bg-dark rounded p-3 border border-secondary"
+                                                style="--bs-border-opacity: .25;">
+                                                <div class="d-flex justify-content-center">
+                                                    <div class="d-grid"
+                                                        style="grid-template-columns: min-content min-content; gap: 0;">
+                                                        <!-- Top Left: Y Source + y-axis line on right -->
+                                                        <div
+                                                            class="border-end border-secondary pb-1 pe-2 pt-1 position-relative">
+                                                            <i class="fa-solid fa-caret-up position-absolute text-secondary"
+                                                                style="top: -6px; right: -4.5px; font-size: 0.8rem; z-index: 1;"></i>
+                                                            <div class="btn-group-vertical" id="xy-graph-y-source"
+                                                                role="group">
+                                                                <input class="btn-check" type="radio"
+                                                                    name="xy-graph-y-source" id="y-source-Ch4">
+                                                                <label
+                                                                    class="btn btn-outline-secondary btn-xs shadow-none"
+                                                                    for="y-source-Ch4">Ch4</label>
+                                                                <input class="btn-check" type="radio"
+                                                                    name="xy-graph-y-source" id="y-source-Ch3">
+                                                                <label
+                                                                    class="btn btn-outline-secondary btn-xs shadow-none"
+                                                                    for="y-source-Ch3">Ch3</label>
+                                                                <input class="btn-check" type="radio"
+                                                                    name="xy-graph-y-source" id="y-source-Ch2" checked>
+                                                                <label
+                                                                    class="btn btn-outline-secondary btn-xs shadow-none"
+                                                                    for="y-source-Ch2">Ch2</label>
+                                                                <input class="btn-check" type="radio"
+                                                                    name="xy-graph-y-source" id="y-source-Ch1">
+                                                                <label
+                                                                    class="btn btn-outline-secondary btn-xs shadow-none"
+                                                                    for="y-source-Ch1">Ch1</label>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Top Right -->
+                                                        <div
+                                                            style="margin-top: 5px; margin-right: 5px; background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(to top, rgba(255, 255, 255, 0.1) 1px, transparent 1px); background-size: 10px 10px; background-position: left bottom;">
+                                                        </div>
+
+                                                        <!-- Bottom Left: acts as x-axis start -->
+                                                        <div></div>
+
+                                                        <!-- Bottom Right: X Source + x-axis line on top -->
+                                                        <div
+                                                            class="border-top border-secondary pt-1 ps-2 pe-3 position-relative text-center">
+                                                            <i class="fa-solid fa-caret-right position-absolute text-secondary"
+                                                                style="right: -6px; top: -7.5px; font-size: 0.8rem; z-index: 1;"></i>
+                                                            <div class="btn-group" id="xy-graph-x-source" role="group">
+                                                                <input class="btn-check" type="radio"
+                                                                    name="xy-graph-x-source" id="x-source-Ch1" checked>
+                                                                <label
+                                                                    class="btn btn-outline-secondary btn-xs shadow-none"
+                                                                    for="x-source-Ch1">Ch1</label>
+                                                                <input class="btn-check" type="radio"
+                                                                    name="xy-graph-x-source" id="x-source-Ch2">
+                                                                <label
+                                                                    class="btn btn-outline-secondary btn-xs shadow-none"
+                                                                    for="x-source-Ch2">Ch2</label>
+                                                                <input class="btn-check" type="radio"
+                                                                    name="xy-graph-x-source" id="x-source-Ch3">
+                                                                <label
+                                                                    class="btn btn-outline-secondary btn-xs shadow-none"
+                                                                    for="x-source-Ch3">Ch3</label>
+                                                                <input class="btn-check" type="radio"
+                                                                    name="xy-graph-x-source" id="x-source-Ch4">
+                                                                <label
+                                                                    class="btn btn-outline-secondary btn-xs shadow-none"
+                                                                    for="x-source-Ch4">Ch4</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-1">
+                    <div class="btn-group px-1" id="run-control" role="group">
+                        <input class="btn-check" type="radio" name="run-control" id="run" checked>
+                        <label class="btn btn-outline-secondary btn-xs shadow-none" for="run">Run</label>
+
+                        <input class="btn-check" type="radio" name="run-control" id="single">
+                        <label class="btn btn-outline-secondary btn-xs shadow-none" for="single">Single</label>
+
+                        <input class="btn-check" type="radio" name="run-control" id="stop">
+                        <label class="btn btn-outline-secondary btn-xs shadow-none" for="stop">Stop</label>
+                    </div>
+                    <div id="nlab-power-usage-bar" class="align-middle px-1">
+                        <div class="btn btn-xs btn-outline-success hidden" id="usb-status-bar"></div>
+                        <div id="nlab-power-usage" class="overflow-hidden" style="width: 0%; pointer-events: none;">
+                            <div class="btn btn-xs btn-success" id="usb-status" style="width: 100px;"></div>
+                        </div>
+                        <div id="nlab-usb-power-off" class="btn btn-xs btn-outline-secondary hidden">Power Off</div>
+                        <div id="nlab-usb-disconnected" class="btn btn-xs btn-outline-danger">Disconnected</div>
+                        <div id="nlab-usb-power-fault" class="btn btn-xs btn-outline-warning hidden">Power Fault</div>
+                    </div>
+                </div>
             </div>
-            <div class="col-8 text-end">
-                <div class="btn-group" role="group">
-                    <button id="save-traces" class="btn btn-xs btn-outline-secondary">Save Traces</button>
-                </div>
-                <!-- <div class="btn-group static btn-group-xs" role="group">
-                    <button type="button" class="btn btn-light">Trigger</button>
-                    <button type="button" class="btn btn-light"><span class="btn-xs btn-info">4</span><span
-                            class="pl-1">&UpArrow;</span></button>
-                    <button type="button" class="btn btn-outline-light">0.2 V</button>
-                </div> -->
-
-                <div class="btn-group px-2" id="run-control" role="group">
-                    <input class="btn-check" type="radio" name="run-control" id="run" checked>
-                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="run">Run</label>
-
-                    <input class="btn-check" type="radio" name="run-control" id="single">
-                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="single">Single</label>
-
-                    <input class="btn-check" type="radio" name="run-control" id="stop">
-                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="stop">Stop</label>
-                </div>
-                <div id="nlab-power-usage-bar">
-                    <div class="btn btn-xs btn-outline-success hidden" id="usb-status-bar"></div>
-                    <div id="nlab-power-usage">
-                        <div class="btn btn-xs btn-success hidden" id="usb-status"></div>
-                    </div>
-                    <div class="hidden" id="nlab-usb-power-off">
-                        <div class="btn btn-xs btn-outline-secondary">Power Off</div>
-                    </div>
-                    <div id="nlab-usb-disconnected">
-                        <div class="btn btn-xs btn-outline-danger">Disconnected</div>
-                    </div>
-                    <div class="hidden"  id="nlab-usb-power-fault">
-                        <div class="btn btn-xs btn-outline-warning">Power Fault</div>
-                    </div>
-                </div>
-            </div>
+            <div class="sidebar"></div>
         </div>
         <div class="row flex-grow-1">
-            <div class="col bg-dark sidebar">
+            <div class="col bg-dark sidebar d-flex flex-column gap-2">
+                <div class="">
+                    <img src="src/assets/svg/nLabLogo_white.svg" width="96px" style="vertical-align: baseline;">
+                </div>
                 <div class="btn-group-vertical btn-group-xs" id="A1-controls">
                     <div class="btn-group btn-group-xs">
-                        <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary"
-                            id="A1-onoff">A1</button>
+                        <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary" id="A1-onoff">A1
+                        </button>
                         <div class="btn-group btn-group-xs dropright">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
                             <div class="dropdown-menu clickable">
                                 <div class="mx-3 form-group">
-                                    <span class="px-1">Frequency:</span><label for="A1-freq">5</label><span class="px-1">Hz</span>
+                                    <span class="px-1">Frequency:</span><label for="A1-freq">5</label><span
+                                        class="px-1">Hz</span>
                                     <i class="fa-regular fa-pen-to-square label-edit-button"></i>
                                     <input type="range" class="form-range" id="A1-freq">
                                 </div>
                                 <div class="mx-3 form-group">
-                                    <span class="px-1">Amplitude:</span><label for="A1-amplitude">5</label><span class="px-1">V</span>
+                                    <span class="px-1">Amplitude:</span><label for="A1-amplitude">5</label><span
+                                        class="px-1">V</span>
                                     <i class="fa-regular fa-pen-to-square label-edit-button"></i>
                                     <input type="range" class="form-range" id="A1-amplitude">
                                 </div>
                                 <div class="btn-group my-1 mx-4" role="group">
-                                    <input class="btn-check" type="radio" name="A1-waveType" value="Sine" id="A1-waveType-sine" checked>
-                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="A1-waveType-sine">Sine</label>
-                                    <input class="btn-check" type="radio" name="A1-waveType" value="Triangle" id="A1-waveType-triangle">
-                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="A1-waveType-triangle">Triangle</label>
+                                    <input class="btn-check" type="radio" name="A1-waveType" value="Sine"
+                                        id="A1-waveType-sine" checked>
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none"
+                                        for="A1-waveType-sine">Sine</label>
+                                    <input class="btn-check" type="radio" name="A1-waveType" value="Triangle"
+                                        id="A1-waveType-triangle">
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none"
+                                        for="A1-waveType-triangle">Triangle</label>
                                 </div>
                                 <div class="btn-group my-1 mx-4" role="group">
-                                    <input class="btn-check" type="radio" name="A1-polarity" value="Unipolar" id="A1-polarity-unipolar" checked>
-                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="A1-polarity-unipolar">Unipolar</label>
-                                    <input class="btn-check" type="radio" name="A1-polarity" value="Bipolar" id="A1-polarity-bipolar">
-                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="A1-polarity-bipolar">Bipolar</label>
+                                    <input class="btn-check" type="radio" name="A1-polarity" value="Unipolar"
+                                        id="A1-polarity-unipolar" checked>
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none"
+                                        for="A1-polarity-unipolar">Unipolar</label>
+                                    <input class="btn-check" type="radio" name="A1-polarity" value="Bipolar"
+                                        id="A1-polarity-bipolar">
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none"
+                                        for="A1-polarity-bipolar">Bipolar</label>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button data-bs-toggle="button" class="btn btn-outline-secondary static"
-                        id="A1-status">&nbsp;</button>
+                    <button data-bs-toggle="button" class="btn btn-outline-secondary static" id="A1-status">&nbsp;
+                    </button>
                 </div>
                 <div class="btn-group-vertical btn-group-xs" id="A2-controls">
                     <div class="btn-group btn-group-xs">
-                        <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary"
-                            id="A2-onoff">A2</button>
+                        <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary" id="A2-onoff">A2
+                        </button>
                         <div class="btn-group btn-group-xs dropright">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
                             <div class="dropdown-menu clickable">
                                 <div class="mx-3 form-group">
-                                    <span class="px-1">Frequency:</span><label for="A2-freq">5</label><span class="px-1">Hz</span>
+                                    <span class="px-1">Frequency:</span><label for="A2-freq">5</label><span
+                                        class="px-1">Hz</span>
                                     <i class="fa-regular fa-pen-to-square label-edit-button"></i>
                                     <input type="range" class="form-range" id="A2-freq">
                                 </div>
                                 <div class="mx-3 form-group">
-                                    <span class="px-1">Amplitude:</span><label for="A2-amplitude">5</label><span class="px-1">V</span>
+                                    <span class="px-1">Amplitude:</span><label for="A2-amplitude">5</label><span
+                                        class="px-1">V</span>
                                     <i class="fa-regular fa-pen-to-square label-edit-button"></i>
                                     <input type="range" class="form-range" id="A2-amplitude">
                                 </div>
                                 <div class="btn-group my-1 mx-4" role="group">
-                                    <input class="btn-check" type="radio" name="A2-waveType" value="Sine" id="A2-waveType-sine" checked>
-                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="A2-waveType-sine">Sine</label>
-                                    <input class="btn-check" type="radio" name="A2-waveType" value="Triangle" id="A2-waveType-triangle">
-                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="A2-waveType-triangle">Triangle</label>
+                                    <input class="btn-check" type="radio" name="A2-waveType" value="Sine"
+                                        id="A2-waveType-sine" checked>
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none"
+                                        for="A2-waveType-sine">Sine</label>
+                                    <input class="btn-check" type="radio" name="A2-waveType" value="Triangle"
+                                        id="A2-waveType-triangle">
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none"
+                                        for="A2-waveType-triangle">Triangle</label>
                                 </div>
                                 <div class="btn-group my-1 mx-4" role="group">
-                                    <input class="btn-check" type="radio" name="A2-polarity" value="Unipolar" id="A2-polarity-unipolar" checked>
-                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="A2-polarity-unipolar">Unipolar</label>
-                                    <input class="btn-check" type="radio" name="A2-polarity" value="Bipolar" id="A2-polarity-bipolar">
-                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="A2-polarity-bipolar">Bipolar</label>
+                                    <input class="btn-check" type="radio" name="A2-polarity" value="Unipolar"
+                                        id="A2-polarity-unipolar" checked>
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none"
+                                        for="A2-polarity-unipolar">Unipolar</label>
+                                    <input class="btn-check" type="radio" name="A2-polarity" value="Bipolar"
+                                        id="A2-polarity-bipolar">
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none"
+                                        for="A2-polarity-bipolar">Bipolar</label>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button data-bs-toggle="button" class="btn btn-outline-secondary static"
-                        id="A2-status">&nbsp;</button>
+                    <button data-bs-toggle="button" class="btn btn-outline-secondary static" id="A2-status">&nbsp;
+                    </button>
                 </div>
                 <div class="btn-group-vertical btn-group-xs" id="P1-controls">
                     <div class="btn-group btn-group-xs">
-                        <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary"
-                            id="P1-onoff">P1</button>
+                        <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary" id="P1-onoff">P1
+                        </button>
                         <div class="btn-group btn-group-xs dropright">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
                             <div class="dropdown-menu clickable">
                                 <div class="mx-3 form-group">
-                                    <span class="px-1">Frequency:</span><label for="P1-freq"></label><span class="px-1">Hz</span>
+                                    <span class="px-1">Frequency:</span><label for="P1-freq"></label><span
+                                        class="px-1">Hz</span>
                                     <i class="fa-regular fa-pen-to-square label-edit-button"></i>
                                     <input type="range" class="form-range" id="P1-freq">
                                 </div>
                                 <div class="mx-3 form-group">
-                                    <span class="px-1">Duty:</span><label for="P1-duty"></label><span class="px-1">%</span>
+                                    <span class="px-1">Duty:</span><label for="P1-duty"></label><span
+                                        class="px-1">%</span>
                                     <i class="fa-regular fa-pen-to-square label-edit-button"></i>
                                     <input type="range" class="form-range" id="P1-duty">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button data-bs-toggle="button" class="btn btn-outline-secondary static"
-                        id="P1-status">&nbsp;</button>
+                    <button data-bs-toggle="button" class="btn btn-outline-secondary static" id="P1-status">&nbsp;
+                    </button>
                 </div>
                 <div class="btn-group-vertical btn-group-xs" id="P2-controls">
                     <div class="btn-group btn-group-xs">
-                        <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary"
-                            id="P2-onoff">P2</button>
+                        <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary" id="P2-onoff">P2
+                        </button>
                         <div class="btn-group btn-group-xs dropright">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
                             <div class="dropdown-menu clickable">
                                 <div class="mx-3 form-group">
-                                    <span class="px-1">Frequency:</span><label for="P2-freq"></label><span class="px-1">Hz</span>
+                                    <span class="px-1">Frequency:</span><label for="P2-freq"></label><span
+                                        class="px-1">Hz</span>
                                     <i class="fa-regular fa-pen-to-square label-edit-button"></i>
                                     <input type="range" class="form-range" id="P2-freq">
                                 </div>
                                 <div class="mx-3 form-group">
-                                    <span class="px-1">Duty:</span><label for="P2-duty"></label><span class="px-1">%</span>
+                                    <span class="px-1">Duty:</span><label for="P2-duty"></label><span
+                                        class="px-1">%</span>
                                     <i class="fa-regular fa-pen-to-square label-edit-button"></i>
                                     <input type="range" class="form-range" id="P2-duty">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button data-bs-toggle="button" class="btn btn-outline-secondary static"
-                        id="P2-status">&nbsp;</button>
+                    <button data-bs-toggle="button" class="btn btn-outline-secondary static" id="P2-status">&nbsp;
+                    </button>
                 </div>
                 <!-- <div class="btn-group-vertical btn-group-xs">
-            <div class="btn-group btn-group-xs">
-                <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary">Math</button>
-                <div class="btn-group btn-group-xs dropright">
-                    <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-bs-toggle="dropdown"></button>
-                    <div class="dropdown-menu">
-                    </div>
+        <div class="btn-group btn-group-xs">
+            <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary">Math</button>
+            <div class="btn-group btn-group-xs dropright">
+                <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-bs-toggle="dropdown"></button>
+                <div class="dropdown-menu">
                 </div>
             </div>
-            <button type="button" class="btn btn-outline-secondary static"><span class="btn-xs btn-info">4</span><span class="px-1">-</span><span class="btn-xs btn-warning">3</span></button>
-        </div>  -->
+        </div>
+        <button type="button" class="btn btn-outline-secondary static"><span class="btn-xs btn-info">4</span><span class="px-1">-</span><span class="btn-xs btn-warning">3</span></button>
+    </div>  -->
                 <!-- <div class="btn-group btn-group-sm dropright">
-              <button type="button" data-bs-toggle="button" class="btn btn-sm btn-outline-secondary flex-grow-1">Cursors</button>
-              <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-bs-toggle="dropdown"></button>
-              <div class="dropdown-menu">
-              </div>
-          </div> -->
-
+          <button type="button" data-bs-toggle="button" class="btn btn-sm btn-outline-secondary flex-grow-1">Cursors</button>
+          <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary" data-bs-toggle="dropdown"></button>
+          <div class="dropdown-menu">
+          </div>
+      </div> -->
             </div>
             <div class="col bg-dark-1l p-0 flex-column d-flex overflow-hidden">
                 <div class="row h-100 w-100 g-0 position-relative align-items-center" id="scope-graph-container">
-                    <div class="top-0 position-absolute p-2 text-white text-center hidden" id="transient-message-display"></div>
-                    <div class="h-100 w-100 position-absolute hidden" id="scope-graph"></div>
-                    <div class="bg-bg-dark-1l text-white text-center fs-5 fw-light" id="scope-message" style="z-index: 1">Starting nLab...</div>
-                </div>
-                <div class="row w-100 bg-bg-dark-1l text-white py-1 g-0">
-                    <div class="col-4 text-start px-4">
-<!--                        <div class="btn-group static btn-group-xs" role="group">-->
-<!--                            <button type="button" class="btn btn-primary">1</button>-->
-<!--                            <button type="button" class="btn btn-outline-primary">0.2 V</button>-->
-<!--                        </div>-->
-<!--                        <div class="btn-group static btn-group-xs" role="group">-->
-<!--                            <button type="button" class="btn btn-success">2</button>-->
-<!--                            <button type="button" class="btn btn-outline-success">0.2 V</button>-->
-<!--                        </div>-->
-<!--                        <div class="btn-group static btn-group-xs" role="group">-->
-<!--                            <button type="button" class="btn btn-warning">3</button>-->
-<!--                            <button type="button" class="btn btn-outline-warning">0.2 V</button>-->
-<!--                        </div>-->
-<!--                        <div class="btn-group static btn-group-xs" role="group">-->
-<!--                            <button type="button" class="btn btn-info">4</button>-->
-<!--                            <button type="button" class="btn btn-outline-info">0.2 V</button>-->
-<!--                        </div>-->
-                    </div>
-                    <div class="col-4 text-center">
-                        <div class="btn-group static btn-group-xs" id="horizontal-info" role="group">
-                            <button type="button" class="btn btn-light" id="time-per-div">1.0 s/div</button>
-                            <button type="button" class="btn btn-outline-light" id="sample-rate">4800 pts<br>400 Sa/s</button>
+
+                    <div class="top-0 position-absolute p-2 text-white text-center hidden"
+                        id="transient-message-display"></div>
+                    <div class="h-100 w-100 position-absolute hidden d-flex flex-column overflow-hidden"
+                        id="scope-graph-wrapper">
+                        <div class="flex-grow-1 w-100 position-relative" id="scope-graph" style="min-height: 0;"></div>
+                        <div class="w-100 bg-dark-1l py-1 text-center" style="z-index: 2;">
+                            <div class="btn-group static btn-group-xs" id="horizontal-info" role="group">
+                                <button type="button" class="btn btn-light" id="time-per-div">1.0 s/div</button>
+                                <button type="button" class="btn btn-outline-light" id="sample-rate">4800 pts<br>400
+                                    Sa/s</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-4 text-end px-4">
-<!--                        <div class="btn-group static btn-group-xs" role="group">-->
-<!--                            <button type="button" class="btn btn-light"><span class="btn-xs btn-info">4</span><span-->
-<!--                                    class="pl-1">&UpArrow;</span></button>-->
-<!--                            <button type="button" class="btn btn-outline-light">0.2 V</button>-->
-<!--                        </div>-->
+                    <div class="h-100 w-100 position-absolute d-none d-flex flex-column overflow-hidden"
+                        id="scope-graph-extra-wrapper">
+                        <div class="flex-grow-1 w-100 position-relative" id="scope-graph-extra" style="min-height: 0;">
+                        </div>
+                        <div class="w-100 bg-dark-1l py-1 text-center" style="z-index: 2;">
+                            <div class="btn-group static btn-group-xs" id="horizontal-info-extra" role="group">
+                                <button type="button" class="btn btn-light" id="time-per-div-extra">1.0 s/div</button>
+                                <button type="button" class="btn btn-outline-light" id="sample-rate-extra">4800
+                                    pts<br>400 Sa/s</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-dark-1l text-white text-center fs-5 fw-light" id="scope-message" style="z-index: 1">
+                        Starting nLab...
                     </div>
                 </div>
+
+
             </div>
-            <div class="col bg-dark sidebar">
+            <div class="col bg-dark sidebar d-flex flex-column gap-2">
                 <div class="btn-group-vertical btn-group-xs" id="Ch1-controls">
                     <div class="btn-group btn-group-xs">
                         <div class="btn-group btn-group-xs dropleft">
@@ -249,13 +415,15 @@
                                 data-bs-toggle="dropdown"></button>
                             <div class="dropdown-menu clickable">
                                 <div class="mx-3 form-group">
-                                    <span class="px-1">Scale:</span><label for="Ch1-scale">1</label><span class="px-1">V/div</span>
+                                    <span class="px-1">Scale:</span><label for="Ch1-scale">1</label><span
+                                        class="px-1">V/div</span>
                                     <input type="range" class="form-range" id="Ch1-scale">
                                 </div>
                             </div>
                         </div>
                         <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary"
-                            id="Ch1-onoff">Ch1</button>
+                            id="Ch1-onoff">Ch1
+                        </button>
                     </div>
                     <button class="btn btn-outline-secondary static" id="Ch1-status">1 V/div</button>
                 </div>
@@ -267,13 +435,15 @@
                                 data-bs-toggle="dropdown"></button>
                             <div class="dropdown-menu clickable">
                                 <div class="mx-3 form-group">
-                                    <span class="px-1">Scale:</span><label for="Ch2-scale">1</label><span class="px-1">V/div</span>
+                                    <span class="px-1">Scale:</span><label for="Ch2-scale">1</label><span
+                                        class="px-1">V/div</span>
                                     <input type="range" class="form-range" id="Ch2-scale">
                                 </div>
                             </div>
                         </div>
                         <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary"
-                            id="Ch2-onoff">Ch2</button>
+                            id="Ch2-onoff">Ch2
+                        </button>
                     </div>
                     <button class="btn btn-outline-secondary static" id="Ch2-status">1 V/div</button>
                 </div>
@@ -285,13 +455,15 @@
                                 data-bs-toggle="dropdown"></button>
                             <div class="dropdown-menu clickable">
                                 <div class="mx-3 form-group">
-                                    <span class="px-1">Scale:</span><label for="Ch3-scale">1</label><span class="px-1">V/div</span>
+                                    <span class="px-1">Scale:</span><label for="Ch3-scale">1</label><span
+                                        class="px-1">V/div</span>
                                     <input type="range" class="form-range" id="Ch3-scale">
                                 </div>
                             </div>
                         </div>
                         <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary"
-                            id="Ch3-onoff">Ch3</button>
+                            id="Ch3-onoff">Ch3
+                        </button>
                     </div>
                     <button class="btn btn-outline-secondary static" id="Ch3-status">1 V/div</button>
                 </div>
@@ -303,13 +475,15 @@
                                 data-bs-toggle="dropdown"></button>
                             <div class="dropdown-menu clickable">
                                 <div class="mx-3 form-group">
-                                    <span class="px-1">Scale:</span><label for="Ch4-scale">1</label><span class="px-1">V/div</span>
+                                    <span class="px-1">Scale:</span><label for="Ch4-scale">1</label><span
+                                        class="px-1">V/div</span>
                                     <input type="range" class="form-range" id="Ch4-scale">
                                 </div>
                             </div>
                         </div>
                         <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary"
-                            id="Ch4-onoff">Ch4</button>
+                            id="Ch4-onoff">Ch4
+                        </button>
                     </div>
                     <button class="btn btn-outline-secondary static" id="Ch4-status">1 V/div</button>
                 </div>
@@ -321,41 +495,60 @@
                                 data-bs-toggle="dropdown"></button>
                             <div class="dropdown-menu clickable">
                                 <div class="mx-3 form-group">
-                                    <span class="px-1">Trigger Level:</span><label for="trigger-level">5</label><span class="px-1">V</span>
+                                    <span class="px-1">Trigger Level:</span><label for="trigger-level">5</label><span
+                                        class="px-1">V</span>
                                     <i class="fa-regular fa-pen-to-square label-edit-button"></i>
                                     <input type="range" class="form-range" id="trigger-level">
                                 </div>
                                 <div class="btn-group my-1 mx-4" role="group">
-                                    <input class="btn-check" type="radio" name="trigger-source" value="Ch1" id="trigger-source-Ch1" checked>
-                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="trigger-source-Ch1">Ch1</label>
-                                    <input class="btn-check" type="radio" name="trigger-source" value="Ch2" id="trigger-source-Ch2">
-                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="trigger-source-Ch2">Ch2</label>
-                                    <input class="btn-check" type="radio" name="trigger-source" value="Ch3" id="trigger-source-Ch3">
-                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="trigger-source-Ch3">Ch3</label>
-                                    <input class="btn-check" type="radio" name="trigger-source" value="Ch4" id="trigger-source-Ch4">
-                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="trigger-source-Ch4">Ch4</label>
+                                    <input class="btn-check" type="radio" name="trigger-source" value="Ch1"
+                                        id="trigger-source-Ch1" checked>
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none"
+                                        for="trigger-source-Ch1">Ch1</label>
+                                    <input class="btn-check" type="radio" name="trigger-source" value="Ch2"
+                                        id="trigger-source-Ch2">
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none"
+                                        for="trigger-source-Ch2">Ch2</label>
+                                    <input class="btn-check" type="radio" name="trigger-source" value="Ch3"
+                                        id="trigger-source-Ch3">
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none"
+                                        for="trigger-source-Ch3">Ch3</label>
+                                    <input class="btn-check" type="radio" name="trigger-source" value="Ch4"
+                                        id="trigger-source-Ch4">
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none"
+                                        for="trigger-source-Ch4">Ch4</label>
                                 </div>
                                 <div class="btn-group my-1 mx-4" role="group">
-                                    <input class="btn-check" type="radio" name="trigger-type" value="RisingEdge" id="trigger-type-rising-edge" checked>
-                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="trigger-type-rising-edge">Rising</label>
-                                    <input class="btn-check" type="radio" name="trigger-type" value="FallingEdge" id="trigger-type-falling-edge">
-                                    <label class="btn btn-outline-secondary btn-xs shadow-none" for="trigger-type-falling-edge">Falling</label>
+                                    <input class="btn-check" type="radio" name="trigger-type" value="RisingEdge"
+                                        id="trigger-type-rising-edge" checked>
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none"
+                                        for="trigger-type-rising-edge">Rising</label>
+                                    <input class="btn-check" type="radio" name="trigger-type" value="FallingEdge"
+                                        id="trigger-type-falling-edge">
+                                    <label class="btn btn-outline-secondary btn-xs shadow-none"
+                                        for="trigger-type-falling-edge">Falling</label>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary" id="trigger-onoff">Trigger</button>
+                        <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary"
+                            id="trigger-onoff">
+                            Trigger
+                        </button>
                     </div>
-                    <button type="button" class="btn btn-outline-secondary static"><span
-                            class="btn-xs" id="trigger-source-display"></span></button>
+                    <button type="button" class="btn btn-outline-secondary static"><span class="btn-xs"
+                            id="trigger-source-display"></span></button>
                 </div>
             </div>
         </div>
-        <div class="row bg-dark text-white align-items-center py-2">
-            <div class="col-4 align-self-end text-white-50" id="version-display"></div>
+        <div class="row bg-dark text-white align-items-end py-2">
+            <div class="col-4">
+                <!-- <img src="src/assets/svg/nLabLogo_white.svg" width="92px" style="vertical-align: baseline;"> -->
+            </div>
             <div class="col-4">
                 <input type="range" min="0" max="15" class="form-range" id="horizontal-slider">
             </div>
-            <div class="col-4 text-end"></div>
+            <div class="col-4 text-end text-white-50 px-3" id="version-display"></div>
+        </div>
     </main>
 </body>
 <script src="app/renderer.js"></script>

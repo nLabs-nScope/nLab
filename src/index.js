@@ -19,6 +19,8 @@ import * as trigger from './js/Trigger.js'
 import * as flags from './js/Flags.js'
 import * as axes from './js/Axes.js'
 import * as message from './js/Message.js'
+import * as xygraph from './js/XYGraph.js'
+import * as extraGraph from './js/ExtraGraph.js'
 import {getId, idFromCh} from './js/Utils.js'
 
 require('./js/Save.js');
@@ -34,9 +36,6 @@ for (let dropdown of document.getElementsByClassName("dropdown-menu clickable"))
 }
 
 var config = {
-    // edits: {
-    //     shapePosition: true,
-    // },
     responsive: true,
     displayModeBar: false
 }
@@ -132,6 +131,7 @@ function updatePlot() {
 
     log.debug("updating the graph");
     Plotly.update('scope-graph', trace_data, layout_data);
+    extraGraph.update(trace_data);
 
     window.requestAnimationFrame(updatePlot);
 
@@ -173,8 +173,10 @@ function monitorScope() {
 
     if (nlab.isConnected(nLab)) {
         getId('save-traces').classList.remove("disabled");
+        getId('extra-graphs-button').classList.remove("disabled");
     } else {
         getId('save-traces').classList.add("disabled");
+        getId('extra-graphs-button').classList.add("disabled");
     }
 
     window.requestAnimationFrame(monitorScope);
