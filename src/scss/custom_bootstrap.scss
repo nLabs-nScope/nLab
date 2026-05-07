@@ -163,3 +163,23 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
   border-left: 0.3em solid transparent !important;
   vertical-align: 0.3em !important;
 }
+
+@mixin slider-ticks($stops) {
+  $intervals: $stops - 1;
+  background-image: radial-gradient(circle at 3px center, rgba(255, 255, 255, 0.7) 3px, transparent 3.5px);
+  background-size: calc((100% - 0.8rem) / #{$intervals}) 0.8rem;
+  background-position: calc(0.4rem - 3px) center;
+  background-repeat: repeat-x;
+}
+
+.slider-ticks-8 {
+  @include slider-ticks(8);
+}
+
+.slider-ticks-15 {
+  @include slider-ticks(15);
+}
+
+.slider-ticks-16 {
+  @include slider-ticks(16);
+}

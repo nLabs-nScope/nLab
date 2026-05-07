@@ -42,8 +42,16 @@ function valToGain(val) {
 }
 
 function gainToVal(gain) {
-    gain = Math.round(gain);
-    return gains.indexOf(gain);
+    let closest_idx = 0;
+    let min_diff = Infinity;
+    for (let i = 0; i < gains.length; i++) {
+        let diff = Math.abs(gains[i] - gain);
+        if (diff < min_diff) {
+            min_diff = diff;
+            closest_idx = i;
+        }
+    }
+    return closest_idx;
 }
 
 export function setAnalogInputRange(ch) {
