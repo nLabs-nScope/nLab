@@ -13,7 +13,7 @@
 <body>
 
     <main role="main" class="container-fluid h-100 d-flex flex-column">
-        <div class="row bg-dark text-white py-1 align-items-center text-nowrap  ">
+        <div class="row bg-dark text-white py-2 align-items-center text-nowrap  ">
             <div class="sidebar"></div>
             <div class="col flex-grow-1 d-flex justify-content-between px-1">
                 <div class="d-flex align-items-center gap-1">
@@ -193,7 +193,8 @@
                             <div class="btn btn-xs btn-success" id="usb-status" style="width: 100px;"></div>
                         </div>
                         <div id="nlab-usb-power-off" class="btn btn-xs btn-outline-secondary hidden">Power Off</div>
-                        <div id="nlab-usb-disconnected" class="btn btn-xs btn-outline-danger">Disconnected</div>
+                        <div id="nlab-usb-disconnected" class="btn btn-xs btn-outline-light disabled">No Connection
+                        </div>
                         <div id="nlab-usb-power-fault" class="btn btn-xs btn-outline-warning hidden">Power Fault</div>
                     </div>
                 </div>
@@ -209,7 +210,7 @@
                     <div class="btn-group btn-group-xs">
                         <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary" id="A1-onoff">A1
                         </button>
-                        <div class="btn-group btn-group-xs dropright">
+                        <div class="btn-group btn-group-xs dropend">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
@@ -256,7 +257,7 @@
                     <div class="btn-group btn-group-xs">
                         <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary" id="A2-onoff">A2
                         </button>
-                        <div class="btn-group btn-group-xs dropright">
+                        <div class="btn-group btn-group-xs dropend">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
@@ -303,7 +304,7 @@
                     <div class="btn-group btn-group-xs">
                         <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary" id="P1-onoff">P1
                         </button>
-                        <div class="btn-group btn-group-xs dropright">
+                        <div class="btn-group btn-group-xs dropend">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
@@ -330,7 +331,7 @@
                     <div class="btn-group btn-group-xs">
                         <button type="button" data-bs-toggle="button" class="btn btn-outline-secondary" id="P2-onoff">P2
                         </button>
-                        <div class="btn-group btn-group-xs dropright">
+                        <div class="btn-group btn-group-xs dropend">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
@@ -409,7 +410,7 @@
             <div class="col bg-dark sidebar d-flex flex-column gap-2">
                 <div class="btn-group-vertical btn-group-xs" id="Ch1-controls">
                     <div class="btn-group btn-group-xs">
-                        <div class="btn-group btn-group-xs dropleft">
+                        <div class="btn-group btn-group-xs dropstart">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
@@ -417,7 +418,7 @@
                                 <div class="mx-3 form-group">
                                     <span class="px-1">Scale:</span><label for="Ch1-scale">1</label><span
                                         class="px-1">V/div</span>
-                                    <input type="range" class="form-range" id="Ch1-scale">
+                                    <input type="range" class="form-range slider-ticks-8" id="Ch1-scale">
                                 </div>
                             </div>
                         </div>
@@ -429,7 +430,7 @@
                 </div>
                 <div class="btn-group-vertical btn-group-xs" id="Ch2-controls">
                     <div class="btn-group btn-group-xs">
-                        <div class="btn-group btn-group-xs dropleft">
+                        <div class="btn-group btn-group-xs dropstart">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
@@ -437,7 +438,7 @@
                                 <div class="mx-3 form-group">
                                     <span class="px-1">Scale:</span><label for="Ch2-scale">1</label><span
                                         class="px-1">V/div</span>
-                                    <input type="range" class="form-range" id="Ch2-scale">
+                                    <input type="range" class="form-range slider-ticks-8" id="Ch2-scale">
                                 </div>
                             </div>
                         </div>
@@ -449,7 +450,7 @@
                 </div>
                 <div class="btn-group-vertical btn-group-xs" id="Ch3-controls">
                     <div class="btn-group btn-group-xs">
-                        <div class="btn-group btn-group-xs dropleft">
+                        <div class="btn-group btn-group-xs dropstart">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
@@ -457,7 +458,7 @@
                                 <div class="mx-3 form-group">
                                     <span class="px-1">Scale:</span><label for="Ch3-scale">1</label><span
                                         class="px-1">V/div</span>
-                                    <input type="range" class="form-range" id="Ch3-scale">
+                                    <input type="range" class="form-range slider-ticks-8" id="Ch3-scale">
                                 </div>
                             </div>
                         </div>
@@ -469,7 +470,7 @@
                 </div>
                 <div class="btn-group-vertical btn-group-xs" id="Ch4-controls">
                     <div class="btn-group btn-group-xs">
-                        <div class="btn-group btn-group-xs dropleft">
+                        <div class="btn-group btn-group-xs dropstart">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
@@ -477,7 +478,7 @@
                                 <div class="mx-3 form-group">
                                     <span class="px-1">Scale:</span><label for="Ch4-scale">1</label><span
                                         class="px-1">V/div</span>
-                                    <input type="range" class="form-range" id="Ch4-scale">
+                                    <input type="range" class="form-range slider-ticks-8" id="Ch4-scale">
                                 </div>
                             </div>
                         </div>
@@ -489,7 +490,7 @@
                 </div>
                 <div class="btn-group-vertical btn-group-xs" id="trigger-controls">
                     <div class="btn-group btn-group-xs">
-                        <div class="btn-group btn-group-xs dropleft">
+                        <div class="btn-group btn-group-xs dropstart">
                             <button type="button"
                                 class="btn dropdown-toggle dropdown-toggle-split btn-outline-secondary"
                                 data-bs-toggle="dropdown"></button>
@@ -545,7 +546,7 @@
                 <!-- <img src="src/assets/svg/nLabLogo_white.svg" width="92px" style="vertical-align: baseline;"> -->
             </div>
             <div class="col-4">
-                <input type="range" min="0" max="15" class="form-range" id="horizontal-slider">
+                <input type="range" min="0" max="15" class="form-range slider-ticks-16" id="horizontal-slider">
             </div>
             <div class="col-4 text-end text-white-50 px-3" id="version-display"></div>
         </div>

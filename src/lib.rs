@@ -49,7 +49,7 @@ struct NlabTraces {
 
 impl NlabTraces {
     fn trace_gap(&self) -> usize {
-        self.num_samples / 120
+        self.num_samples / 60
     }
 }
 

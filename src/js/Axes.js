@@ -1,19 +1,24 @@
-import {idFromCh} from './Utils.js'
+import { idFromCh } from './Utils.js'
+
+export function getCSSVar(name) {
+    if (typeof window === 'undefined') return '';
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
 
 export const colors = {
-    "Ch1": 'rgb(52,210,146)',
-    "Ch2": 'rgb(246,216,97)',
-    "Ch3": 'rgb(58,176,226)',
-    "Ch4": 'rgb(233,102,86)',
-    "Trigger": 'rgb(255,255,255)',
+    get Ch1() { return getCSSVar('--ch1-color') },
+    get Ch2() { return getCSSVar('--ch2-color') },
+    get Ch3() { return getCSSVar('--ch3-color') },
+    get Ch4() { return getCSSVar('--ch4-color') },
+    get Trigger() { return getCSSVar('--trigger-color') },
 };
 
 export const text_colors = {
-    "Ch1": "black",
-    "Ch2": "black",
-    "Ch3": "white",
-    "Ch4": "white",
-    "Trigger": "black",
+    get Ch1() { return getCSSVar('--ch1-text') },
+    get Ch2() { return getCSSVar('--ch2-text') },
+    get Ch3() { return getCSSVar('--ch3-text') },
+    get Ch4() { return getCSSVar('--ch4-text') },
+    get Trigger() { return getCSSVar('--trigger-text') },
 }
 
 export var ranges = {
@@ -29,11 +34,11 @@ export function channel_axis(ch) {
         overlaying: 'y',
         range: ranges[ch],
         fixedrange: true,
-        tickfont: {color: colors[ch]},
+        tickfont: { color: colors[ch] },
         showticklabels: false,
         zeroline: false,
         showgrid: false,
-        position: (idFromCh(ch)-1)/3.0,
+        position: (idFromCh(ch) - 1) / 3.0,
     }
 }
 

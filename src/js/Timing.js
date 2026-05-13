@@ -146,9 +146,13 @@ export function update() {
     }
 
     if (nlab.version(nLab) >= 0x0200 && getId("horizontal-slider").max == time_per_div_1.length - 1) {
-        getId("horizontal-slider").max = time_per_div_v2.length - 1
+        getId("horizontal-slider").max = time_per_div_v2.length - 1;
+        getId("horizontal-slider").classList.remove("slider-ticks-16");
+        getId("horizontal-slider").classList.add("slider-ticks-15");
     } else if (nlab.version(nLab) < 0x0200 && getId("horizontal-slider").max == time_per_div_v2.length - 1) {
-        getId("horizontal-slider").max = time_per_div_1.length - 1
+        getId("horizontal-slider").max = time_per_div_1.length - 1;
+        getId("horizontal-slider").classList.remove("slider-ticks-15");
+        getId("horizontal-slider").classList.add("slider-ticks-16");
     }
 }
 
