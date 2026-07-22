@@ -49,6 +49,14 @@ module.exports = {
             }
         },
         {
+            name: 'electron-forge-maker-appimage',
+            config: {
+                options: {
+                    icon: 'src/assets/icons/nLabApp_Icon_512x512@2x.png',
+                }
+            }
+        },
+        {
             name: '@electron-forge/maker-zip',
             config: {},
         },

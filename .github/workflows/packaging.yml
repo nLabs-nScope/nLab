@@ -33,14 +33,18 @@ jobs:
             runs_on: ubuntu-22.04
             target_architecture: x64
             executable_path: xvfb-run out/nLab-linux-x64/nLab
-            artifact_path: out/make/deb/x64/nlab_*.deb
-            artifact_name: 'Linux Package (deb)'
+            artifact_path: |
+              out/make/deb/x64/nlab_*.deb
+              out/make/**/*.AppImage
+            artifact_name: 'Linux Package (deb & AppImage)'
           - target_os: linux-arm64
             runs_on: ubuntu-22.04-arm
             target_architecture: arm64
             executable_path: xvfb-run out/nLab-linux-arm64/nLab
-            artifact_path: out/make/deb/arm64/nlab_*.deb
-            artifact_name: 'Linux Package arm64 (deb)'
+            artifact_path: |
+              out/make/deb/arm64/nlab_*.deb
+              out/make/**/*.AppImage
+            artifact_name: 'Linux Package arm64 (deb & AppImage)'
           - target_os: macos
             runs_on: macos-latest
             target_architecture: universal
