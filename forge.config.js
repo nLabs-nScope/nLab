@@ -1,4 +1,18 @@
-const path = require('path');
+const { MakerBase } = require('@electron-forge/maker-base');
+
+class MakerAppImage extends MakerBase {
+    name = 'appimage';
+    defaultPlatforms = ['linux'];
+
+    isSupportedOnCurrentPlatform() {
+        return true;
+    }
+
+    async make(options) {
+        const { buildForge } = require('app-builder-lib');
+        return buildForge(options, { linux: [`appimage:${options.targetArch}`] });
+    }
+}
 
 module.exports = {
     packagerConfig: {
@@ -48,6 +62,11 @@ module.exports = {
                 }
             }
         },
+        new MakerAppImage({
+            options: {
+                icon: 'src/assets/icons/nLabApp_Icon_512x512@2x.png',
+            }
+        }),
         {
             name: '@electron-forge/maker-zip',
             config: {},
