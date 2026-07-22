@@ -20,6 +20,7 @@ import * as flags from './js/Flags.js'
 import * as axes from './js/Axes.js'
 import * as message from './js/Message.js'
 import * as xygraph from './js/XYGraph.js'
+import * as fftgraph from './js/FFTGraph.js'
 import * as extraGraph from './js/ExtraGraph.js'
 import {getId, idFromCh} from './js/Utils.js'
 

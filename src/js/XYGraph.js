@@ -50,13 +50,20 @@ function handle_graph_view_change(id) {
     }
 }
 
-getId('xy-graph-view-on').onclick = function () {
-    let button_collapsed = this.classList.contains('collapsed');
-    if (button_collapsed) {
-        hide_xy_graph();
-    } else {
+let collapseOne = getId('collapseOne');
+if (collapseOne) {
+    collapseOne.addEventListener('show.bs.collapse', function () {
         show_xy_graph();
-    }
+        // Collapse FFT if it is open
+        let collapseFFT = getId('collapseFFT');
+        if (collapseFFT && collapseFFT.classList.contains('show')) {
+            let bsCollapse = bootstrap.Collapse.getInstance(collapseFFT) || new bootstrap.Collapse(collapseFFT, {toggle: false});
+            bsCollapse.hide();
+        }
+    });
+    collapseOne.addEventListener('hide.bs.collapse', function () {
+        hide_xy_graph();
+    });
 }
 
 export function show_xy_graph() {
