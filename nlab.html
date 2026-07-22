@@ -172,6 +172,89 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="accordion-item border-0">
+                                    <h2 class="accordion-header px-2 py-1">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapseFFT"
+                                            aria-expanded="false" aria-controls="collapseFFT" id="fft-graph-view-on">
+                                            FFT View
+                                        </button>
+                                        <div class="btn-group" id="fft-graph-view" role="group">
+                                            <input class="btn-check" type="radio" name="fft-graph-view"
+                                                id="fft-graph-view-vertical" checked>
+                                            <label
+                                                class="btn btn-outline-secondary btn-xs shadow-none d-inline-flex align-items-center justify-content-center"
+                                                for="fft-graph-view-vertical">
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                                    stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                                    stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                                                    <!-- Outer container with rounded corners -->
+                                                    <rect x="2" y="2" width="12" height="12" rx="2" />
+                                                    <!-- Vertical divider -->
+                                                    <line x1="8" y1="2" x2="8" y2="14" />
+                                                </svg>
+                                            </label>
+                                            <input class="btn-check" type="radio" name="fft-graph-view"
+                                                id="fft-graph-view-horizontal">
+                                            <label
+                                                class="btn btn-outline-secondary btn-xs shadow-none d-inline-flex align-items-center justify-content-center"
+                                                for="fft-graph-view-horizontal">
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                                    stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                                    stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                                                    <!-- Outer container with rounded corners -->
+                                                    <rect x="2" y="2" width="12" height="12" rx="2" />
+                                                    <!-- Horizontal divider -->
+                                                    <line x1="2" y1="8" x2="14" y2="8" />
+                                                </svg>
+                                            </label>
+                                            <input class="btn-check" type="radio" name="fft-graph-view"
+                                                id="fft-graph-view-full">
+                                            <label
+                                                class="btn btn-outline-secondary btn-xs shadow-none d-inline-flex align-items-center justify-content-center"
+                                                for="fft-graph-view-full">
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <!-- Outer window frame -->
+                                                    <rect x="2" y="2" width="12" height="12" rx="2"
+                                                        stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                    <!-- Arrows group with thinner strokes -->
+                                                    <g stroke="currentColor" stroke-width="0.75" fill="none"
+                                                        stroke-linecap="round" stroke-linejoin="round">
+                                                        <path d="M7.33 7.33 L4.67 4.67 M4.67 6.67 V4.67 H6.67" />
+                                                        <!-- Top-right arrow -->
+                                                        <path d="M8.67 7.33 L11.33 4.67 M9.33 4.67 H11.33 V6.67" />
+                                                        <!-- Bottom-left arrow -->
+                                                        <path d="M7.33 8.67 L4.67 11.33 M4.67 9.33 V11.33 H6.67" />
+                                                        <!-- Bottom-right arrow -->
+                                                        <path d="M8.67 8.67 L11.33 11.33 M9.33 11.33 H11.33 V9.33" />
+                                                    </g>
+                                                </svg>
+                                            </label>
+                                        </div>
+                                    </h2>
+                                    <div id="collapseFFT" class="accordion-collapse collapse"
+                                        aria-labelledby="headingFFT">
+                                        <div class="accordion-body p-2 pt-1">
+                                            <div class="bg-dark rounded p-3 border border-secondary"
+                                                style="--bs-border-opacity: .25;">
+                                                <div class="d-flex justify-content-center">
+                                                    <div class="btn-group" id="fft-graph-scale" role="group">
+                                                        <input class="btn-check" type="radio"
+                                                            name="fft-graph-scale" id="fft-scale-log" checked>
+                                                        <label class="btn btn-outline-secondary btn-xs shadow-none"
+                                                            for="fft-scale-log">Log (dB)</label>
+                                                        <input class="btn-check" type="radio"
+                                                            name="fft-graph-scale" id="fft-scale-linear">
+                                                        <label class="btn btn-outline-secondary btn-xs shadow-none"
+                                                            for="fft-scale-linear">Linear</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
