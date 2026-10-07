@@ -74,5 +74,5 @@ if (process.env.NLAB_CODESIGN) {
         identity: "W74MCWRPFC",
         hardenedRuntime: true,
     }
-    module.exports.makers[0].config.signWithParams = `/csp "DigiCert Software Trust Manager KSP" /kc key_847858243 /f ${process.env.CODE_SIGNING_CERT_FILE} /tr http://timestamp.digicert.com /td SHA256 /fd SHA256`
+    module.exports.makers[0].config.signWithParams = `/csp "DigiCert Software Trust Manager KSP" /kc key_1625951729 /f ${process.env.CODE_SIGNING_CERT_FILE} /tr http://timestamp.digicert.com /td SHA256 /fd SHA256`
 }
