@@ -14,6 +14,10 @@ on:
         description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
         required: false
         default: false
+
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ${{ matrix.runs_on }}
@@ -32,15 +36,15 @@ jobs:
           - target_os: linux
             runs_on: ubuntu-22.04
             target_architecture: x64
-            executable_path: xvfb-run out/nLab-linux-x64/nLab
+            executable_path: xvfb-run --auto-servernum out/nLab-linux-x64/nLab
             artifact_path: |
               out/make/deb/x64/nlab_*.deb
               out/make/**/*.AppImage
             artifact_name: 'Linux Package (deb & AppImage)'
           - target_os: linux-arm64
-            runs_on: ubuntu-22.04-arm
+            runs_on: ubuntu-24.04-arm
             target_architecture: arm64
-            executable_path: xvfb-run out/nLab-linux-arm64/nLab
+            executable_path: xvfb-run --auto-servernum out/nLab-linux-arm64/nLab
             artifact_path: |
               out/make/deb/arm64/nlab_*.deb
               out/make/**/*.AppImage
@@ -68,7 +72,7 @@ jobs:
         if: startsWith(matrix.target_os, 'linux')
         run: |
           sudo apt-get update
-          sudo apt-get install libusb-1.0-0-dev libudev-dev
+          sudo apt-get install -y libusb-1.0-0-dev libudev-dev
           sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
         # https://github.com/electron/electron/issues/42510#issuecomment-2171583086
       - name: Checkout
@@ -96,11 +100,13 @@ jobs:
       - name: Setup Windows certs
         if: matrix.target_os =='windows'
         run: |
-          echo "${{ secrets.DIGICERT_CLIENT_CERT_FILE }}" | base64 --decode > /d/digicert_sm_cert.p12
-          echo "${{ secrets.WINDOWS_SIGNING_CERT }}" | base64 --decode > /d/signing_cert.crt
+          echo "${{ secrets.DIGICERT_CLIENT_CERT_FILE }}" | base64 --decode > "${RUNNER_TEMP}/digicert_sm_cert.p12"
+          echo "${{ secrets.WINDOWS_SIGNING_CERT }}" | base64 --decode > "${RUNNER_TEMP}/signing_cert.crt"
       - name: Package
         run: npm run make -- --arch ${{ matrix.target_architecture }}
         env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEBUG: "electron-packager,electron-windows-installer:main"
           MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.MACOS_NOTARIZATION_APPLE_ID }}
           MACOS_NOTARIZATION_PWD: ${{ secrets.MACOS_NOTARIZATION_PWD }}
@@ -108,8 +114,9 @@ jobs:
           SM_HOST: ${{ secrets.DIGICERT_HOST }}
           SM_API_KEY: ${{ secrets.DIGICERT_API_KEY }}
           SM_CLIENT_CERT_PASSWORD: ${{ secrets.DIGICERT_CLIENT_CERT_PASSWORD }}
-          SM_CLIENT_CERT_FILE: D:\\digicert_sm_cert.p12
-          CODE_SIGNING_CERT_FILE: D:\\signing_cert.crt
+          SM_CLIENT_CERT_FILE: ${{ runner.temp }}/digicert_sm_cert.p12
+          CODE_SIGNING_CERT_FILE: ${{ runner.temp }}/signing_cert.crt
+          DIGICERT_CERTIFICATE_ID: ${{ secrets.DIGICERT_CERTIFICATE_ID }}
       - name: Smoke Test
         run: ${{ matrix.executable_path }}
         env:
@@ -123,8 +130,13 @@ jobs:
         if: matrix.target_os == 'macos'
         working-directory: ./out/make/zip/darwin/universal
         run: |
-          f=$(echo nLab-darwin-universal-*.zip); cp "$f" $(sed 's:universal:x64:' <<< "$f")
-          f=$(echo nLab-darwin-universal-*.zip); cp "$f" $(sed 's:universal:arm64:' <<< "$f")
+          shopt -s nullglob
+          zips=(nLab-darwin-universal-*.zip)
+          if [ ${#zips[@]} -gt 0 ]; then
+            f="${zips[0]}"
+            cp "$f" "$(sed 's:universal:x64:' <<< "$f")"
+            cp "$f" "$(sed 's:universal:arm64:' <<< "$f")"
+          fi
       - name: Archive the updaters
         if: matrix.target_os == 'macos'
         uses: actions/upload-artifact@v4
@@ -137,6 +149,8 @@ jobs:
         if: failure()
         uses: mxschmitt/action-tmate@v3
         env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEBUG: "electron-packager,electron-windows-installer:main"
           MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.MACOS_NOTARIZATION_APPLE_ID }}
           MACOS_NOTARIZATION_PWD: ${{ secrets.MACOS_NOTARIZATION_PWD }}
@@ -144,5 +158,7 @@ jobs:
           SM_HOST: ${{ secrets.DIGICERT_HOST }}
           SM_API_KEY: ${{ secrets.DIGICERT_API_KEY }}
           SM_CLIENT_CERT_PASSWORD: ${{ secrets.DIGICERT_CLIENT_CERT_PASSWORD }}
-          SM_CLIENT_CERT_FILE: D:\\digicert_sm_cert.p12
-          CODE_SIGNING_CERT_FILE: D:\\signing_cert.crt
+          SM_CLIENT_CERT_FILE: ${{ runner.temp }}/digicert_sm_cert.p12
+          CODE_SIGNING_CERT_FILE: ${{ runner.temp }}/signing_cert.crt
+          DIGICERT_CERTIFICATE_ID: ${{ secrets.DIGICERT_CERTIFICATE_ID }}
+
