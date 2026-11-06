@@ -28,7 +28,7 @@ module.exports = {
             config: {
                 setupExe: 'nLab Installer.exe',
                 loadingGif: 'src/assets/gif/installing.gif',
-                iconUrl: 'https://www.nscope.org/user/pages/icons/nscope_icon.ico',
+                iconUrl: 'https://raw.githubusercontent.com/nLabs-nScope/nLab/main/src/assets/icons/nLabApp_Icon.ico',
                 setupIcon: 'src/assets/icons/nLabApp_Icon.ico',
             },
         },
