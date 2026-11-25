@@ -1,3 +1,4 @@
+const path = require('path');
 const { MakerBase } = require('@electron-forge/maker-base');
 
 class MakerAppImage extends MakerBase {
@@ -93,9 +94,21 @@ if (process.env.NLAB_CODESIGN) {
         identity: "W74MCWRPFC",
         hardenedRuntime: true,
     }
-    const certId = process.env.DIGICERT_CERTIFICATE_ID;
-    const keyAlias = certId?.startsWith('key_') ? certId : `key_${certId}`;
-    module.exports.makers[0].config.signWithParams = `/csp "DigiCert Software Trust Manager KSP" /kc ${keyAlias} /f "${process.env.CODE_SIGNING_CERT_FILE}" /tr http://timestamp.digicert.com /td SHA256 /fd SHA256`;
+    if (process.platform === 'win32') {
+        const certId = process.env.DIGICERT_CERTIFICATE_ID?.trim();
+        const certFile = process.env.CODE_SIGNING_CERT_FILE?.trim();
+        if (!certId) {
+            throw new Error('DIGICERT_CERTIFICATE_ID must be set when NLAB_CODESIGN is enabled on Windows');
+        }
+        if (!certFile) {
+            throw new Error('CODE_SIGNING_CERT_FILE must be set when NLAB_CODESIGN is enabled on Windows');
+        }
+        const keyAlias = certId.startsWith('key_') ? certId : `key_${certId}`;
+        const normalizedCertFile = path.win32.normalize(certFile);
+        const certSha1 = process.env.CODE_SIGNING_CERT_SHA1?.trim();
+        const certSelector = certSha1 ? `/sha1 ${certSha1}` : '/a';
+        module.exports.makers[0].config.signWithParams = `/csp "DigiCert Software Trust Manager KSP" /kc ${keyAlias} /f "${normalizedCertFile}" ${certSelector} /tr http://timestamp.digicert.com /td SHA256 /fd SHA256`;
+    }
 }
 
 
